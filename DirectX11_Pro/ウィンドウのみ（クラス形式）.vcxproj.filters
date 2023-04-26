@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="MAIN.cpp" />
+    <ClCompile Include="Fps.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPolygon.cpp" />
+    <ClCompile Include="Light.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="MathDx11.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework.h" />
+    <ClInclude Include="MAIN.h" />
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Fps.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPolygon.h" />
+    <ClInclude Include="Light.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="MathDx11.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{1267d535-840e-46bb-8431-04e7170c7fa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{8529d28b-9eef-4f06-be7f-6a617a70d34d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
