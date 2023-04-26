@@ -86,8 +86,11 @@
   <ItemGroup>
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Line3D.cpp" />
     <ClCompile Include="MAIN.cpp" />
     <ClCompile Include="MathDx11.cpp" />
+    <ClCompile Include="Pixel3D.cpp" />
+    <ClCompile Include="PointSprite3D.cpp" />
     <ClCompile Include="TestPolygon.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
@@ -96,8 +99,11 @@
     <ClInclude Include="Fps.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Line3D.h" />
     <ClInclude Include="MAIN.h" />
     <ClInclude Include="MathDx11.h" />
+    <ClInclude Include="Pixel3D.h" />
+    <ClInclude Include="PointSprite3D.h" />
     <ClInclude Include="TestPolygon.h" />
     <ClInclude Include="Text.h" />
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include "Fps.h"
 #include "TestPolygon.h"
 #include "Light.h"
+#include "Pixel3D.h"
 
 using namespace DirectX;
 
@@ -208,6 +209,7 @@ HRESULT MAIN::InitD3D()
 	ID3D11RasterizerState* pIr = NULL;
 	device->CreateRasterizerState(&rdc, &pIr);
 	deviceContext->RSSetState(pIr);
+
 	//•¶Žš—ñƒŒƒ“ƒ_ƒŠƒ“ƒO‚Ì‰Šú‰»
 	text = new Text;
 	XMFLOAT4 vColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -222,7 +224,6 @@ HRESULT MAIN::InitD3D()
 	// ŽlŠpƒ|ƒŠƒSƒ“
 	polygon = new TestPolygon;
 	polygon->Init(device, deviceContext, light);
-
 
 	return S_OK;
 }

@@ -15,6 +15,13 @@
     <ClCompile Include="MathDx11.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Pixel3D.cpp">
+      <Filter>Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Line3D.cpp">
+      <Filter>Function</Filter>
+    </ClCompile>
+    <ClCompile Include="PointSprite3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -35,6 +42,13 @@
     <ClInclude Include="MathDx11.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Pixel3D.h">
+      <Filter>Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Line3D.h">
+      <Filter>Function</Filter>
+    </ClInclude>
+    <ClInclude Include="PointSprite3D.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -45,6 +59,9 @@
     </Filter>
     <Filter Include="Light">
       <UniqueIdentifier>{8529d28b-9eef-4f06-be7f-6a617a70d34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Function">
+      <UniqueIdentifier>{6f73f6b0-d3a5-488b-aa81-51891dde9383}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

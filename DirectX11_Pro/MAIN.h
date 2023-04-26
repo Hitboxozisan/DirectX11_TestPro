@@ -6,6 +6,7 @@ class Text;
 class Fps;
 class Light;
 class TestPolygon;
+class Pixel3D;
 
 //
 //
@@ -35,4 +36,5 @@ public:
 	Fps* fps;
 	Light* light;			// ƒ‰ƒCƒg
 	TestPolygon* polygon;
+	Pixel3D* pixel3d;
 };
