@@ -3,7 +3,7 @@
 #include "Fps.h"
 #include "TestPolygon.h"
 #include "Light.h"
-#include "Pixel3D.h"
+#include "PointSprite3D.h"
 
 using namespace DirectX;
 
@@ -225,6 +225,10 @@ HRESULT MAIN::InitD3D()
 	polygon = new TestPolygon;
 	polygon->Init(device, deviceContext, light);
 
+	pointSprite = new PointSprite3D();
+	pointSprite->Init(device, deviceContext);
+
+
 	return S_OK;
 }
 //
@@ -261,7 +265,9 @@ void MAIN::Render()
 	// フレームレート計算・描画
 	//fps->Render();
 	// 四角ポリゴン描画
-	polygon->Render(vEyePt, mView, mProj);
+	//polygon->Render(vEyePt, mView, mProj);
+
+	pointSprite->Render();
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆

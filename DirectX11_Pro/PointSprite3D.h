@@ -14,9 +14,10 @@ public:
 	PointSprite3D();
 	~PointSprite3D();
 
-	HRESULT Init();
+	HRESULT Init(ID3D11Device* m_pDevice, ID3D11DeviceContext* m_pDeviceContext);
 	HRESULT InitModel();
-	HRESULT MakeShader();
+	HRESULT MakeShader(LPCWSTR, LPSTR, LPSTR, void**, ID3DBlob**);
+	HRESULT MakeTexture();
 	void Render();
 
 private:
@@ -31,6 +32,23 @@ private:
 		XMMATRIX mWVP;
 	};
 
+	HWND m_hWnd;
+	ID3D11Device* m_pDevice;
+	ID3D11DeviceContext* m_pDeviceContext;
 
+	ID3D11InputLayout* m_pVertexLayout;
+	ID3D11VertexShader* m_pVertexShader;
+	ID3D11GeometryShader* m_pGeometryShader;
+	ID3D11PixelShader* m_pPixelShader;
+	ID3D11Buffer* m_pConstantBuffer;
+	ID3D11Buffer* m_pVertexBuffer;
+
+	// テクスチャ関係
+	ID3D11SamplerState* m_pSampler;			//テクスチャーのサンプラー
+	ID3D11ShaderResourceView* m_pTexture;	//テクスチャー（用意するのはリソースビューだけでいい）
+	ID3D11BlendState* m_pBlendState;
+
+	ID3D11Resource* resource;
+	D3D11_SHADER_RESOURCE_VIEW_DESC* shaderView;
 };
 
