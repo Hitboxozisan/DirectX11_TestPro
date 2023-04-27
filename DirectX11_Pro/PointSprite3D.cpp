@@ -20,7 +20,10 @@ HRESULT PointSprite3D::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inDevic
 	//hlslファイル読み込み ブロブ作成　ブロブとはシェーダーの塊みたいなもの。XXシェーダーとして特徴を持たない。後で各種シェーダーに成り得る。
 	ID3DBlob* pCompiledShader = NULL;
 	//バーテックスシェーダー作成
-	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "VS", "vs_5_0", (void**)&m_pVertexShader, &pCompiledShader))) return E_FAIL;
+	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "VS", "vs_5_0", (void**)&m_pVertexShader, &pCompiledShader)))
+	{
+		return E_FAIL;
+	}
 	//頂点インプットレイアウトを定義	
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
@@ -34,10 +37,16 @@ HRESULT PointSprite3D::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inDevic
 	}
 	SAFE_RELEASE(pCompiledShader);
 	//ジオメトリシェーダー作成
-	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "GS_Point", "gs_5_0", (void**)&m_pGeometryShader, &pCompiledShader))) return E_FAIL;
+	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "GS_Point", "gs_5_0", (void**)&m_pGeometryShader, &pCompiledShader)))
+	{
+		return E_FAIL;
+	}
 	SAFE_RELEASE(pCompiledShader);
 	//ピクセルシェーダー作成
-	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "PS", "ps_5_0", (void**)&m_pPixelShader, &pCompiledShader))) return E_FAIL;
+	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "PS", "ps_5_0", (void**)&m_pPixelShader, &pCompiledShader)))
+	{
+		return E_FAIL;
+	}
 	SAFE_RELEASE(pCompiledShader);
 	//コンスタントバッファー作成　ここでは変換行列渡し用
 	D3D11_BUFFER_DESC cb;
@@ -60,10 +69,10 @@ HRESULT PointSprite3D::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inDevic
 	}
 
 	// テクスチャの作成
-	if (FAILED(MakeTexture()))
-	{
-		return E_FAIL;
-	}
+	//if (FAILED(MakeTexture()))
+	//{
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
 }
@@ -155,7 +164,7 @@ HRESULT PointSprite3D::MakeTexture()
 		return E_FAIL;
 	}*/
 
-	if(CreateShaderResourceView(m_pDevice))
+	//if(CreateShaderResourceView(m_pDevice))
 
 	//アルファブレンド用ブレンドステート作成
 	//pngファイル内にアルファ情報がある。アルファにより透過するよう指定している
