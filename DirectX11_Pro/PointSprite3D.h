@@ -48,7 +48,6 @@ private:
 	ID3D11ShaderResourceView* m_pTexture;	//テクスチャー（用意するのはリソースビューだけでいい）
 	ID3D11BlendState* m_pBlendState;
 
-	ID3D11Resource* resource;
-	D3D11_SHADER_RESOURCE_VIEW_DESC* shaderView;
+	ID3D11ShaderResourceView* srv = nullptr;
 };
 

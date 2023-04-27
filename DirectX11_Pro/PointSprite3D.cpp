@@ -155,17 +155,20 @@ HRESULT PointSprite3D::MakeTexture()
 	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	m_pDevice->CreateSamplerState(&SamDesc, &m_pSampler);
 
+	ScratchImage image;
 
 	//テクスチャー読み込み
-	/*if (FAILED(LoadFromWICFile(filename, WIC_FLAGS_NONE, &info, *image)))
+	if (FAILED(LoadFromWICFile(L"Data/Image/particle.png", WIC_FLAGS_NONE, nullptr, image)))
 	{
-		info = {};
 		MessageBoxA(0, "テクスチャーを読み込めません", "", MB_OK);
 		return E_FAIL;
-	}*/
+	}
 
-	//if(CreateShaderResourceView(m_pDevice))
-
+	if (FAILED(CreateShaderResourceView(m_pDevice, image.GetImages(), image.GetImageCount(), image.GetMetadata(), &srv)))
+	{
+		return E_FAIL;
+	}
+	
 	//アルファブレンド用ブレンドステート作成
 	//pngファイル内にアルファ情報がある。アルファにより透過するよう指定している
 	D3D11_BLEND_DESC bd;
