@@ -29,6 +29,7 @@ public:
 	IDXGISwapChain* swapChain;
 	ID3D11RenderTargetView* rtv;
 	ID3D11DepthStencilView* dsv;
+	ID3D11DepthStencilState* depthStencilState;
 	ID3D11Texture2D* ds;
 
 	//MESH* m_pMesh;

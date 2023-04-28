@@ -208,6 +208,9 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 		info = {};
 		return E_FAIL;
 	}
+
+
+
 	//hlslファイル読み込み ブロブ作成　ブロブとはシェーダーの塊みたいなもの。XXシェーダーとして特徴を持たない。後で各種シェーダーに成り得る。
 	ID3DBlob *pCompiledShader=NULL;
 	ID3DBlob *pErrors=NULL;
@@ -308,8 +311,6 @@ void Text::Render(char* text,int x,int y)
 
 	//トポロジー
 	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
-
-	
 	//頂点インプットレイアウトをセット
 	deviceContext->IASetInputLayout( vertexLayout );
 

@@ -1,26 +1,29 @@
 #include "PointSprite3D.h"
 #include <locale.h>
 #include <memory>
+#include "FireSpark.h"
 
 
 PointSprite3D::PointSprite3D()
 {
+	// 処理なし
 }
 
 PointSprite3D::~PointSprite3D()
 {
+	// 処理なし
 }
 
 HRESULT PointSprite3D::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inDeviceContext)
 {
-	m_pDevice = inDevice;
-	m_pDeviceContext = inDeviceContext;
+	device = inDevice;
+	deviceContext = inDeviceContext;
 
 
 	//hlslファイル読み込み ブロブ作成　ブロブとはシェーダーの塊みたいなもの。XXシェーダーとして特徴を持たない。後で各種シェーダーに成り得る。
 	ID3DBlob* pCompiledShader = NULL;
 	//バーテックスシェーダー作成
-	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "VS", "vs_5_0", (void**)&m_pVertexShader, &pCompiledShader)))
+	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "VS", "vs_5_0", (void**)&vertexShader, &pCompiledShader)))
 	{
 		return E_FAIL;
 	}
@@ -31,19 +34,19 @@ HRESULT PointSprite3D::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inDevic
 	};
 	UINT numElements = sizeof(layout) / sizeof(layout[0]);
 	//頂点インプットレイアウトを作成
-	if (FAILED(m_pDevice->CreateInputLayout(layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &m_pVertexLayout)))
+	if (FAILED(device->CreateInputLayout(layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &vertexLayout)))
 	{
-		return FALSE;
+		return E_FAIL;
 	}
 	SAFE_RELEASE(pCompiledShader);
 	//ジオメトリシェーダー作成
-	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "GS_Point", "gs_5_0", (void**)&m_pGeometryShader, &pCompiledShader)))
+	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "GS_Point", "gs_5_0", (void**)&geometryShader, &pCompiledShader)))
 	{
 		return E_FAIL;
 	}
 	SAFE_RELEASE(pCompiledShader);
 	//ピクセルシェーダー作成
-	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "PS", "ps_5_0", (void**)&m_pPixelShader, &pCompiledShader)))
+	if (FAILED(MakeShader(L"Shader/PointSprite3D.hlsl", "PS", "ps_5_0", (void**)&pixelShader, &pCompiledShader)))
 	{
 		return E_FAIL;
 	}
@@ -57,7 +60,7 @@ HRESULT PointSprite3D::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inDevic
 	cb.StructureByteStride = 0;
 	cb.Usage = D3D11_USAGE_DYNAMIC;
 
-	if (FAILED(m_pDevice->CreateBuffer(&cb, NULL, &m_pConstantBuffer)))
+	if (FAILED(device->CreateBuffer(&cb, NULL, &constantBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -69,10 +72,13 @@ HRESULT PointSprite3D::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inDevic
 	}
 
 	// テクスチャの作成
-	//if (FAILED(MakeTexture()))
-	//{
-	//	return E_FAIL;
-	//}
+	if (FAILED(MakeTexture()))
+	{
+		return E_FAIL;
+	}
+
+	firespark = new FireSpark();
+	firespark->Init(500, XMFLOAT3(0, 0, 0));
 
 	return S_OK;
 }
@@ -93,14 +99,14 @@ HRESULT PointSprite3D::InitModel()
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = vertices;
-	if (FAILED(m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBuffer)))
+	if (FAILED(device->CreateBuffer(&bd, &InitData, &vertexBuffer)))
 	{
 		return E_FAIL;
 	}
 	//バーテックスバッファーをセット
 	UINT stride = sizeof(PointSprite3DVertex);
 	UINT offset = 0;
-	m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 
 	return S_OK;
 }
@@ -119,27 +125,27 @@ HRESULT PointSprite3D::MakeShader(LPCWSTR szFileName, LPSTR szFuncName, LPSTR sz
 	memcpy(szProfile, szProfileName, 2);
 	if (strcmp(szProfile, "vs") == 0)//Vertex Shader
 	{
-		if (FAILED(m_pDevice->CreateVertexShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11VertexShader**)ppShader))) return E_FAIL;
+		if (FAILED(device->CreateVertexShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11VertexShader**)ppShader))) return E_FAIL;
 	}
 	if (strcmp(szProfile, "ps") == 0)//Pixel Shader
 	{
-		if (FAILED(m_pDevice->CreatePixelShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11PixelShader**)ppShader))) return E_FAIL;
+		if (FAILED(device->CreatePixelShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11PixelShader**)ppShader))) return E_FAIL;
 	}
 	if (strcmp(szProfile, "gs") == 0)//Geometry Shader
 	{
-		if (FAILED(m_pDevice->CreateGeometryShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11GeometryShader**)ppShader))) return E_FAIL;
+		if (FAILED(device->CreateGeometryShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11GeometryShader**)ppShader))) return E_FAIL;
 	}
 	if (strcmp(szProfile, "hs") == 0)//Hull Shader
 	{
-		if (FAILED(m_pDevice->CreateHullShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11HullShader**)ppShader))) return E_FAIL;
+		if (FAILED(device->CreateHullShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11HullShader**)ppShader))) return E_FAIL;
 	}
 	if (strcmp(szProfile, "ds") == 0)//Domain Shader
 	{
-		if (FAILED(m_pDevice->CreateDomainShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11DomainShader**)ppShader))) return E_FAIL;
+		if (FAILED(device->CreateDomainShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11DomainShader**)ppShader))) return E_FAIL;
 	}
 	if (strcmp(szProfile, "cs") == 0)//Compute Shader
 	{
-		if (FAILED(m_pDevice->CreateComputeShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11ComputeShader**)ppShader))) return E_FAIL;
+		if (FAILED(device->CreateComputeShader((*ppBlob)->GetBufferPointer(), (*ppBlob)->GetBufferSize(), NULL, (ID3D11ComputeShader**)ppShader))) return E_FAIL;
 	}
 	return S_OK;
 }
@@ -153,22 +159,41 @@ HRESULT PointSprite3D::MakeTexture()
 	SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	m_pDevice->CreateSamplerState(&SamDesc, &m_pSampler);
+	device->CreateSamplerState(&SamDesc, &sampler);
 
-	ScratchImage image;
-
-	//テクスチャー読み込み
-	if (FAILED(LoadFromWICFile(L"Data/Image/particle.png", WIC_FLAGS_NONE, nullptr, image)))
-	{
-		MessageBoxA(0, "テクスチャーを読み込めません", "", MB_OK);
-		return E_FAIL;
-	}
-
-	if (FAILED(CreateShaderResourceView(m_pDevice, image.GetImages(), image.GetImageCount(), image.GetMetadata(), &srv)))
+	//フォントのテクスチャーを作成
+	// マルチバイト文字列からワイド文字列へ変換
+	setlocale(LC_CTYPE, "jpn");
+	wchar_t filename[256];
+	size_t ret;
+	mbstowcs_s(&ret, filename, "Data/Image/particle.png", 256);
+	auto image = std::make_unique<ScratchImage>();
+	HRESULT hr = LoadFromWICFile(filename, WIC_FLAGS_NONE, &info, *image);
+	if (FAILED(hr))
 	{
 		return E_FAIL;
 	}
 	
+	// リソースとシェーダーリソースビューを作成
+	if (FAILED(CreateShaderResourceView(device, image->GetImages(), image->GetImageCount(), info, &srv)))
+	{
+		// 失敗
+		info = {};
+		return E_FAIL;
+	}
+
+	//テクスチャー読み込み
+	//if (FAILED(LoadFromWICFile(L"Data/Image/particle.png", WIC_FLAGS_NONE, nullptr, image)))
+	//{
+	//	MessageBoxA(0, "テクスチャーを読み込めません", "", MB_OK);
+	//	return E_FAIL;
+	//}
+	//
+	//if (FAILED(CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), &srv)))
+	//{
+	//	return E_FAIL;
+	//}
+
 	//アルファブレンド用ブレンドステート作成
 	//pngファイル内にアルファ情報がある。アルファにより透過するよう指定している
 	D3D11_BLEND_DESC bd;
@@ -184,13 +209,13 @@ HRESULT PointSprite3D::MakeTexture()
 	bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-	if (FAILED(m_pDevice->CreateBlendState(&bd, &m_pBlendState)))
+	if (FAILED(device->CreateBlendState(&bd, &blendState)))
 	{
 		return E_FAIL;
 	}
 
 	UINT mask = 0xffffffff;
-	m_pDeviceContext->OMSetBlendState(m_pBlendState, NULL, mask);
+	deviceContext->OMSetBlendState(blendState, NULL, mask);
 
 	return S_OK;
 }
@@ -201,12 +226,12 @@ void PointSprite3D::Render()
 	XMMATRIX View;
 	XMMATRIX Proj;
 	//ワールドトランスフォーム
-	static float x = -1;
-	x += 0.00001;
-	XMMATRIX Scale, Tran;
-	Scale = XMMatrixScaling(0.01, 0.01, 0.01);
-	Tran = XMMatrixTranslation( x, 0, 0);
-	World = Scale * Tran;
+	//static float x = -1;
+	//x += 0.00001;
+	//XMMATRIX Scale, Tran;
+	//Scale = XMMatrixScaling(0.01, 0.01, 0.01);
+	//Tran = XMMatrixTranslation( x, 0, 0);
+	//World = Scale * Tran;
 	// ビュートランスフォーム
 	XMVECTOR vEyePt = { 0.0f, 0.0f, -2.0f };	//視点位置
 	XMVECTOR vLookatPt = {0.0f, 0.0f, 0.0f};	//注視位置
@@ -214,32 +239,56 @@ void PointSprite3D::Render()
 	View = XMMatrixLookAtLH(vEyePt, vLookatPt, vUpVec);
 	// プロジェクショントランスフォーム
 	Proj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
+
+	for (int i = 0; i < 500; i++)
+	{
+		XMMATRIX scale, tran;
+		scale = XMMatrixScaling(0.01, 0.01, 0.01);
+		XMFLOAT3 particlePos = firespark->GetParticlePos(i);
+		tran = XMMatrixTranslation(particlePos.x, particlePos.y, particlePos.z);
+		World = scale * tran;
+
+		RenderSprite(World * View * Proj);
+	}
+
+	XMFLOAT3 particlePos = firespark->GetParticlePos(7);
+}
+
+void PointSprite3D::RenderSprite(XMMATRIX& wvp)
+{
 	//使用するシェーダーのセット
-	m_pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
-	m_pDeviceContext->GSSetShader(m_pGeometryShader, NULL, 0);
-	m_pDeviceContext->PSSetShader(m_pPixelShader, NULL, 0);
+	deviceContext->VSSetShader(vertexShader, NULL, 0);
+	deviceContext->GSSetShader(geometryShader, NULL, 0);
+	deviceContext->PSSetShader(pixelShader, NULL, 0);
 	//シェーダーのコンスタントバッファーに各種データを渡す
 	D3D11_MAPPED_SUBRESOURCE pData;
 	PointSprite3DBuffer cb;
-	if (SUCCEEDED(m_pDeviceContext->Map(m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+	if (SUCCEEDED(deviceContext->Map(constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		//ワールド、カメラ、射影行列を渡す
-		XMMATRIX m = World * View * Proj;
+		XMMATRIX m = wvp;
 		m = XMMatrixTranspose(m);
 		cb.mWVP = m;
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)(&cb), sizeof(cb));
-		m_pDeviceContext->Unmap(m_pConstantBuffer, 0);
+		deviceContext->Unmap(constantBuffer, 0);
 	}
 	//このコンスタントバッファーをどのシェーダーで使うか
-	m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
-	m_pDeviceContext->GSSetConstantBuffers(0, 1, &m_pConstantBuffer);
-	m_pDeviceContext->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+	deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
+	deviceContext->GSSetConstantBuffers(0, 1, &constantBuffer);
+	deviceContext->PSSetConstantBuffers(0, 1, &constantBuffer);
+
 	//頂点インプットレイアウトをセット
-	m_pDeviceContext->IASetInputLayout(m_pVertexLayout);
+	deviceContext->IASetInputLayout(vertexLayout);
 	//プリミティブ・トポロジーをセット
-	m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	// テクスチャをシェーダーに渡す
+	//deviceContext->PSSetSamplers(0, 1, &sampler);
+	deviceContext->PSSetShaderResources(0, 1, &srv);
 
 	//プリミティブをレンダリング
-	m_pDeviceContext->Draw(1, 0);
+	deviceContext->Draw(1, 0);
+
+	firespark->Run();
 }

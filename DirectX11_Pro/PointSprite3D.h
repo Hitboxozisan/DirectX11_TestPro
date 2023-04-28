@@ -5,6 +5,8 @@
 
 using namespace DirectX;
 
+class FireSpark;
+
 /// <summary>
 /// ポイントスプライトを3D空間で描画する
 /// </summary>
@@ -19,6 +21,7 @@ public:
 	HRESULT MakeShader(LPCWSTR, LPSTR, LPSTR, void**, ID3DBlob**);
 	HRESULT MakeTexture();
 	void Render();
+	void RenderSprite(XMMATRIX& wvp);
 
 private:
 	//頂点の構造体
@@ -32,22 +35,28 @@ private:
 		XMMATRIX mWVP;
 	};
 
-	HWND m_hWnd;
-	ID3D11Device* m_pDevice;
-	ID3D11DeviceContext* m_pDeviceContext;
+	HWND hWnd;
+	ID3D11Device* device;
+	ID3D11DeviceContext* deviceContext;
 
-	ID3D11InputLayout* m_pVertexLayout;
-	ID3D11VertexShader* m_pVertexShader;
-	ID3D11GeometryShader* m_pGeometryShader;
-	ID3D11PixelShader* m_pPixelShader;
-	ID3D11Buffer* m_pConstantBuffer;
-	ID3D11Buffer* m_pVertexBuffer;
+	ID3D11InputLayout* vertexLayout;
+	ID3D11VertexShader* vertexShader;
+	ID3D11GeometryShader* geometryShader;
+	ID3D11PixelShader* pixelShader;
+	ID3D11Buffer* constantBuffer;
+	ID3D11Buffer* vertexBuffer;
 
 	// テクスチャ関係
-	ID3D11SamplerState* m_pSampler;			//テクスチャーのサンプラー
-	ID3D11ShaderResourceView* m_pTexture;	//テクスチャー（用意するのはリソースビューだけでいい）
-	ID3D11BlendState* m_pBlendState;
+	ID3D11SamplerState* sampler;			//テクスチャーのサンプラー
+	ID3D11ShaderResourceView* texture;	//テクスチャー（用意するのはリソースビューだけでいい）
+	ID3D11BlendState* blendState;
+	
 
+	TexMetadata info = {};
+	// シェーダーリソースビュー
 	ID3D11ShaderResourceView* srv = nullptr;
+
+	FireSpark* firespark;
+	
 };
 

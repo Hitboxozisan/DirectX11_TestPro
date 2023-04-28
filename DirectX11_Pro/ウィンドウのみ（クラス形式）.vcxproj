@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FireSpark.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Line3D.cpp" />
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="FireSpark.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Light.h" />

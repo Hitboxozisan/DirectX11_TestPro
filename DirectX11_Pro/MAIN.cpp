@@ -175,6 +175,7 @@ HRESULT MAIN::InitD3D()
 	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 	device->CreateRenderTargetView(pBackBuffer, NULL, &rtv);
 	SAFE_RELEASE(pBackBuffer);
+
 	//深度ステンシルビューの作成
 	D3D11_TEXTURE2D_DESC descDepth;
 	descDepth.Width = WINDOW_WIDTH;
@@ -190,8 +191,18 @@ HRESULT MAIN::InitD3D()
 	descDepth.MiscFlags = 0;
 	device->CreateTexture2D(&descDepth, NULL, &ds);
 	device->CreateDepthStencilView(ds, NULL, &dsv);
+
 	//レンダーターゲットビューと深度ステンシルビューをパイプラインにバインド
 	deviceContext->OMSetRenderTargets(1, &rtv, dsv);
+
+	// 深度テストを無効にする
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	depthStencilDesc.DepthEnable = false;
+
+	device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
+	deviceContext->OMSetDepthStencilState(depthStencilState, 1);
+
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
 	vp.Width = WINDOW_WIDTH;

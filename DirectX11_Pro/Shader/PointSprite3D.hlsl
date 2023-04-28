@@ -1,6 +1,6 @@
 //グローバル
-Texture2D g_Texture: register(t0);			// テクスチャオブジェクト
-SamplerState g_Sampler : register(s0);		// サンプラー
+Texture2D g_Texture: register(t0);
+SamplerState g_Sampler : register(s0);
 
 cbuffer global
 {

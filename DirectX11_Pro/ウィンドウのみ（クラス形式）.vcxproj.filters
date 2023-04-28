@@ -21,7 +21,12 @@
     <ClCompile Include="Line3D.cpp">
       <Filter>Function</Filter>
     </ClCompile>
-    <ClCompile Include="PointSprite3D.cpp" />
+    <ClCompile Include="FireSpark.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="PointSprite3D.cpp">
+      <Filter>Function</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -48,7 +53,12 @@
     <ClInclude Include="Line3D.h">
       <Filter>Function</Filter>
     </ClInclude>
-    <ClInclude Include="PointSprite3D.h" />
+    <ClInclude Include="FireSpark.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="PointSprite3D.h">
+      <Filter>Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -62,6 +72,9 @@
     </Filter>
     <Filter Include="Function">
       <UniqueIdentifier>{6f73f6b0-d3a5-488b-aa81-51891dde9383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{9d043f9d-b910-4d18-97fb-d16e281cea67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
