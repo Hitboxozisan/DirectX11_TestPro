@@ -7,6 +7,7 @@ class Fps;
 class Light;
 class TestPolygon;
 class PointSprite3D;
+class TestObj;
 
 //
 //
@@ -38,4 +39,5 @@ public:
 	Light* light;			// ƒ‰ƒCƒg
 	TestPolygon* polygon;
 	PointSprite3D* pointSprite;
+	TestObj* testObj;
 };

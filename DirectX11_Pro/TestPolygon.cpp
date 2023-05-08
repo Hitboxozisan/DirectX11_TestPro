@@ -113,7 +113,7 @@ void TestPolygon::Render(XMVECTOR inEye, XMMATRIX inView, XMMATRIX inProj)
 	XMMATRIX mView;
 	XMMATRIX mProj;
 	//ワールドトランスフォーム（絶対座標変換）
-	mWorld = XMMatrixRotationY(timeGetTime() / 360.0f);		//単純にyaw回転させる
+	mWorld = XMMatrixRotationY(timeGetTime() / 1000.0f);		//単純にyaw回転させる
 	//使用するシェーダーの登録
 	deviceContext->VSSetShader(vertexShader, NULL, 0);
 	deviceContext->PSSetShader(pixelShader, NULL, 0);

@@ -4,6 +4,7 @@
 #include "TestPolygon.h"
 #include "Light.h"
 #include "PointSprite3D.h"
+#include "TestObj.h"
 
 using namespace DirectX;
 
@@ -146,6 +147,8 @@ void MAIN::App()
 //
 HRESULT MAIN::InitD3D()
 {
+	HRESULT result;
+
 	// デバイスとスワップチェーンの作成
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
@@ -171,9 +174,13 @@ HRESULT MAIN::InitD3D()
 		return FALSE;
 	}
 	//レンダーターゲットビューの作成
-	ID3D11Texture2D* pBackBuffer;
+	ID3D11Texture2D* pBackBuffer = nullptr;
 	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-	device->CreateRenderTargetView(pBackBuffer, NULL, &rtv);
+	// そのテクスチャーに対しレンダーターゲットビューを作成
+	if (FAILED(device->CreateRenderTargetView(pBackBuffer, NULL, &rtv)))
+	{
+		return E_FAIL;
+	}
 	SAFE_RELEASE(pBackBuffer);
 
 	//深度ステンシルビューの作成
@@ -189,19 +196,34 @@ HRESULT MAIN::InitD3D()
 	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
-	device->CreateTexture2D(&descDepth, NULL, &ds);
-	device->CreateDepthStencilView(ds, NULL, &dsv);
+	result = device->CreateTexture2D(&descDepth, NULL, &ds);
+	if (FAILED(result))
+	{
+		return E_FAIL;
+	}
+	// そのテクスチャーに対しデプスステンシルビューを作成
+	result = device->CreateDepthStencilView(ds, NULL, &dsv);
+	if (FAILED(result))
+	{
+		return E_FAIL;
+	}
 
+	
+
+	// 深度テストを有効化
+	
 	//レンダーターゲットビューと深度ステンシルビューをパイプラインにバインド
 	deviceContext->OMSetRenderTargets(1, &rtv, dsv);
 
 	// 深度テストを無効にする
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
-	depthStencilDesc.DepthEnable = false;
+	//D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	//ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	//depthStencilDesc.DepthEnable = false;
+	//
+	//device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
+	//deviceContext->OMSetDepthStencilState(depthStencilState, 1);
 
-	device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
-	deviceContext->OMSetDepthStencilState(depthStencilState, 1);
+	
 
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
@@ -239,6 +261,9 @@ HRESULT MAIN::InitD3D()
 	pointSprite = new PointSprite3D();
 	pointSprite->Init(device, deviceContext);
 
+	testObj = new TestObj;
+	testObj->Init(device, deviceContext, swapChain);
+
 
 	return S_OK;
 }
@@ -264,6 +289,7 @@ void MAIN::Render()
 	float ClearColor[4] = { 0,0,1,1 };// クリア色作成　RGBAの順
 	deviceContext->ClearRenderTargetView(rtv, ClearColor);//画面クリア
 	deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);//深度バッファクリア
+	
 	// ビュートランスフォーム（視点座標変換）
 	XMVECTOR vEyePt = { 0.0f, 1.0f, -2.0f };//カメラ（視点）位置
 	XMVECTOR vLookatPt = { 0.0f, 0.0f, 0.0f };//注視位置
@@ -278,7 +304,9 @@ void MAIN::Render()
 	// 四角ポリゴン描画
 	//polygon->Render(vEyePt, mView, mProj);
 
-	pointSprite->Render();
+	//pointSprite->Render(mView, mProj);
+
+	testObj->Render();
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆

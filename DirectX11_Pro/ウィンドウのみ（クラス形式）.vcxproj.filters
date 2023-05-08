@@ -8,7 +8,6 @@
     <ClCompile Include="Text.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="TestPolygon.cpp" />
     <ClCompile Include="Light.cpp">
       <Filter>Light</Filter>
     </ClCompile>
@@ -27,6 +26,12 @@
     <ClCompile Include="PointSprite3D.cpp">
       <Filter>Function</Filter>
     </ClCompile>
+    <ClCompile Include="TestObj.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPolygon.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -40,7 +45,6 @@
     <ClInclude Include="Text.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="TestPolygon.h" />
     <ClInclude Include="Light.h">
       <Filter>Light</Filter>
     </ClInclude>
@@ -59,6 +63,12 @@
     <ClInclude Include="PointSprite3D.h">
       <Filter>Function</Filter>
     </ClInclude>
+    <ClInclude Include="TestObj.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPolygon.h">
+      <Filter>Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -75,6 +85,9 @@
     </Filter>
     <Filter Include="Effect">
       <UniqueIdentifier>{9d043f9d-b910-4d18-97fb-d16e281cea67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{7fad5f92-8f23-4d97-9820-19afa7611ad4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

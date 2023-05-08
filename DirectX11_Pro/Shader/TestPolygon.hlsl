@@ -48,5 +48,7 @@ float4 PS( VS_OUTPUT input ) : SV_Target
 	float3 Reflect = normalize(2 * NL * Normal - LightDir);
 	float4 specular = 2 * pow(saturate(dot(Reflect, ViewDir)), 2);
 
+
+
 	return g_Diffuse * NL + specular;
 }

@@ -20,7 +20,7 @@ public:
 	HRESULT InitModel();
 	HRESULT MakeShader(LPCWSTR, LPSTR, LPSTR, void**, ID3DBlob**);
 	HRESULT MakeTexture();
-	void Render();
+	void Render(XMMATRIX view, XMMATRIX proj);
 	void RenderSprite(XMMATRIX& wvp);
 
 private:
@@ -53,8 +53,6 @@ private:
 	
 
 	TexMetadata info = {};
-	// シェーダーリソースビュー
-	ID3D11ShaderResourceView* srv = nullptr;
 
 	FireSpark* firespark;
 	

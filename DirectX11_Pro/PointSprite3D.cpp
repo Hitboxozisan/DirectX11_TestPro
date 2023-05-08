@@ -161,7 +161,6 @@ HRESULT PointSprite3D::MakeTexture()
 	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	device->CreateSamplerState(&SamDesc, &sampler);
 
-	//フォントのテクスチャーを作成
 	// マルチバイト文字列からワイド文字列へ変換
 	setlocale(LC_CTYPE, "jpn");
 	wchar_t filename[256];
@@ -175,24 +174,12 @@ HRESULT PointSprite3D::MakeTexture()
 	}
 	
 	// リソースとシェーダーリソースビューを作成
-	if (FAILED(CreateShaderResourceView(device, image->GetImages(), image->GetImageCount(), info, &srv)))
+	if (FAILED(CreateShaderResourceView(device, image->GetImages(), image->GetImageCount(), info, &texture)))
 	{
 		// 失敗
 		info = {};
 		return E_FAIL;
 	}
-
-	//テクスチャー読み込み
-	//if (FAILED(LoadFromWICFile(L"Data/Image/particle.png", WIC_FLAGS_NONE, nullptr, image)))
-	//{
-	//	MessageBoxA(0, "テクスチャーを読み込めません", "", MB_OK);
-	//	return E_FAIL;
-	//}
-	//
-	//if (FAILED(CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), &srv)))
-	//{
-	//	return E_FAIL;
-	//}
 
 	//アルファブレンド用ブレンドステート作成
 	//pngファイル内にアルファ情報がある。アルファにより透過するよう指定している
@@ -220,25 +207,19 @@ HRESULT PointSprite3D::MakeTexture()
 	return S_OK;
 }
 
-void PointSprite3D::Render()
+void PointSprite3D::Render(XMMATRIX view, XMMATRIX proj)
 {
 	XMMATRIX World;
-	XMMATRIX View;
-	XMMATRIX Proj;
-	//ワールドトランスフォーム
-	//static float x = -1;
-	//x += 0.00001;
-	//XMMATRIX Scale, Tran;
-	//Scale = XMMatrixScaling(0.01, 0.01, 0.01);
-	//Tran = XMMatrixTranslation( x, 0, 0);
-	//World = Scale * Tran;
+	//XMMATRIX View;
+	//XMMATRIX Proj;
+	
 	// ビュートランスフォーム
-	XMVECTOR vEyePt = { 0.0f, 0.0f, -2.0f };	//視点位置
-	XMVECTOR vLookatPt = {0.0f, 0.0f, 0.0f};	//注視位置
-	XMVECTOR vUpVec = { 0.0f, 1.0f, 0.0f };		//上方位置
-	View = XMMatrixLookAtLH(vEyePt, vLookatPt, vUpVec);
-	// プロジェクショントランスフォーム
-	Proj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
+	//XMVECTOR vEyePt = { 0.0f, 1.0f, -2.0f };	//視点位置
+	//XMVECTOR vLookatPt = {0.0f, 0.0f, 0.0f};	//注視位置
+	//XMVECTOR vUpVec = { 0.0f, 1.0f, 0.0f };		//上方位置
+	//View = XMMatrixLookAtLH(vEyePt, vLookatPt, vUpVec);
+	//// プロジェクショントランスフォーム
+	//Proj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
 
 	for (int i = 0; i < 500; i++)
 	{
@@ -248,7 +229,7 @@ void PointSprite3D::Render()
 		tran = XMMatrixTranslation(particlePos.x, particlePos.y, particlePos.z);
 		World = scale * tran;
 
-		RenderSprite(World * View * Proj);
+		RenderSprite(World * view * proj);
 	}
 
 	XMFLOAT3 particlePos = firespark->GetParticlePos(7);
@@ -284,8 +265,8 @@ void PointSprite3D::RenderSprite(XMMATRIX& wvp)
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	// テクスチャをシェーダーに渡す
-	//deviceContext->PSSetSamplers(0, 1, &sampler);
-	deviceContext->PSSetShaderResources(0, 1, &srv);
+	deviceContext->PSSetSamplers(0, 1, &sampler);
+	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	//プリミティブをレンダリング
 	deviceContext->Draw(1, 0);
