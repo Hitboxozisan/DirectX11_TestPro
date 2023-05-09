@@ -24,7 +24,7 @@ public:
 	HRESULT MakeTexture();
 
 	void Fainalize();
-	void Render(XMMATRIX view, XMMATRIX proj);
+	void Render(XMVECTOR eye, XMVECTOR lookatPt, XMVECTOR upVec);
 
 private:
 

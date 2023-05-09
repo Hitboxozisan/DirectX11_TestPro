@@ -242,6 +242,7 @@ HRESULT MAIN::InitD3D()
 	ID3D11RasterizerState* pIr = NULL;
 	device->CreateRasterizerState(&rdc, &pIr);
 	deviceContext->RSSetState(pIr);
+	SAFE_RELEASE(pIr);
 
 	//文字列レンダリングの初期化
 	//text = new Text;
@@ -306,7 +307,7 @@ void MAIN::Render()
 
 	//pointSprite->Render(mView, mProj);
 
-	testObj->Render(mView, mProj);
+	testObj->Render(vEyePt, vLookatPt, vUpVec);
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆
