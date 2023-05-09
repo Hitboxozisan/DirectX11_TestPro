@@ -24,19 +24,24 @@ public:
 	HRESULT MakeTexture();
 
 	void Fainalize();
-	void Render();
+	void Render(XMMATRIX view, XMMATRIX proj);
 
 private:
 
 	struct ObjVertex
 	{
 		XMFLOAT3 pos = {0.0f, 0.0f, 0.0f};		// 位置
-		XMFLOAT2 tex = {0.0f, 0.0f};
+		XMFLOAT3 norm = {0.0f, 0.0f, 0.0f};
 	};
 
 	struct ObjShaderConstantBuffer
 	{
+		XMMATRIX W;
 		XMMATRIX WVP;
+		XMVECTOR lightDir;
+		XMVECTOR diffuse;
+		XMVECTOR specular;
+		XMVECTOR eye;
 	};
 
 
@@ -56,12 +61,11 @@ private:
 	ID3D11Buffer* m_pConstantBuffer;
 	//↓モデルごと	
 	ID3D11Buffer* m_pVertexBuffer;
+	ID3D11ShaderResourceView* srv = nullptr;
 	MyMesh m_Mesh;
-	ID3D11SamplerState* m_pSampleLinear;		// テクスチャーのサンプラー
-	ID3D11ShaderResourceView* m_pTexture;		// テクスチャー
+	//ID3D11SamplerState* m_pSampleLinear;		// テクスチャーのサンプラー
+	//ID3D11ShaderResourceView* m_pTexture;		// テクスチャー
 
 	TexMetadata info = {};
-	// シェーダーリソースビュー
-	ID3D11ShaderResourceView* srv = nullptr;
 };
 

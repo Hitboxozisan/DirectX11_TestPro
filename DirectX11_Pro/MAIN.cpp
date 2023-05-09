@@ -244,22 +244,22 @@ HRESULT MAIN::InitD3D()
 	deviceContext->RSSetState(pIr);
 
 	//文字列レンダリングの初期化
-	text = new Text;
-	XMFLOAT4 vColor(1.0f, 0.0f, 0.0f, 1.0f);
-	if (FAILED(text->Init(deviceContext, WINDOW_WIDTH, WINDOW_HEIGHT, 25, vColor)))
-	{
-		return E_FAIL;
-	}
+	//text = new Text;
+	//XMFLOAT4 vColor(1.0f, 0.0f, 0.0f, 1.0f);
+	//if (FAILED(text->Init(deviceContext, WINDOW_WIDTH, WINDOW_HEIGHT, 25, vColor)))
+	//{
+	//	return E_FAIL;
+	//}
 	// フレームレート
-	fps = new Fps;
-	fps->Init(text);
+	//fps = new Fps;
+	//fps->Init(text);
 
 	// 四角ポリゴン
-	polygon = new TestPolygon;
-	polygon->Init(device, deviceContext, light);
+	//polygon = new TestPolygon;
+	//polygon->Init(device, deviceContext, light);
 
-	pointSprite = new PointSprite3D();
-	pointSprite->Init(device, deviceContext);
+	//pointSprite = new PointSprite3D();
+	//pointSprite->Init(device, deviceContext);
 
 	testObj = new TestObj;
 	testObj->Init(device, deviceContext, swapChain);
@@ -291,7 +291,7 @@ void MAIN::Render()
 	deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);//深度バッファクリア
 	
 	// ビュートランスフォーム（視点座標変換）
-	XMVECTOR vEyePt = { 0.0f, 1.0f, -2.0f };//カメラ（視点）位置
+	XMVECTOR vEyePt = { 0.0f, 0.1f, -0.3f };//カメラ（視点）位置
 	XMVECTOR vLookatPt = { 0.0f, 0.0f, 0.0f };//注視位置
 	XMVECTOR vUpVec = { 0.0f, 1.0f, 0.0f };//上方位置
 	mView = XMMatrixLookAtLH(vEyePt, vLookatPt, vUpVec);
@@ -306,7 +306,7 @@ void MAIN::Render()
 
 	//pointSprite->Render(mView, mProj);
 
-	testObj->Render();
+	testObj->Render(mView, mProj);
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆

@@ -54,22 +54,23 @@ HRESULT TestObj::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inContext, ID
 	//m_pDevice->CreateRasterizerState(&rdc, &pIr);
 	//m_pDeviceContext->RSSetState(pIr);
 	//SAFE_RELEASE(pIr);
+	
 	//シェーダー初期化
 	if (FAILED(InitShader()))
 	{
 		return E_FAIL;
 	}
 	//メッシュ作成
-	if (FAILED(InitStaticMesh("Data/Model/Test/Geometry+UV.obj", &m_Mesh)))
+	if (FAILED(InitStaticMesh("Data/Model/Test/Geometry+Normal.obj", &m_Mesh)))
 	{
 		return E_FAIL;
 	}
 
 	//テクスチャー作成
-	if (FAILED(MakeTexture()))
-	{
-		return E_FAIL;
-	}
+	//if (FAILED(MakeTexture()))
+	//{
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
 }
@@ -79,12 +80,14 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 {
 	float x, y, z;
 	int v1 = 0, v2 = 0, v3 = 0;
+	int vn1 = 0, vn2 = 0, vn3 = 0;
 	int vt1 = 0, vt2 = 0, vt3 = 0;
 	DWORD dwVCount = 0;//読み込みカウンター
 	DWORD dwVTCount = 0;//読み込みカウンター
+	DWORD dwVNCount = 0;
 	DWORD dwFCount = 0;//読み込みカウンター
 
-	char key[200] = { 0 };
+	char key[190] = { 0 };
 	//OBJファイルを開いて内容を読み込む
 	FILE* fp = NULL;
 	fopen_s(&fp, FileName, "rt");
@@ -100,10 +103,10 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 			pMesh->dwNumVert++;
 		}
 		//テクスチャー座標
-		if (strcmp(key, "vt") == 0)
-		{
-			dwVTCount++;
-		}
+		//if (strcmp(key, "vt") == 0)
+		//{
+		//	dwVTCount++;
+		//}
 		//フェイス（ポリゴン）
 		if (strcmp(key, "f") == 0)
 		{
@@ -112,15 +115,16 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 	}
 
 	//一時的なメモリ確保（頂点バッファとインデックスバッファ）
-	ObjVertex* pvVertexBuffer = new ObjVertex[pMesh->dwNumFace * 3];
+	ObjVertex* pvVertexBuffer = new ObjVertex[pMesh->dwNumVert];
 	XMFLOAT3* pvCoord = new XMFLOAT3[pMesh->dwNumVert];
-	XMFLOAT2* pvTexture = new XMFLOAT2[dwVTCount];
+	XMFLOAT3* pvNormal = new XMFLOAT3[pMesh->dwNumVert];
 	int* piFaceBuffer = new int[pMesh->dwNumFace * 3];//３頂点ポリゴンなので、1フェイス=3頂点(3インデックス)
 
 	//本読み込み	
 	fseek(fp, SEEK_SET, 0);
 	dwVCount = 0;
 	dwVTCount = 0;
+	dwVNCount = 0;
 	dwFCount = 0;
 
 	while (!feof(fp))
@@ -138,29 +142,30 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 			pvCoord[dwVCount].z = z;
 			dwVCount++;
 		}
-		//テクスチャー座標 読み込み
-		if (strcmp(key, "vt") == 0)
+		//法線 読み込み
+		if (strcmp(key, "vn") == 0)
 		{
-			fscanf_s(fp, "%f %f", &x, &y);
-			pvTexture[dwVTCount].x = x;
-			pvTexture[dwVTCount].y = 1 - y;//OBJファイルはY成分が逆なので合わせる
+			fscanf_s(fp, "%f %f %f", &x, &y, &z);
+			pvNormal[dwVNCount].x = -x;
+			pvNormal[dwVNCount].y = y;//OBJファイルはY成分が逆なので合わせる
+			pvNormal[dwVNCount].z = z;
 			dwVTCount++;
 		}
 		//フェイス 読み込み→頂点インデックスに
 		if (strcmp(key, "f") == 0)
 		{
-			fscanf_s(fp, "%d/%d/ %d/%d/ %d/%d/", &v1, &vt1, &v2, &vt2, &v3, &vt3);
-			piFaceBuffer[dwFCount * 3] = dwFCount * 3;
-			piFaceBuffer[dwFCount * 3 + 1] = dwFCount * 3 + 1;
-			piFaceBuffer[dwFCount * 3 + 2] = dwFCount * 3 + 2;
-			//頂点構造体に代入
-			pvVertexBuffer[dwFCount * 3].pos = pvCoord[v1 - 1];
-			pvVertexBuffer[dwFCount * 3].tex = pvTexture[vt1 - 1];
-			pvVertexBuffer[dwFCount * 3 + 1].pos = pvCoord[v2 - 1];
-			pvVertexBuffer[dwFCount * 3 + 1].tex = pvTexture[vt2 - 1];
-			pvVertexBuffer[dwFCount * 3 + 2].pos = pvCoord[v3 - 1];
-			pvVertexBuffer[dwFCount * 3 + 2].tex = pvTexture[vt3 - 1];
+			fscanf_s(fp, "%d//%d %d//%d %d//%d", &v1, &vn1, &v2, &vn2, &v3, &vn3);
+			piFaceBuffer[dwFCount * 3] = v1-1;
+			piFaceBuffer[dwFCount * 3 + 1] = v2 - 1;
+			piFaceBuffer[dwFCount * 3 + 2] = v3 - 1;
 			dwFCount++;
+			//頂点構造体に代入
+			pvVertexBuffer[v1 - 1].pos = pvCoord[v1 - 1];
+			pvVertexBuffer[v1 - 1].norm = pvNormal[vn1 - 1];
+			pvVertexBuffer[v2 - 1].pos = pvCoord[v2 - 1];
+			pvVertexBuffer[v2 - 1].norm = pvNormal[vn2 - 1];
+			pvVertexBuffer[v3 - 1].pos = pvCoord[v3 - 1];
+			pvVertexBuffer[v3 - 1].norm = pvNormal[vn3 - 1];
 		}
 	}
 
@@ -169,7 +174,7 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 	//バーテックスバッファーを作成
 	D3D11_BUFFER_DESC bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ObjVertex) * pMesh->dwNumFace * 3;
+	bd.ByteWidth = sizeof(ObjVertex) * pMesh->dwNumFace;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
@@ -194,7 +199,8 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 
 	//一時的な入れ物は、もはや不要
 	delete[] pvCoord;
-	delete[] pvTexture;
+	//delete[] pvTexture;
+	delete[] pvNormal;
 	delete[] pvVertexBuffer;
 	delete[] piFaceBuffer;
 
@@ -207,7 +213,7 @@ HRESULT TestObj::InitShader()
 	ID3DBlob* pCompiledShader = NULL;
 	ID3DBlob* pErrors = NULL;
 	//ブロブからバーテックスシェーダー作成
-	if (FAILED(D3DCompileFromFile(L"Shader/Geometry.hlsl", NULL, NULL, "VS", "vs_5_0", 0, 0, &pCompiledShader, &pErrors)))
+	if (FAILED(D3DCompileFromFile(L"Shader/Geometry+Shade+Spec.hlsl", NULL, NULL, "VS", "vs_5_0", 0, 0, &pCompiledShader, &pErrors)))
 	{
 		char* p = (char*)pErrors->GetBufferPointer();
 		MessageBoxA(0, p, 0, MB_OK);
@@ -226,7 +232,7 @@ HRESULT TestObj::InitShader()
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT numElements = sizeof(layout) / sizeof(layout[0]);
 	//頂点インプットレイアウトを作成
@@ -235,7 +241,7 @@ HRESULT TestObj::InitShader()
 		return E_FAIL;
 	}
 	//ブロブからピクセルシェーダー作成
-	if (FAILED(D3DCompileFromFile(L"Shader/Geometry.hlsl", NULL, NULL, "PS", "ps_5_0", 0, 0, &pCompiledShader, &pErrors)))
+	if (FAILED(D3DCompileFromFile(L"Shader/Geometry+Shade+Spec.hlsl", NULL, NULL, "PS", "ps_5_0", 0, 0, &pCompiledShader, &pErrors)))
 	{
 		MessageBox(0, L"hlsl読み込み失敗", NULL, MB_OK);
 		return E_FAIL;
@@ -272,7 +278,7 @@ HRESULT TestObj::MakeTexture()
 	SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	m_pDevice->CreateSamplerState(&SamDesc, &m_pSampleLinear);
+	//m_pDevice->CreateSamplerState(&SamDesc, &m_pSampleLinear);
 
 	//フォントのテクスチャーを作成
 	// マルチバイト文字列からワイド文字列へ変換
@@ -311,24 +317,24 @@ void TestObj::Fainalize()
 	SAFE_RELEASE(m_pBackBuffer_DSTex);
 	SAFE_RELEASE(m_pDeviceContext);
 	SAFE_RELEASE(m_pDevice);
-	SAFE_RELEASE(m_pSampleLinear);
-	SAFE_RELEASE(m_pTexture);
+	//SAFE_RELEASE(m_pSampleLinear);
+	//SAFE_RELEASE(m_pTexture);
 }
 
-void TestObj::Render()
+void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 {
 	XMMATRIX mWorld;
-	XMMATRIX  mView;
-	XMMATRIX  mProj;
+	//XMMATRIX  mView;
+	//XMMATRIX  mProj;
 	//ワールドトランスフォーム（絶対座標変換）
 	mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
 	// ビュートランスフォーム（視点座標変換）
-	XMVECTOR vEyePt = { 0.0f, 0.1f, -0.3f }; //カメラ（視点）位置
-	XMVECTOR vLookatPt = { 0.0f, 0.0f, 0.0f };//注視位置
-	XMVECTOR vUpVec = { 0.0f, 1.0f, 0.0f };//上方位置
-	mView = XMMatrixLookAtLH(vEyePt, vLookatPt, vUpVec);
-	// プロジェクショントランスフォーム（射影変換）
-	mProj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 110.0f);
+	//XMVECTOR vEyePt = { 0.0f, 0.1f, -0.3f }; //カメラ（視点）位置
+	//XMVECTOR vLookatPt = { 0.0f, 0.0f, 0.0f };//注視位置
+	//XMVECTOR vUpVec = { 0.0f, 1.0f, 0.0f };//上方位置
+	//mView = XMMatrixLookAtLH(vEyePt, vLookatPt, vUpVec);
+	//// プロジェクショントランスフォーム（射影変換）
+	//mProj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 110.0f);
 
 	//使用するシェーダーの登録	
 	m_pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
@@ -338,17 +344,29 @@ void TestObj::Render()
 	ObjShaderConstantBuffer cb;
 	if (SUCCEEDED(m_pDeviceContext->Map(m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
+		// ワールド行列
+		cb.W = mWorld;
+		cb.W = XMMatrixTranspose(cb.W);
 		//ワールド、カメラ、射影行列を渡す
-		XMMATRIX m = mWorld * mView * mProj;
-		m = XMMatrixTranspose(m);
+		XMMATRIX m = mWorld * view * proj;
 		cb.WVP = m;
+		cb.WVP = XMMatrixTranspose(cb.WVP);
+		// ライトの方向を渡す
+		XMFLOAT3 lightDir = { 1.0f, 1.0f, -1.0f };
+		cb.lightDir = XMVECTOR({lightDir.x, lightDir.y, lightDir.z, 0.0f});
+		// ディフューズカラーを渡す
+		cb.diffuse = XMVECTOR({ 0.5, 0.5, 0.5, 1.0 });
+		// スペキュラーをシェーダーに渡す
+		cb.specular = XMVECTOR({ 1.0f, 1.0f, 1.0f, 1.0f });
+		// カメラ位置をシェーダーに渡す
+		cb.eye = XMVECTOR({ 0.0f, 0.1f, -0.3f, 1.0f});
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&cb, sizeof(ObjShaderConstantBuffer));
 		m_pDeviceContext->Unmap(m_pConstantBuffer, 0);
 	}
 	// テクスチャをシェーダーに渡す
-	m_pDeviceContext->PSSetSamplers(0, 1, &m_pSampleLinear);
-	m_pDeviceContext->PSSetShaderResources(0, 1, &srv);
+	//m_pDeviceContext->PSSetSamplers(0, 1, &m_pSampleLinear);
+	//m_pDeviceContext->PSSetShaderResources(0, 1, &srv);
 	//このコンスタントバッファーを使うシェーダーの登録
 	m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
 	m_pDeviceContext->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
