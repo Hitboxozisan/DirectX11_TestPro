@@ -49,10 +49,10 @@ private:
 	{
 		XMMATRIX W;
 		XMMATRIX WVP;
-		XMVECTOR lightDir;
-		XMVECTOR diffuse;
-		XMVECTOR specular;
-		XMVECTOR eye;
+		XMFLOAT4 lightDir;
+		XMFLOAT4 diffuse;
+		XMFLOAT4 specular;
+		XMFLOAT4 eye;
 	};
 
 

@@ -14,39 +14,39 @@ cbuffer global
 
 //バーテックスシェーダー出力構造体
 struct VS_OUTPUT
-{	
+{
 	float4 Pos : SV_POSITION;
 	float4 PosLocal : POSITION;
-    float4 Normal : NORMAL;
-	float2 Tex : TEXCOORD3;
+	float4 Normal : NORMAL;
+	float2 Tex : TEXCOORD;
 };
 //
 //バーテックスシェーダー
 //
-VS_OUTPUT VS( float4 Pos : POSITION ,float4 Normal : NORMAL,float2 Tex : TEXCOORD)
+VS_OUTPUT VS(float4 Pos : POSITION, float4 Normal : NORMAL, float2 Tex : TEXCOORD)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
-	output.Pos=mul(Pos,g_mWVP);
-	output.PosLocal =Pos;
-	output.Normal=Normal;
-	output.Tex=Tex;
+	output.Pos = mul(Pos, g_mWVP);
+	output.PosLocal = Pos;
+	output.Normal = Normal;
+	output.Tex = Tex;
 
 	return output;
 }
 //
 //ピクセルシェーダー
 //
-float4 PS( VS_OUTPUT input ) : SV_Target
-{	
-	float4 PosWorld=mul(input.PosLocal,g_mW);
+float4 PS(VS_OUTPUT input) : SV_Target
+{
+	float4 PosWorld = mul(input.PosLocal,g_mW);
 	float3 Normal = normalize(mul(input.Normal,(float3x3)g_mW));
 	float3 LightDir = normalize(g_vLightDir);
 	float3 EyeVector = g_vEye - PosWorld;
-	float3 ViewDir = normalize(EyeVector); 
-	float4 NL = saturate(dot(Normal, LightDir)); 
-	float3 Reflect = normalize(2 * NL * Normal - LightDir); 
-	float4 Specular =pow(saturate(dot(Reflect, ViewDir)),1); 
+	float3 ViewDir = normalize(EyeVector);
+	float4 NL = saturate(dot(Normal, LightDir));
+	float3 Reflect = normalize(2 * NL * Normal - LightDir);
+	float4 Specular = pow(saturate(dot(Reflect, ViewDir)),1);
 
-	float4 Color=(g_Diffuse * NL + Specular*g_Specular)/2+g_texColor.Sample( g_samLinear, input.Tex )/2;
+	float4 Color = (g_Diffuse * NL + Specular * g_Specular) / 2 + g_texColor.Sample(g_samLinear, input.Tex) / 2;
 	return Color;
 }

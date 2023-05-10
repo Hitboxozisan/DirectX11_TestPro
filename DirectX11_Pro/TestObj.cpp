@@ -1,6 +1,7 @@
 #include "TestObj.h"
 #include <locale.h>
 #include <memory>
+//#include <string.h>
 
 HRESULT TestObj::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inContext, IDXGISwapChain* inSwap)
 {
@@ -20,10 +21,10 @@ HRESULT TestObj::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inContext, ID
 	}
 
 	//テクスチャー作成
-	if (FAILED(MakeTexture()))
-	{
-		return E_FAIL;
-	}
+	//if (FAILED(MakeTexture()))
+	//{
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
 }
@@ -96,7 +97,7 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 		if (strcmp(key, "mtllib") == 0)
 		{
 			fscanf_s(fp, "%s ", key, sizeof(key));
-			LoadMaterial(key, &m_Material);
+			LoadMaterial("Data/Material/Geometry+Normal+UV.mtl", &m_Material);
 		}
 		//頂点 読み込み
 		if (strcmp(key, "v") == 0)
@@ -320,7 +321,9 @@ HRESULT TestObj::LoadMaterial(LPSTR FileName, MyMaterial* pMaterial)
 		//map_Kd　テクスチャー
 		if (strcmp(key, "map_Kd") == 0)
 		{
+			 
 			fscanf_s(fp, "%s", &m_Material.textureName, sizeof(m_Material.textureName));
+			
 			//テクスチャー作成
 			// マルチバイト文字列からワイド文字列へ変換
 			setlocale(LC_CTYPE, "jpn");
@@ -333,7 +336,7 @@ HRESULT TestObj::LoadMaterial(LPSTR FileName, MyMaterial* pMaterial)
 			{
 				return E_FAIL;
 			}
-
+			
 			// リソースとシェーダーリソースビューを作成
 			if (FAILED(CreateShaderResourceView(m_pDevice, image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
 			{
@@ -361,8 +364,8 @@ void TestObj::Fainalize()
 	SAFE_RELEASE(m_pBackBuffer_DSTex);
 	SAFE_RELEASE(m_pDeviceContext);
 	SAFE_RELEASE(m_pDevice);
-	//SAFE_RELEASE(m_pSampleLinear);
-	//SAFE_RELEASE(m_pTexture);
+	SAFE_RELEASE(m_pSampleLinear);
+	SAFE_RELEASE(m_pTexture);
 }
 
 void TestObj::Render(XMVECTOR eye, XMVECTOR lookatPt, XMVECTOR upVec)
@@ -394,13 +397,13 @@ void TestObj::Render(XMVECTOR eye, XMVECTOR lookatPt, XMVECTOR upVec)
 		cb.WVP = XMMatrixTranspose(cb.WVP);
 		// ライトの方向を渡す
 		XMFLOAT3 lightDir = { -1.0f, 0.0f, -1.0f };
-		cb.lightDir = XMVECTOR({lightDir.x, lightDir.y, lightDir.z, 0.0f});
+		cb.lightDir = XMFLOAT4({lightDir.x, lightDir.y, lightDir.z, 0.0f});
 		// ディフューズカラーを渡す
-		cb.diffuse = XMVECTOR({ 0.5, 0.5, 0.5, 1.0 });
+		cb.diffuse = m_Material.kd;
 		// スペキュラーをシェーダーに渡す
-		cb.specular = XMVECTOR({ 0.7f, 0.7f, 0.7f, 1.0f });
+		cb.specular = m_Material.ks;
 		// カメラ位置をシェーダーに渡す
-		cb.eye = XMVECTOR({ 0.0f, 0.1f, -0.3f, 1.0f});
+		cb.eye = XMFLOAT4({ 0.0f, 0.1f, 0.3f, 0.0f});
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&cb, sizeof(ObjShaderConstantBuffer));
 		m_pDeviceContext->Unmap(m_pConstantBuffer, 0);
