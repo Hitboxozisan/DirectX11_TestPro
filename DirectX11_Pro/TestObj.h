@@ -15,6 +15,15 @@ struct MyMesh
 	ID3D11Buffer* pIndexBuffer;
 };
 
+struct MyMaterial
+{
+	CHAR name[111];
+	XMFLOAT4 ka;
+	XMFLOAT4 kd;
+	XMFLOAT4 ks;
+	CHAR textureName[110];
+};
+
 class TestObj
 {
 public:
@@ -22,6 +31,7 @@ public:
 	HRESULT InitStaticMesh(LPSTR FileName, MyMesh* pMesh);
 	HRESULT	InitShader();
 	HRESULT MakeTexture();
+	HRESULT LoadMaterial(LPSTR FileName, MyMaterial* pMaterial);
 
 	void Fainalize();
 	void Render(XMVECTOR eye, XMVECTOR lookatPt, XMVECTOR upVec);
@@ -32,6 +42,7 @@ private:
 	{
 		XMFLOAT3 pos = {0.0f, 0.0f, 0.0f};		// 位置
 		XMFLOAT3 norm = {0.0f, 0.0f, 0.0f};
+		XMFLOAT2 tex = { 0.0f, 0.0f };
 	};
 
 	struct ObjShaderConstantBuffer
@@ -61,10 +72,10 @@ private:
 	ID3D11Buffer* m_pConstantBuffer;
 	//↓モデルごと	
 	ID3D11Buffer* m_pVertexBuffer;
-	ID3D11ShaderResourceView* srv = nullptr;
 	MyMesh m_Mesh;
-	//ID3D11SamplerState* m_pSampleLinear;		// テクスチャーのサンプラー
-	//ID3D11ShaderResourceView* m_pTexture;		// テクスチャー
+	MyMaterial m_Material;
+	ID3D11SamplerState* m_pSampleLinear;		// テクスチャーのサンプラー
+	ID3D11ShaderResourceView* m_pTexture;		// テクスチャー
 
 	TexMetadata info = {};
 };
