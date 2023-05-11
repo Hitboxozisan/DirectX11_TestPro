@@ -77,6 +77,9 @@
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="Singleton.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -99,6 +102,9 @@
     </Filter>
     <Filter Include="Camera">
       <UniqueIdentifier>{c15b7e34-09ab-4d64-94e5-a4151494f1df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{c455048d-673a-484b-a03d-f68b2c75d1d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
