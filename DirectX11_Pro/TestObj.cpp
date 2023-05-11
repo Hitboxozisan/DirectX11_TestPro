@@ -321,7 +321,15 @@ HRESULT TestObj::LoadMaterial(LPSTR FileName, MyMaterial* pMaterial)
 		//map_Kd　テクスチャー
 		if (strcmp(key, "map_Kd") == 0)
 		{
-			 
+			//テクスチャー用サンプラー作成
+			D3D11_SAMPLER_DESC SamDesc;
+			ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
+			SamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+			SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+			SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+			SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+			m_pDevice->CreateSamplerState(&SamDesc, &m_pSampleLinear);
+
 			fscanf_s(fp, "%s", &m_Material.textureName, sizeof(m_Material.textureName));
 			
 			//テクスチャー作成

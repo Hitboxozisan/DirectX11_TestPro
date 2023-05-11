@@ -140,6 +140,8 @@ void MAIN::Loop()
 //アプリケーション処理。アプリのメイン関数。
 void MAIN::App()
 {
+	
+
 	Render();
 }
 //
@@ -307,7 +309,10 @@ void MAIN::Render()
 
 	//pointSprite->Render(mView, mProj);
 
+	// Objファイル（手）
 	testObj->Render(vEyePt, vLookatPt, vUpVec);
+
+
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆

@@ -147,8 +147,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FireSpark.cpp" />
     <ClCompile Include="Fps.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Line3D.cpp" />
     <ClCompile Include="MAIN.cpp" />
@@ -160,10 +162,12 @@
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="FireSpark.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Line3D.h" />
     <ClInclude Include="MAIN.h" />

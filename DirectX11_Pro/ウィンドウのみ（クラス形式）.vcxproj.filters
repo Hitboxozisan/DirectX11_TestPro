@@ -32,6 +32,10 @@
     <ClCompile Include="TestPolygon.cpp">
       <Filter>Test</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -69,6 +73,10 @@
     <ClInclude Include="TestPolygon.h">
       <Filter>Test</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -88,6 +96,9 @@
     </Filter>
     <Filter Include="Test">
       <UniqueIdentifier>{7fad5f92-8f23-4d97-9820-19afa7611ad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{c15b7e34-09ab-4d64-94e5-a4151494f1df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
