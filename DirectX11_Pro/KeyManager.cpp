@@ -1,45 +1,70 @@
 #pragma comment(lib, "xinput.lib")
 
-#include "KeyManager.h"
-#include <xinput.h>
+#include <windows.h>
 #include <math.h>
-#include <winuser.h>
+#include <xinput.h>
+#include "KeyManager.h"
+#include "EnumItr.h"
 
-void KeyManager::Input()
+void KeyManager::KeyStateUpdate()
 {
-    int iKeyA = 0, iKeyD = 0, iKeyW = 0, iKeyS = 0;
-    // キー入力
-    if (GetAsyncKeyState('A') & 0x8000) iKeyA = 1;
-    if (GetAsyncKeyState('D') & 0x8000) iKeyD = 1;
-    if (GetAsyncKeyState('W') & 0x8000) iKeyW = 1;
-    if (GetAsyncKeyState('S') & 0x8000) iKeyS = 1;
-	
-    //キー入力時の処理
-    double dValue = 1;
-    if (iKeyA || iKeyD)
+    BYTE keyboard[256];
+    int a;
+    
+    for(auto& i : keyInfo)
     {
-        if (iKeyW || iKeyS)
+        if (GetKeyboardState(keyboard))
         {
-            dValue = 1 / sqrt(2);//斜め入力時は1/√2倍する
+            if (keyboard[i] & 0x80)
+            {
+                CheckKeyPushState(i);
+            }
+            else
+            {
+                CheckKeyExitState(i);
+            }
         }
-        else
-        {
-            dValue = 1;
-        }
-    }
-    else if (iKeyW || iKeyS)
-    {
-        dValue = 1;
     }
 
 }
 
-bool KeyManager::GetKeyJust(KeyInfo keyInfo)
+void KeyManager::CheckKeyExitState(KeyInfo keycord)
 {
-    return ;
+    if (key[keycord].prevState == KeyState::Push)
+    {
+        key[keycord].prevState == KeyState::PushExit;
+    }
+    if (key[keycord].prevState == KeyState::PushExit)
+    {
+        key[keycord].prevState == KeyState::None;
+    }
 }
 
-bool KeyManager::GetKey(KeyInfo keyInfo)
+void KeyManager::CheckKeyPushState(KeyInfo keycord)
 {
-    return false;
+    if (key[keycord].prevState == KeyState::None)
+    {
+        key[keycord].state = KeyState::PushJust;
+    }
+    if (key[keycord].prevState == KeyState::PushJust)
+    {
+        key[keycord].state = KeyState::Push;
+    }
 }
+
+bool KeyManager::IsKeyPush(KeyInfo keyInfo)
+{
+    return key[keyInfo].state == KeyState::Push;
+}
+
+bool KeyManager::IsKeyJust(KeyInfo keyInfo)
+{
+    return key[keyInfo].state == KeyState::PushJust;
+}
+
+bool KeyManager::IsKeyExit(KeyInfo keyInfo)
+{
+    return key[keyInfo].state == KeyState::PushJust;
+}
+
+

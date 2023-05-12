@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <mutex>
 
 /// <summary>
 /// クラスをシングルトン化する
@@ -38,3 +38,5 @@ private:
 };
 
 // 静的メンバ変数の実態を定義
+template <typename T>std::once_flag Singleton<T>::initFlag;
+template <typename T> T* Singleton<T>::instance = nullptr;

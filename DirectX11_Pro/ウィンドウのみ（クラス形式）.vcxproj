@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="EnumItr.h" />
     <ClInclude Include="FireSpark.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="Framework.h" />

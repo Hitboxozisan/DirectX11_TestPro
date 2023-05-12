@@ -8,6 +8,7 @@ class Light;
 class TestPolygon;
 class PointSprite3D;
 class TestObj;
+class KeyManager;
 
 //
 //
@@ -40,4 +41,5 @@ public:
 	TestPolygon* polygon;
 	PointSprite3D* pointSprite;
 	TestObj* testObj;
+	KeyManager* keyManager;
 };

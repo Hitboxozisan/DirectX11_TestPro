@@ -1,10 +1,14 @@
+//#pragma comment(lib, "xinput.lib")
+
 #include "MAIN.h"
+//#include <xinput.h>
 #include "Text.h"
 #include "Fps.h"
 #include "TestPolygon.h"
 #include "Light.h"
 #include "PointSprite3D.h"
 #include "TestObj.h"
+#include "KeyManager.h"
 
 using namespace DirectX;
 
@@ -137,15 +141,6 @@ void MAIN::Loop()
 }
 //
 //
-//アプリケーション処理。アプリのメイン関数。
-void MAIN::App()
-{
-	
-
-	Render();
-}
-//
-//
 //
 HRESULT MAIN::InitD3D()
 {
@@ -210,10 +205,10 @@ HRESULT MAIN::InitD3D()
 		return E_FAIL;
 	}
 
-	
+
 
 	// 深度テストを有効化
-	
+
 	//レンダーターゲットビューと深度ステンシルビューをパイプラインにバインド
 	deviceContext->OMSetRenderTargets(1, &rtv, dsv);
 
@@ -225,7 +220,7 @@ HRESULT MAIN::InitD3D()
 	//device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
 	//deviceContext->OMSetDepthStencilState(depthStencilState, 1);
 
-	
+
 
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
@@ -245,6 +240,12 @@ HRESULT MAIN::InitD3D()
 	device->CreateRasterizerState(&rdc, &pIr);
 	deviceContext->RSSetState(pIr);
 	SAFE_RELEASE(pIr);
+
+
+	// Xinputを初期化
+	//XInputEnable(true);
+
+	// 各インスタンス生成
 
 	//文字列レンダリングの初期化
 	//text = new Text;
@@ -267,8 +268,19 @@ HRESULT MAIN::InitD3D()
 	testObj = new TestObj;
 	testObj->Init(device, deviceContext, swapChain);
 
+	keyManager = new KeyManager;
+
 
 	return S_OK;
+}
+//
+//
+//アプリケーション処理。アプリのメイン関数。
+void MAIN::App()
+{
+	keyManager->KeyStateUpdate();
+
+	Render();
 }
 //
 //

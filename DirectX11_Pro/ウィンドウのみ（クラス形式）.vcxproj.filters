@@ -80,6 +80,7 @@
     <ClInclude Include="Singleton.h">
       <Filter>Singleton</Filter>
     </ClInclude>
+    <ClInclude Include="EnumItr.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
