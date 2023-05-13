@@ -13,6 +13,8 @@ public:
 	static T& GetInstance()
 	{
 		std::call_once(initFlag, Create);
+		assert(instance);
+		return *instance;
 	}
 
 private:

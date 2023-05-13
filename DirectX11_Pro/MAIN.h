@@ -9,6 +9,7 @@ class TestPolygon;
 class PointSprite3D;
 class TestObj;
 class KeyManager;
+class Camera;
 
 //
 //
@@ -42,4 +43,5 @@ public:
 	PointSprite3D* pointSprite;
 	TestObj* testObj;
 	KeyManager* keyManager;
+	Camera* camera;
 };

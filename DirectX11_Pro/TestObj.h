@@ -34,7 +34,7 @@ public:
 	HRESULT LoadMaterial(LPSTR FileName, MyMaterial* pMaterial);
 
 	void Fainalize();
-	void Render(XMVECTOR eye, XMVECTOR lookatPt, XMVECTOR upVec);
+	void Render(XMMATRIX view, XMMATRIX proj);
 
 private:
 

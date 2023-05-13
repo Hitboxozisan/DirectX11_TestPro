@@ -1,7 +1,5 @@
-//#pragma comment(lib, "xinput.lib")
 
 #include "MAIN.h"
-//#include <xinput.h>
 #include "Text.h"
 #include "Fps.h"
 #include "TestPolygon.h"
@@ -9,6 +7,7 @@
 #include "PointSprite3D.h"
 #include "TestObj.h"
 #include "KeyManager.h"
+#include "Camera.h"
 
 using namespace DirectX;
 
@@ -270,6 +269,10 @@ HRESULT MAIN::InitD3D()
 
 	keyManager = new KeyManager;
 
+	// カメラクラス
+	camera = new Camera();
+	camera->Init();
+
 
 	return S_OK;
 }
@@ -278,6 +281,7 @@ HRESULT MAIN::InitD3D()
 //アプリケーション処理。アプリのメイン関数。
 void MAIN::App()
 {
+	camera->Update();
 	keyManager->KeyStateUpdate();
 
 	Render();
@@ -305,13 +309,8 @@ void MAIN::Render()
 	deviceContext->ClearRenderTargetView(rtv, ClearColor);//画面クリア
 	deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);//深度バッファクリア
 	
-	// ビュートランスフォーム（視点座標変換）
-	XMVECTOR vEyePt = { 0.0f, 0.1f, -0.3f };//カメラ（視点）位置
-	XMVECTOR vLookatPt = { 0.0f, 0.0f, 0.0f };//注視位置
-	XMVECTOR vUpVec = { 0.0f, 1.0f, 0.0f };//上方位置
-	mView = XMMatrixLookAtLH(vEyePt, vLookatPt, vUpVec);
-	// プロジェクショントランスフォーム（射影変換）
-	mProj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
+	// 座標変換
+	camera->Render();
 	
 
 	// フレームレート計算・描画
@@ -322,9 +321,7 @@ void MAIN::Render()
 	//pointSprite->Render(mView, mProj);
 
 	// Objファイル（手）
-	testObj->Render(vEyePt, vLookatPt, vUpVec);
-
-
+	testObj->Render(camera->GetView(), camera->GetProj());
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆

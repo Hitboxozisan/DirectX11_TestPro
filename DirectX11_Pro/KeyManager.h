@@ -2,22 +2,28 @@
 
 #include <map>
 
+// キー情報
+enum KeyInfo : int
+{
+	Up = VK_UP,
+	Down = VK_DOWN,
+	Left = VK_LEFT,
+	Right = VK_RIGHT,
+};
+
 /// <summary>
 /// キーの入力判定
 /// </summary>
 class KeyManager
 {
 public:
+	void KeyStateUpdate();						// キー操作更新処理
 
-	// キー情報
-	enum KeyInfo : int
-	{
-		Up = VK_UP,
-		Down = VK_DOWN,
-		Left = VK_LEFT,
-		Right = VK_RIGHT,
-	};
-
+	bool IsKeyPush(KeyInfo keyInfo);
+	bool IsKeyJust(KeyInfo keyInfo);
+	bool IsKeyExit(KeyInfo keyInfo);
+	
+private:
 	// キー情報配列
 	constexpr static KeyInfo keyInfo[] =
 	{
@@ -43,14 +49,9 @@ public:
 		KeyState prevState = KeyState::None;
 	};
 
-	void KeyStateUpdate();						// キー操作更新処理
+	std::map<KeyInfo, KeyStateInfo> key;
+
 	void CheckKeyPushState(KeyInfo keycord);	// キーを押した際の状態遷移
 	void CheckKeyExitState(KeyInfo keycord);	// キーを離した際の状態遷移
 
-	bool IsKeyPush(KeyInfo keyInfo);
-	bool IsKeyJust(KeyInfo keyInfo);
-	bool IsKeyExit(KeyInfo keyInfo);
-	
-private:
-	std::map<KeyInfo, KeyStateInfo> key;
 };

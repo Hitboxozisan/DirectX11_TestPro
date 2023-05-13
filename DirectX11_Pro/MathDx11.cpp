@@ -57,8 +57,36 @@ namespace MathDx11
 		return ret;
 	}
 
+	/// <summary>
+	/// XMVECTOR‚ðXMFLOAT‚É•ÏŠ·
+	/// </summary>
+	/// <param name="vec"></param>
+	/// <returns></returns>
+	const XMFLOAT3 ConvertVectorFromFloat3(const XMVECTOR vec)
+	{
+		XMFLOAT3 ret;
+		ret.x = XMVectorGetX(vec);
+		ret.y = XMVectorGetY(vec);
+		ret.z = XMVectorGetZ(vec);
 
-	const XMVECTOR Conversion(const XMFLOAT4 lhs)
+		return ret;
+	}
+
+	/// <summary>
+	/// XMFLOAT3‚ðXMVECTOR‚É•ÏŠ·
+	/// </summary>
+	/// <param name="lhs"></param>
+	/// <returns></returns>
+	const XMVECTOR ConvertFloat3FromVector(const XMFLOAT3 lhs)
+	{
+		XMVECTOR ret;
+		ret = { lhs.x, lhs.y, lhs.z };
+
+		return ret;
+	}
+
+
+	const XMVECTOR ConvertFloat4FromVector(const XMFLOAT4 lhs)
 	{
 		XMVECTOR ret;
 		ret = { lhs.x, lhs.y, lhs.z, lhs.w };

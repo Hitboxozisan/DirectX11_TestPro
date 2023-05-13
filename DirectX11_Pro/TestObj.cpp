@@ -376,17 +376,11 @@ void TestObj::Fainalize()
 	SAFE_RELEASE(m_pTexture);
 }
 
-void TestObj::Render(XMVECTOR eye, XMVECTOR lookatPt, XMVECTOR upVec)
+void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 {
 	XMMATRIX mWorld;
-	XMMATRIX  mView;
-	XMMATRIX  mProj;
 	//ワールドトランスフォーム（絶対座標変換）
 	mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
-	// ビュートランスフォーム（視点座標変換）
-	mView = XMMatrixLookAtLH(eye, lookatPt, upVec);
-	// プロジェクショントランスフォーム（射影変換）
-	mProj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 110.0f);
 
 	//使用するシェーダーの登録	
 	m_pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
@@ -400,7 +394,7 @@ void TestObj::Render(XMVECTOR eye, XMVECTOR lookatPt, XMVECTOR upVec)
 		cb.W = mWorld;
 		cb.W = XMMatrixTranspose(cb.W);
 		//ワールド、カメラ、射影行列を渡す
-		XMMATRIX m = mWorld * mView * mProj;
+		XMMATRIX m = mWorld * view * proj;
 		cb.WVP = m;
 		cb.WVP = XMMatrixTranspose(cb.WVP);
 		// ライトの方向を渡す
