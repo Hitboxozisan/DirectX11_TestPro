@@ -28,6 +28,8 @@ using Microsoft::WRL::ComPtr;
 #define WINDOW_HEIGHT 720 //ウィンドウ高さ
 #define APP_NAME L"DirectX11_Game"
 #define FLAME_RATE 60;
+#define ZERO_VECTOR = XMVECTOR{0.0f, 0.0f, 0.0f};
+#define ZERO_MATRIX = XMMATRIX{ZERO_VECTOR, ZERO_VECTOR, ZERO_VECTOR, ZERO_VECTOR};
 
 //マクロ
 #define SAFE_RELEASE(x) if(x){x->Release(); x=NULL;}

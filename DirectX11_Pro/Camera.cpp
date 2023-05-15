@@ -7,17 +7,22 @@ using namespace MathDx11;
 
 Camera::Camera()
 {
+	// 処理なし
 }
 
 Camera::~Camera()
 {
+	// 処理なし
 }
 
 /// <summary>
 /// 初期化処理
 /// </summary>
 void Camera::Init()
-{
+{	
+	cameraPos = { 0.0f, 0.0f, 0.0f };
+	yawFlo = 0;
+	dir = { 0.0f, 0.0f, 1.0f };
 	position = INITIAL_POS;
 	upDir = INITIAL_UP_DIR;
 }
@@ -27,18 +32,8 @@ void Camera::Init()
 /// </summary>
 void Camera::Update()
 {
-	KeyManager key = Singleton<KeyManager>::GetInstance();
-	XMFLOAT3 cameraPos = {0.0f, 0.0f, 0.0f};
-
-	/*if (key.IsKeyPush(KeyInfo::Left))
-	{
-		cameraPos.x += -10;
-	}*/
-	cameraPos.x += -(key.IsKeyPush(KeyInfo::Left)) * 1 + (key.IsKeyPush(KeyInfo::Right)) * 1;
-	cameraPos.y += -(key.IsKeyPush(KeyInfo::Down)) * 1 + (key.IsKeyPush(KeyInfo::Up)) * 1;
-
-	// 実際の位置を更新
-	position = ConvertFloat3FromVector(cameraPos);
+	MoveCamera();
+	RotateCamera();
 }
 
 /// <summary>
@@ -46,8 +41,9 @@ void Camera::Update()
 /// </summary>
 void Camera::Render()
 {
+
 	// ビュートランスフォーム
-	lookPos = position + XMVECTOR{ 0.0f, 0.0f, 1.0f };
+	lookPos = position + dir;
 	view = XMMatrixLookAtLH(position, lookPos, upDir);
 
 	proj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
@@ -76,4 +72,34 @@ const XMVECTOR Camera::GetLookPos()
 const XMVECTOR Camera::GetUpVec()
 {
 	return upDir;
+}
+
+/// <summary>
+/// カメラを動かす
+/// </summary>
+void Camera::MoveCamera()
+{
+	KeyManager key = KeyManager::GetInstance();
+
+	cameraPos.x += -(key.IsKeyPush(KeyInfo::Left)) * 0.001 + (key.IsKeyPush(KeyInfo::Right)) * 0.001;
+	cameraPos.y += -(key.IsKeyPush(KeyInfo::Down)) * 0.001 + (key.IsKeyPush(KeyInfo::Up)) * 0.001;
+
+	// 実際の位置を更新
+	position = ConvertFloat3FromVector(cameraPos);
+}
+
+/// <summary>
+/// カメラを回転させる
+/// </summary>
+void Camera::RotateCamera()
+{
+	KeyManager key = KeyManager::GetInstance();
+
+	yawFlo += -(key.IsKeyPush(KeyInfo::RotateL)) * 0.01 + (key.IsKeyPush(KeyInfo::RotateR)) * 0.01;
+
+	yaw = XMMatrixRotationY(yawFlo);
+
+	dir = { 0.0f, 0.0f, 1.0f };
+	dir = XMVector3TransformCoord(dir, yaw);
+
 }

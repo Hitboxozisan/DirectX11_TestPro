@@ -42,6 +42,5 @@ public:
 	TestPolygon* polygon;
 	PointSprite3D* pointSprite;
 	TestObj* testObj;
-	KeyManager* keyManager;
 	Camera* camera;
 };

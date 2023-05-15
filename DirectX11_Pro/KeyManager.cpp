@@ -6,6 +6,9 @@
 #include "KeyManager.h"
 #include "EnumItr.h"
 
+/// <summary>
+/// キーの状態を得る
+/// </summary>
 void KeyManager::KeyStateUpdate()
 {
     BYTE keyboard[256];
@@ -13,6 +16,7 @@ void KeyManager::KeyStateUpdate()
     
     for(auto& i : keyInfo)
     {
+        key[i].prevState = key[i].state;
         if (GetKeyboardState(keyboard))
         {
             if (keyboard[i] & 0x80)
@@ -28,18 +32,26 @@ void KeyManager::KeyStateUpdate()
 
 }
 
+/// <summary>
+/// キーを離した際の状態遷移
+/// </summary>
+/// <param name="keycord"></param>
 void KeyManager::CheckKeyExitState(KeyInfo keycord)
 {
     if (key[keycord].prevState == KeyState::Push)
     {
-        key[keycord].prevState == KeyState::PushExit;
+        key[keycord].state = KeyState::PushExit;
     }
     if (key[keycord].prevState == KeyState::PushExit)
     {
-        key[keycord].prevState == KeyState::None;
+        key[keycord].state = KeyState::None;
     }
 }
 
+/// <summary>
+/// キーを押した際の状態遷移
+/// </summary>
+/// <param name="keycord"></param>
 void KeyManager::CheckKeyPushState(KeyInfo keycord)
 {
     if (key[keycord].prevState == KeyState::None)
@@ -52,19 +64,34 @@ void KeyManager::CheckKeyPushState(KeyInfo keycord)
     }
 }
 
-bool KeyManager::IsKeyPush(KeyInfo keyInfo)
+/// <summary>
+/// キーを押してるか
+/// </summary>
+/// <param name="keyInfo"></param>
+/// <returns></returns>
+const bool KeyManager::IsKeyPush(KeyInfo keycord)
 {
-    return key[keyInfo].state == KeyState::Push;
+    return key[keycord].state == KeyState::Push;
 }
 
-bool KeyManager::IsKeyJust(KeyInfo keyInfo)
+/// <summary>
+/// キーを押した瞬間か
+/// </summary>
+/// <param name="keyInfo"></param>
+/// <returns></returns>
+bool KeyManager::IsKeyJust(KeyInfo keycord)
 {
-    return key[keyInfo].state == KeyState::PushJust;
+    return key[keycord].state == KeyState::PushJust;
 }
 
-bool KeyManager::IsKeyExit(KeyInfo keyInfo)
+/// <summary>
+/// キーを離したか
+/// </summary>
+/// <param name="keyInfo"></param>
+/// <returns></returns>
+bool KeyManager::IsKeyExit(KeyInfo keycord)
 {
-    return key[keyInfo].state == KeyState::PushJust;
+    return key[keycord].state == KeyState::PushJust;
 }
 
 

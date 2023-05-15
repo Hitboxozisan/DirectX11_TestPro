@@ -3,12 +3,15 @@
 #include <map>
 
 // キー情報
-enum KeyInfo : int
+enum KeyInfo
 {
 	Up = VK_UP,
 	Down = VK_DOWN,
 	Left = VK_LEFT,
 	Right = VK_RIGHT,
+	RotateR = 'E',
+	RotateL = 'Q',
+	
 };
 
 /// <summary>
@@ -17,11 +20,17 @@ enum KeyInfo : int
 class KeyManager
 {
 public:
+	static KeyManager& GetInstance()
+	{
+		static KeyManager keyManager;
+		return keyManager;
+	};
+
 	void KeyStateUpdate();						// キー操作更新処理
 
-	bool IsKeyPush(KeyInfo keyInfo);
-	bool IsKeyJust(KeyInfo keyInfo);
-	bool IsKeyExit(KeyInfo keyInfo);
+	const bool IsKeyPush(KeyInfo keycord);
+	bool IsKeyJust(KeyInfo keycord);
+	bool IsKeyExit(KeyInfo keycord);
 	
 private:
 	// キー情報配列
@@ -31,6 +40,8 @@ private:
 		KeyInfo::Down,
 		KeyInfo::Left,
 		KeyInfo::Right,
+		KeyInfo::RotateR,
+		KeyInfo::RotateL,
 	};
 
 	// キーの状態

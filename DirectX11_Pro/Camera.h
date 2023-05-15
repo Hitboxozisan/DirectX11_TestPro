@@ -7,6 +7,9 @@ using namespace DirectX;
 
 class KeyManager;
 
+/// <summary>
+/// ÉJÉÅÉâÉNÉâÉX
+/// </summary>
 class Camera final
 {
 public:
@@ -28,10 +31,19 @@ private:
 	const XMVECTOR INITIAL_POS = { 0.0f, 1.0f, 0.0f };
 	const XMVECTOR INITIAL_UP_DIR = { 0.0f, 1.0f, 0.0f };
 
+	float yawFlo;
+
+	XMFLOAT3 cameraPos;
+
 	XMMATRIX view;
 	XMMATRIX proj;
+	XMMATRIX yaw;
+	XMVECTOR dir;
 	XMVECTOR position;
 	XMVECTOR lookPos;
 	XMVECTOR upDir;
+
+	void MoveCamera();
+	void RotateCamera();
 };
 

@@ -8,6 +8,7 @@
 #include "TestObj.h"
 #include "KeyManager.h"
 #include "Camera.h"
+#include "Singleton.h"
 
 using namespace DirectX;
 
@@ -267,8 +268,6 @@ HRESULT MAIN::InitD3D()
 	testObj = new TestObj;
 	testObj->Init(device, deviceContext, swapChain);
 
-	keyManager = new KeyManager;
-
 	// カメラクラス
 	camera = new Camera();
 	camera->Init();
@@ -281,8 +280,10 @@ HRESULT MAIN::InitD3D()
 //アプリケーション処理。アプリのメイン関数。
 void MAIN::App()
 {
+	// キー操作更新処理
+	KeyManager::GetInstance().KeyStateUpdate();
+
 	camera->Update();
-	keyManager->KeyStateUpdate();
 
 	Render();
 }
@@ -311,7 +312,6 @@ void MAIN::Render()
 	
 	// 座標変換
 	camera->Render();
-	
 
 	// フレームレート計算・描画
 	//fps->Render();

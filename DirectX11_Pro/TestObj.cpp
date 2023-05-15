@@ -378,9 +378,18 @@ void TestObj::Fainalize()
 
 void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 {
-	XMMATRIX mWorld;
+	XMMATRIX mTran, mYaw, mPitch, mRoll, mScale;
+	XMMATRIX mWorld = XMMatrixRotationY(0.0f);
+	mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	mYaw = XMMatrixRotationY(0.0f);
+	mPitch = XMMatrixRotationX(0.0f);
+	mRoll = XMMatrixRotationZ(0.0f);
+	mTran = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+
+	mWorld = mScale * mYaw * mPitch * mRoll * mTran;
+
 	//ワールドトランスフォーム（絶対座標変換）
-	mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
+	//mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
 
 	//使用するシェーダーの登録	
 	m_pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
@@ -405,7 +414,7 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 		// スペキュラーをシェーダーに渡す
 		cb.specular = m_Material.ks;
 		// カメラ位置をシェーダーに渡す
-		cb.eye = XMFLOAT4({ 0.0f, 0.1f, 0.3f, 0.0f});
+		cb.eye = XMFLOAT4({ 0.0f, 0.0f, 0.1f, 0.0f});
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&cb, sizeof(ObjShaderConstantBuffer));
 		m_pDeviceContext->Unmap(m_pConstantBuffer, 0);
@@ -431,3 +440,4 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 	//プリミティブをレンダリング
 	m_pDeviceContext->DrawIndexed(m_Mesh.dwNumFace * 3, 0, 0);
 }
+

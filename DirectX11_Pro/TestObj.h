@@ -55,7 +55,6 @@ private:
 		XMFLOAT4 eye;
 	};
 
-
 	HWND m_hWnd;
 	ID3D11Device* m_pDevice;
 	ID3D11DeviceContext* m_pDeviceContext;
