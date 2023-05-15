@@ -11,6 +11,8 @@ enum KeyInfo
 	Right = VK_RIGHT,
 	RotateR = 'E',
 	RotateL = 'Q',
+	ZoomIn  = 'P',
+	ZoomOut = 'L',
 	
 };
 
@@ -42,6 +44,8 @@ private:
 		KeyInfo::Right,
 		KeyInfo::RotateR,
 		KeyInfo::RotateL,
+		KeyInfo::ZoomIn,
+		KeyInfo::ZoomOut,
 	};
 
 	// ÉLÅ[ÇÃèÛë‘

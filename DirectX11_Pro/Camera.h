@@ -32,6 +32,7 @@ private:
 	const XMVECTOR INITIAL_UP_DIR = { 0.0f, 1.0f, 0.0f };
 
 	float yawFlo;
+	float zoom;			// ÉYÅ[ÉÄíl
 
 	XMFLOAT3 cameraPos;
 
@@ -45,5 +46,6 @@ private:
 
 	void MoveCamera();
 	void RotateCamera();
+	void ZoomInOut();
 };
 

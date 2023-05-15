@@ -22,6 +22,7 @@ void Camera::Init()
 {	
 	cameraPos = { 0.0f, 0.0f, 0.0f };
 	yawFlo = 0;
+	zoom = 4;
 	dir = { 0.0f, 0.0f, 1.0f };
 	position = INITIAL_POS;
 	upDir = INITIAL_UP_DIR;
@@ -34,6 +35,7 @@ void Camera::Update()
 {
 	MoveCamera();
 	RotateCamera();
+	ZoomInOut();
 }
 
 /// <summary>
@@ -46,32 +48,7 @@ void Camera::Render()
 	lookPos = position + dir;
 	view = XMMatrixLookAtLH(position, lookPos, upDir);
 
-	proj = XMMatrixPerspectiveFovLH(XM_PI / 4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
-}
-
-const XMMATRIX Camera::GetView()
-{
-	return view;
-}
-
-const XMMATRIX Camera::GetProj()
-{
-	return proj;
-}
-
-const XMVECTOR Camera::GetCameraPos()
-{
-	return position;
-}
-
-const XMVECTOR Camera::GetLookPos()
-{
-	return lookPos;
-}
-
-const XMVECTOR Camera::GetUpVec()
-{
-	return upDir;
+	proj = XMMatrixPerspectiveFovLH(XM_PI / zoom, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
 }
 
 /// <summary>
@@ -102,4 +79,46 @@ void Camera::RotateCamera()
 	dir = { 0.0f, 0.0f, 1.0f };
 	dir = XMVector3TransformCoord(dir, yaw);
 
+}
+
+/// <summary>
+/// ズームイン・アウト
+/// </summary>
+void Camera::ZoomInOut()
+{
+	KeyManager key = KeyManager::GetInstance();
+	zoom += (key.IsKeyPush(KeyInfo::ZoomIn)) * 0.03 - (key.IsKeyPush(KeyInfo::ZoomOut)) * 0.03;
+	if (zoom < 1.1)
+	{
+		zoom = 1.1;
+	}
+	if (zoom > 30)
+	{
+		zoom = 30;
+	}
+}
+
+const XMMATRIX Camera::GetView()
+{
+	return view;
+}
+
+const XMMATRIX Camera::GetProj()
+{
+	return proj;
+}
+
+const XMVECTOR Camera::GetCameraPos()
+{
+	return position;
+}
+
+const XMVECTOR Camera::GetLookPos()
+{
+	return lookPos;
+}
+
+const XMVECTOR Camera::GetUpVec()
+{
+	return upDir;
 }
