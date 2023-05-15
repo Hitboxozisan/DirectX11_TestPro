@@ -157,6 +157,7 @@
     <ClCompile Include="MathDx11.cpp" />
     <ClCompile Include="Pixel3D.cpp" />
     <ClCompile Include="PointSprite3D.cpp" />
+    <ClCompile Include="SphereMap.cpp" />
     <ClCompile Include="TestObj.cpp" />
     <ClCompile Include="TestPolygon.cpp" />
     <ClCompile Include="Text.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Pixel3D.h" />
     <ClInclude Include="PointSprite3D.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SphereMap.h" />
     <ClInclude Include="TestObj.h" />
     <ClInclude Include="TestPolygon.h" />
     <ClInclude Include="Text.h" />
