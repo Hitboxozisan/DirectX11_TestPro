@@ -6,6 +6,18 @@
 #include "KeyManager.h"
 #include "EnumItr.h"
 
+//KeyManager::KeyManager()
+//{
+//    // ˆ—‚È‚µ
+//}
+//
+//
+//KeyManager::KeyManager(const KeyManager&)
+//{
+//    // ˆ—‚È‚µ
+//}
+
+
 /// <summary>
 /// ƒL[‚Ìó‘Ô‚ğ“¾‚é
 /// </summary>
@@ -93,5 +105,10 @@ bool KeyManager::IsKeyExit(KeyInfo keycord)
 {
     return key[keycord].state == KeyState::PushJust;
 }
+
+//KeyManager::~KeyManager()
+//{
+//    // ˆ—‚È‚µ
+//}
 
 

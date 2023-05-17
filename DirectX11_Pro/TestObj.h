@@ -36,6 +36,8 @@ public:
 	void Fainalize();
 	void Render(XMMATRIX view, XMMATRIX proj);
 
+	const XMMATRIX GetPosition() const;
+
 private:
 
 	struct ObjVertex
@@ -54,6 +56,8 @@ private:
 		XMFLOAT4 specular;
 		XMFLOAT4 eye;
 	};
+
+	XMMATRIX position;		// オブジェクトの位置
 
 	HWND m_hWnd;
 	ID3D11Device* m_pDevice;

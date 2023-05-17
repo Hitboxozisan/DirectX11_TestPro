@@ -379,14 +379,14 @@ void TestObj::Fainalize()
 void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 {
 	XMMATRIX mTran, mYaw, mPitch, mRoll, mScale;
-	XMMATRIX mWorld = XMMatrixRotationY(0.0f);
+	position = XMMatrixRotationY(0.0f);
 	mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 	mYaw = XMMatrixRotationY(0.0f);
 	mPitch = XMMatrixRotationX(0.0f);
 	mRoll = XMMatrixRotationZ(0.0f);
 	mTran = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
-	mWorld = mScale * mYaw * mPitch * mRoll * mTran;
+	position = mScale * mYaw * mPitch * mRoll * mTran;
 
 	//ワールドトランスフォーム（絶対座標変換）
 	//mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
@@ -400,10 +400,10 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 	if (SUCCEEDED(m_pDeviceContext->Map(m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		// ワールド行列
-		cb.W = mWorld;
+		cb.W = position;
 		cb.W = XMMatrixTranspose(cb.W);
 		//ワールド、カメラ、射影行列を渡す
-		XMMATRIX m = mWorld * view * proj;
+		XMMATRIX m = position * view * proj;
 		cb.WVP = m;
 		cb.WVP = XMMatrixTranspose(cb.WVP);
 		// ライトの方向を渡す
@@ -439,5 +439,10 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 	m_pDeviceContext->IASetIndexBuffer(m_Mesh.pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	//プリミティブをレンダリング
 	m_pDeviceContext->DrawIndexed(m_Mesh.dwNumFace * 3, 0, 0);
+}
+
+const XMMATRIX TestObj::GetPosition() const
+{
+	return position;
 }
 

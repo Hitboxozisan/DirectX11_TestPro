@@ -35,9 +35,20 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="SphereMap.cpp">
       <Filter>SphereMap</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,13 +90,24 @@
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Singleton.h">
       <Filter>Singleton</Filter>
     </ClInclude>
     <ClInclude Include="EnumItr.h" />
     <ClInclude Include="SphereMap.h">
       <Filter>SphereMap</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +137,12 @@
     </Filter>
     <Filter Include="SphereMap">
       <UniqueIdentifier>{fca79c18-bc9a-4b7e-aaa3-149a921e2b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{b36baf48-3211-4709-bb85-ef8cddb7dc06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{5e6210f0-d5ba-4473-b5ff-918925f20f5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

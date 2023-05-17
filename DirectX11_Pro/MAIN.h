@@ -10,6 +10,7 @@ class PointSprite3D;
 class TestObj;
 class KeyManager;
 class Camera;
+class SphereMap;
 
 //
 //
@@ -25,6 +26,8 @@ public:
 	void App();
 	void Render();
 	void DestroyD3D();
+
+private:
 
 	HWND hWnd;
 	ID3D11Device* device;
@@ -43,4 +46,5 @@ public:
 	PointSprite3D* pointSprite;
 	TestObj* testObj;
 	Camera* camera;
+	SphereMap* skyDome;
 };

@@ -8,6 +8,7 @@
 #include "TestObj.h"
 #include "KeyManager.h"
 #include "Camera.h"
+#include "SphereMap.h"
 #include "Singleton.h"
 
 using namespace DirectX;
@@ -258,19 +259,16 @@ HRESULT MAIN::InitD3D()
 	//fps = new Fps;
 	//fps->Init(text);
 
-	// 四角ポリゴン
-	//polygon = new TestPolygon;
-	//polygon->Init(device, deviceContext, light);
-
-	//pointSprite = new PointSprite3D();
-	//pointSprite->Init(device, deviceContext);
-
 	testObj = new TestObj;
 	testObj->Init(device, deviceContext, swapChain);
 
 	// カメラクラス
 	camera = new Camera();
 	camera->Init();
+
+	// スカイドームクラス
+	skyDome = new SphereMap();
+	skyDome->Init(device, deviceContext, swapChain);
 
 
 	return S_OK;
@@ -315,13 +313,12 @@ void MAIN::Render()
 
 	// フレームレート計算・描画
 	//fps->Render();
-	// 四角ポリゴン描画
-	//polygon->Render(vEyePt, mView, mProj);
-
-	//pointSprite->Render(mView, mProj);
 
 	// Objファイル（手）
 	testObj->Render(camera->GetView(), camera->GetProj());
+
+	// スカイドーム描画
+	skyDome->Render(testObj->GetPosition(), camera->GetView(), camera->GetProj());
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆

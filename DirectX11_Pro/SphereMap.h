@@ -26,27 +26,30 @@ struct SphereMapMaterial
 /// <summary>
 /// 環境マッピング（スフィアマップ）
 /// </summary>
-class SphereMap
+class SphereMap final
 {
 public:
+	SphereMap();
+	~SphereMap();
+
 	HRESULT Init(ID3D11Device* inDevice, ID3D11DeviceContext* inContext, IDXGISwapChain* inSwap);
 	HRESULT InitStaticMesh(LPSTR FileName, SphereMapMesh* pMesh);
 	HRESULT InitShader();
 	HRESULT MakeTexture();
 	HRESULT LoadMaterial(LPSTR FileName, SphereMapMaterial* pMaterial);
 
-	void Render();
+	void Render(XMMATRIX player, XMMATRIX view, XMMATRIX proj);
 
 private:
 
-	struct ObjVertex
+	struct SphereMapVertex
 	{
 		XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };		// 位置
 		XMFLOAT3 norm = { 0.0f, 0.0f, 0.0f };
 		XMFLOAT2 tex = { 0.0f, 0.0f };
 	};
 
-	struct ObjShaderConstantBuffer
+	struct SphereMapConstantBuffer
 	{
 		XMMATRIX W;
 		XMMATRIX WVP;
@@ -61,9 +64,17 @@ private:
 	ID3D11DeviceContext* deviceContext;
 	IDXGISwapChain* swapChain;
 
-
 	// テクスチャ
 	SphereMapMesh mesh;
 	SphereMapMaterial material;
+
+	ID3D11InputLayout* vertexLayout;
+	ID3D11VertexShader* vertexShader;
+	ID3D11PixelShader* pixelShader;
+	ID3D11Buffer* constantBuffer;
+	ID3D11SamplerState* sampleLinear;		// テクスチャーのサンプラー
+	ID3D11ShaderResourceView* texture;		// テクスチャー
+
+	TexMetadata info = {};
 };
 

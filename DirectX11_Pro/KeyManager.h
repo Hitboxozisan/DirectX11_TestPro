@@ -35,6 +35,11 @@ public:
 	bool IsKeyExit(KeyInfo keycord);
 	
 private:
+	// 外部からアクセスを制限する
+	//KeyManager();
+	//KeyManager(const KeyManager&);
+	//~KeyManager();
+	
 	// キー情報配列
 	constexpr static KeyInfo keyInfo[] =
 	{
