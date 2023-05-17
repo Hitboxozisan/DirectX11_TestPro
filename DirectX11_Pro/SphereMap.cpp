@@ -93,7 +93,7 @@ HRESULT SphereMap::InitStaticMesh(LPSTR FileName, SphereMapMesh* pMesh)
 	XMFLOAT3* pvCoord = new XMFLOAT3[pMesh->dwNumVert];
 	XMFLOAT3* pvNormal = new XMFLOAT3[dwVNCount];
 	XMFLOAT2* pvTexture = new XMFLOAT2[dwVTCount];
-	int* piFaceBuffer = new int[pMesh->dwNumFace * 4];//３頂点ポリゴンなので、1フェイス=3頂点(3インデックス)
+	int* piFaceBuffer = new int[pMesh->dwNumFace * 4];	//３頂点ポリゴンなので、1フェイス=3頂点(3インデックス)
 
 	//本読み込み	
 	fseek(fp, SEEK_SET, 0);
@@ -170,9 +170,9 @@ HRESULT SphereMap::InitStaticMesh(LPSTR FileName, SphereMapMesh* pMesh)
 			}
 			else
 			{
-				pvVertexBuffer[dwFCount * 3 + 3].pos = { 0.0f, 0.0f, 0.0f };
-				pvVertexBuffer[dwFCount * 3 + 3].norm = { 0.0f, 0.0f, 0.0f };
-				pvVertexBuffer[dwFCount * 3 + 3].tex = { 0.0f, 0.0f};
+				//pvVertexBuffer[dwFCount * 3 + 3].pos = { 0.0f, 0.0f, 0.0f };
+				//pvVertexBuffer[dwFCount * 3 + 3].norm = { 0.0f, 0.0f, 0.0f };
+				//pvVertexBuffer[dwFCount * 3 + 3].tex = { 0.0f, 0.0f};
 			}
 			dwFCount++;
 		}
