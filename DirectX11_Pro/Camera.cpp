@@ -58,8 +58,8 @@ void Camera::MoveCamera()
 {
 	KeyManager key = KeyManager::GetInstance();
 
-	cameraPos.x += -(key.IsKeyPush(KeyInfo::Left)) * 0.001 + (key.IsKeyPush(KeyInfo::Right)) * 0.001;
-	cameraPos.y += -(key.IsKeyPush(KeyInfo::Down)) * 0.001 + (key.IsKeyPush(KeyInfo::Up)) * 0.001;
+	cameraPos.x += -(key.IsKeyPush(KeyInfo::Left)) * 0.01 + (key.IsKeyPush(KeyInfo::Right)) * 0.01;
+	cameraPos.y += -(key.IsKeyPush(KeyInfo::Down)) * 0.01 + (key.IsKeyPush(KeyInfo::Up)) * 0.01;
 
 	// é¿ç€ÇÃà íuÇçXêV
 	position = ConvertFloat3FromVector(cameraPos);

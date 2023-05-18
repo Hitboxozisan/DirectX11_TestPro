@@ -270,7 +270,6 @@ HRESULT MAIN::InitD3D()
 	skyDome = new SphereMap();
 	skyDome->Init(device, deviceContext, swapChain);
 
-
 	return S_OK;
 }
 //

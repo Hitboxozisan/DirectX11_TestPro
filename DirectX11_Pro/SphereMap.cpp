@@ -148,31 +148,31 @@ HRESULT SphereMap::InitStaticMesh(LPSTR FileName, SphereMapMesh* pMesh)
 		if (strcmp(key, "f") == 0)
 		{
 			fscanf_s(fp, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d", &v1, &vt1, &vn1, &v2, &vt2, &vn2, &v3, &vt3, &vn3, &v4, &vt4, &vn4);
-			piFaceBuffer[dwFCount * 3] = dwFCount * 3;
-			piFaceBuffer[dwFCount * 3 + 1] = dwFCount * 3 + 1;
-			piFaceBuffer[dwFCount * 3 + 2] = dwFCount * 3 + 2;
-			piFaceBuffer[dwFCount * 3 + 3] = dwFCount * 3 + 3;
+			piFaceBuffer[dwFCount * 4] = dwFCount * 3;
+			piFaceBuffer[dwFCount * 4 + 1] = dwFCount * 3 + 1;
+			piFaceBuffer[dwFCount * 4 + 2] = dwFCount * 3 + 2;
+			piFaceBuffer[dwFCount * 4 + 3] = dwFCount * 3 + 3;
 			//í∏ì_ç\ë¢ëÃÇ…ë„ì¸
-			pvVertexBuffer[dwFCount * 3].pos = pvCoord[v1 - 1];
-			pvVertexBuffer[dwFCount * 3].norm = pvNormal[vn1 - 1];
-			pvVertexBuffer[dwFCount * 3].tex = pvTexture[vt1 - 1];
-			pvVertexBuffer[dwFCount * 3 + 1].pos = pvCoord[v2 - 1];
-			pvVertexBuffer[dwFCount * 3 + 1].norm = pvNormal[vn2 - 1];
-			pvVertexBuffer[dwFCount * 3 + 1].tex = pvTexture[vt2 - 1];
-			pvVertexBuffer[dwFCount * 3 + 2].pos = pvCoord[v3 - 1];
-			pvVertexBuffer[dwFCount * 3 + 2].norm = pvNormal[vn3 - 1];
-			pvVertexBuffer[dwFCount * 3 + 2].tex = pvTexture[vt3 - 1];
+			pvVertexBuffer[dwFCount * 4].pos = pvCoord[v1 - 1];
+			pvVertexBuffer[dwFCount * 4].norm = pvNormal[vn1 - 1];
+			pvVertexBuffer[dwFCount * 4].tex = pvTexture[vt1 - 1];
+			pvVertexBuffer[dwFCount * 4 + 1].pos = pvCoord[v2 - 1];
+			pvVertexBuffer[dwFCount * 4 + 1].norm = pvNormal[vn2 - 1];
+			pvVertexBuffer[dwFCount * 4 + 1].tex = pvTexture[vt2 - 1];
+			pvVertexBuffer[dwFCount * 4 + 2].pos = pvCoord[v3 - 1];
+			pvVertexBuffer[dwFCount * 4 + 2].norm = pvNormal[vn3 - 1];
+			pvVertexBuffer[dwFCount * 4 + 2].tex = pvTexture[vt3 - 1];
 			if (v4 != 0 && vt4 != 0 && vn4 != 0)
 			{
-				pvVertexBuffer[dwFCount * 3 + 3].pos = pvCoord[v4 - 1];
-				pvVertexBuffer[dwFCount * 3 + 3].norm = pvNormal[vn4 - 1];
-				pvVertexBuffer[dwFCount * 3 + 3].tex = pvTexture[vt4 - 1];
+				pvVertexBuffer[dwFCount * 4 + 3].pos = pvCoord[v4 - 1];
+				pvVertexBuffer[dwFCount * 4 + 3].norm = pvNormal[vn4 - 1];
+				pvVertexBuffer[dwFCount * 4 + 3].tex = pvTexture[vt4 - 1];
 			}
 			else
 			{
-				//pvVertexBuffer[dwFCount * 3 + 3].pos = { 0.0f, 0.0f, 0.0f };
-				//pvVertexBuffer[dwFCount * 3 + 3].norm = { 0.0f, 0.0f, 0.0f };
-				//pvVertexBuffer[dwFCount * 3 + 3].tex = { 0.0f, 0.0f};
+				pvVertexBuffer[dwFCount * 4 + 3].pos = { 0.0f, 0.0f, 0.0f };
+				pvVertexBuffer[dwFCount * 4 + 3].norm = { 0.0f, 0.0f, 0.0f };
+				pvVertexBuffer[dwFCount * 4 + 3].tex = { 0.0f, 0.0f};
 			}
 			dwFCount++;
 		}
