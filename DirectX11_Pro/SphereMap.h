@@ -49,6 +49,13 @@ private:
 		XMFLOAT2 tex = { 0.0f, 0.0f };
 	};
 
+	struct SphereMapVertex3
+	{
+		XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };		// ˆÊ’u
+		XMFLOAT3 norm = { 0.0f, 0.0f, 0.0f };
+		XMFLOAT2 tex = { 0.0f, 0.0f };
+	};
+
 	struct SphereMapConstantBuffer
 	{
 		XMMATRIX W;
