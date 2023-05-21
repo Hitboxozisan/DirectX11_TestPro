@@ -22,12 +22,6 @@ enum KeyInfo
 class KeyManager
 {
 public:
-	static KeyManager& GetInstance()
-	{
-		static KeyManager keyManager;
-		return keyManager;
-	};
-
 	void KeyStateUpdate();						// キー操作更新処理
 
 	const bool IsKeyPush(KeyInfo keycord);

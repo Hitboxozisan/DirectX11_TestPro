@@ -6,14 +6,13 @@
 
 #include <DirectXMath.h>
 
-#include <wrl/client.h>
 #include <DirectXTex.h>
-using Microsoft::WRL::ComPtr;
 using namespace DirectX;
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 
+#include"Common.h"
 
 #define SAFE_RELEASE(x) if(x){x->Release(); x=NULL;}
 #define DIMENSION 25.0f

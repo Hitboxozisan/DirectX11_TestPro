@@ -1,11 +1,14 @@
+#include <DirectXMath.h>
 #include "Camera.h"
 #include "KeyManager.h"
 #include "Singleton.h"
 #include "MathDx11.h"
+#include "Singleton.h"
 
 using namespace MathDx11;
 
 Camera::Camera()
+	:key(Singleton<KeyManager>::GetInstance())
 {
 	// èàóùÇ»Çµ
 }
@@ -56,13 +59,11 @@ void Camera::Render()
 /// </summary>
 void Camera::MoveCamera()
 {
-	KeyManager key = KeyManager::GetInstance();
-
 	cameraPos.x += -(key.IsKeyPush(KeyInfo::Left)) * 0.01 + (key.IsKeyPush(KeyInfo::Right)) * 0.01;
 	cameraPos.y += -(key.IsKeyPush(KeyInfo::Down)) * 0.01 + (key.IsKeyPush(KeyInfo::Up)) * 0.01;
 
 	// é¿ç€ÇÃà íuÇçXêV
-	position = ConvertFloat3FromVector(cameraPos);
+	position = ConvertXMFLOAT3FromXMVECTOR(cameraPos);
 }
 
 /// <summary>
@@ -70,7 +71,7 @@ void Camera::MoveCamera()
 /// </summary>
 void Camera::RotateCamera()
 {
-	KeyManager key = KeyManager::GetInstance();
+	//key = KeyManager::GetInstance();
 
 	yawFlo += -(key.IsKeyPush(KeyInfo::RotateL)) * 0.01 + (key.IsKeyPush(KeyInfo::RotateR)) * 0.01;
 
@@ -86,7 +87,7 @@ void Camera::RotateCamera()
 /// </summary>
 void Camera::ZoomInOut()
 {
-	KeyManager key = KeyManager::GetInstance();
+	//KeyManager key = KeyManager::GetInstance();
 	zoom += (key.IsKeyPush(KeyInfo::ZoomIn)) * 0.03 - (key.IsKeyPush(KeyInfo::ZoomOut)) * 0.03;
 	if (zoom < 1.1)
 	{
@@ -121,4 +122,11 @@ const XMVECTOR Camera::GetLookPos()
 const XMVECTOR Camera::GetUpVec()
 {
 	return upDir;
+}
+
+const XMFLOAT3 Camera::GetPos()
+{
+	XMFLOAT3 pos;
+	XMStoreFloat3(&pos, position);
+	return pos;
 }

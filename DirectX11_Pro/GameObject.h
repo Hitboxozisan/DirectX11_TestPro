@@ -13,7 +13,7 @@ class GameObject
 {
 public:
 	GameObject();
-	~GameObject();
+	virtual ~GameObject();
 
 	// ƒƒbƒVƒ…\‘¢‘Ì
 	struct GameObjectMesh

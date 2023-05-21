@@ -5,8 +5,6 @@
 
 using namespace DirectX;
 
-class KeyManager;
-
 /// <summary>
 /// ƒJƒƒ‰ƒNƒ‰ƒX
 /// </summary>
@@ -25,6 +23,8 @@ public:
 	const XMVECTOR GetCameraPos();
 	const XMVECTOR GetLookPos();
 	const XMVECTOR GetUpVec();
+
+	const XMFLOAT3 GetPos();
 
 private:
 	// ’è”
@@ -47,5 +47,7 @@ private:
 	void MoveCamera();
 	void RotateCamera();
 	void ZoomInOut();
+
+	class KeyManager& key;
 };
 

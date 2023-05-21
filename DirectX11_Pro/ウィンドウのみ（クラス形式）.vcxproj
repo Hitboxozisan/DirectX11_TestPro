@@ -147,7 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="D11Device.cpp" />
+    <ClCompile Include="DirectXManager.cpp" />
     <ClCompile Include="FireSpark.cpp" />
     <ClCompile Include="Fps.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -158,16 +162,28 @@
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MathDx11.cpp" />
     <ClCompile Include="MeshManager.cpp" />
+    <ClCompile Include="ObjModelManager.cpp" />
     <ClCompile Include="Pixel3D.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerBase.cpp" />
     <ClCompile Include="PointSprite3D.cpp" />
+    <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="SphereMap.cpp" />
     <ClCompile Include="TestObj.cpp" />
     <ClCompile Include="TestPolygon.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionTag.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="D11Device.h" />
+    <ClInclude Include="DirectXManager.h" />
     <ClInclude Include="EnumItr.h" />
     <ClInclude Include="FireSpark.h" />
     <ClInclude Include="Fps.h" />
@@ -180,8 +196,15 @@
     <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="MathDx11.h" />
     <ClInclude Include="MeshManager.h" />
+    <ClInclude Include="ObjModelManager.h" />
     <ClInclude Include="Pixel3D.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerBase.h" />
     <ClInclude Include="PointSprite3D.h" />
+    <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SphereMap.h" />
     <ClInclude Include="TestObj.h" />

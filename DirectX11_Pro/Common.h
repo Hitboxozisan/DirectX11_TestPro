@@ -19,7 +19,8 @@
 
 // ComPtrを使用できるようにする
 #include <wrl/client.h>
-using Microsoft::WRL::ComPtr;
+template<typename T>
+using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 // 自作のDirectX関係のヘッダーをインクルード
 

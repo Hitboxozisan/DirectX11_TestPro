@@ -464,6 +464,8 @@ void SphereMap::Render(XMMATRIX player, XMMATRIX view, XMMATRIX proj)
 	stride = sizeof(int);
 	offset = 0;
 	deviceContext->IASetIndexBuffer(mesh.indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+
 	//プリミティブをレンダリング
 	deviceContext->DrawIndexed(mesh.dwNumFace * 3, 0, 0);
 

@@ -1,14 +1,15 @@
 //ヘッダーファイルのインクルード
 #include "Common.h"
 #include "Framework.h"
+#include "Singleton.h"
 
+class SceneManager;
 class Text;
 class Fps;
 class Light;
 class TestPolygon;
 class PointSprite3D;
 class TestObj;
-class KeyManager;
 class Camera;
 class SphereMap;
 
@@ -18,6 +19,7 @@ class SphereMap;
 class MAIN
 {
 public:
+
 	HRESULT InitWindow(HINSTANCE, INT, INT, INT, INT, LPCWSTR);
 	HRESULT Init();
 	HRESULT InitD3D();
@@ -39,12 +41,17 @@ private:
 	ID3D11Texture2D* ds;
 
 	//MESH* m_pMesh;
-	Text* text;				//文字表示用
-	Fps* fps;
-	Light* light;			// ライト
-	TestPolygon* polygon;
-	PointSprite3D* pointSprite;
-	TestObj* testObj;
-	Camera* camera;
-	SphereMap* skyDome;
+	//Text* text;				//文字表示用
+	//Fps* fps;
+	//Light* light;			// ライト
+	//TestPolygon* polygon;
+	//PointSprite3D* pointSprite;
+	//TestObj* testObj;
+	//Camera* camera;
+	//SphereMap* skyDome;
+
+	
+	SceneManager* sceneManager;
+
+	//class KeyManager& key;
 };

@@ -50,6 +50,33 @@
     <ClCompile Include="MeshManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBase.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjModelManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTitle.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXManager.cpp" />
+    <ClCompile Include="D11Device.cpp" />
+    <ClCompile Include="Application.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -109,6 +136,36 @@
     <ClInclude Include="MeshManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBase.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionTag.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjModelManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTitle.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXManager.h" />
+    <ClInclude Include="D11Device.h" />
+    <ClInclude Include="Application.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -138,11 +195,20 @@
     <Filter Include="SphereMap">
       <UniqueIdentifier>{fca79c18-bc9a-4b7e-aaa3-149a921e2b9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{b36baf48-3211-4709-bb85-ef8cddb7dc06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager">
       <UniqueIdentifier>{5e6210f0-d5ba-4473-b5ff-918925f20f5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{c276b82e-8780-45c3-8d45-6b00dff1195f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{e8096e89-814b-4ecd-9557-8475d9040bd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{c6524997-b364-48a5-80b6-02d59459387a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{b36baf48-3211-4709-bb85-ef8cddb7dc06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

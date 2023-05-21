@@ -44,7 +44,7 @@ namespace MathDx11
 	/// </summary>
 	/// <param name="vec"></param>
 	/// <returns></returns>
-	XMFLOAT3 XMNormalizeFloat3(XMFLOAT3& vec)
+	XMFLOAT3 NormalizeXMFLOAT3(XMFLOAT3& vec)
 	{
 		float scale;
 		XMFLOAT3 ret;
@@ -57,12 +57,22 @@ namespace MathDx11
 		return ret;
 	}
 
+	XMFLOAT3 SubXMFLOAT3(const XMFLOAT3& lhs, const XMFLOAT3& rhs)
+	{
+		XMFLOAT3 ret;
+		ret.x = lhs.x - rhs.x;
+		ret.x = lhs.x - rhs.x;
+		ret.x = lhs.x - rhs.x;
+
+		return ret;
+	}
+
 	/// <summary>
 	/// XMVECTOR‚ðXMFLOAT‚É•ÏŠ·
 	/// </summary>
 	/// <param name="vec"></param>
 	/// <returns></returns>
-	const XMFLOAT3 ConvertVectorFromFloat3(const XMVECTOR vec)
+	const XMFLOAT3 ConvertXMVECTORFromXMFLOAT3(const XMVECTOR vec)
 	{
 		XMFLOAT3 ret;
 		ret.x = XMVectorGetX(vec);
@@ -77,7 +87,7 @@ namespace MathDx11
 	/// </summary>
 	/// <param name="lhs"></param>
 	/// <returns></returns>
-	const XMVECTOR ConvertFloat3FromVector(const XMFLOAT3 lhs)
+	const XMVECTOR ConvertXMFLOAT3FromXMVECTOR(const XMFLOAT3 lhs)
 	{
 		XMVECTOR ret;
 		ret = { lhs.x, lhs.y, lhs.z };
@@ -86,7 +96,7 @@ namespace MathDx11
 	}
 
 
-	const XMVECTOR ConvertFloat4FromVector(const XMFLOAT4 lhs)
+	const XMVECTOR ConvertXMFLOAT4FromXMVECTOR(const XMFLOAT4 lhs)
 	{
 		XMVECTOR ret;
 		ret = { lhs.x, lhs.y, lhs.z, lhs.w };

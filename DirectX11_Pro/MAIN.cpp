@@ -1,15 +1,17 @@
 
 #include "MAIN.h"
+#include "SceneManager.h"
 #include "Text.h"
 #include "Fps.h"
 #include "TestPolygon.h"
 #include "Light.h"
 #include "PointSprite3D.h"
 #include "TestObj.h"
+#include "Singleton.h"
 #include "KeyManager.h"
 #include "Camera.h"
 #include "SphereMap.h"
-#include "Singleton.h"
+#include "Application.h"
 
 using namespace DirectX;
 
@@ -22,6 +24,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //アプリケーションのエントリー関数 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, INT)
 {
+	class Application* app = new Application();
+	//app->Run();
+
 	g_pMain = new MAIN;
 	if (g_pMain != NULL)
 	{
@@ -106,14 +111,23 @@ LRESULT MAIN::MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 /// </summary>
 HRESULT MAIN::Init()
 {
-	light = new Light;
-	light->SetLight({ 0.0f, 0.0f, 5.0f, -1.0f });
-	light->SetLight(XMVector3Normalize(light->GetLight()));
+	
+
+	//key = Singleton<KeyManager>::GetInstance();
+
+	//light = new Light;
+	//light->SetLight({ 0.0f, 0.0f, 5.0f, -1.0f });
+	//light->SetLight(XMVector3Normalize(light->GetLight()));
 
 	if (FAILED(InitD3D()))
 	{
 		return E_FAIL;
 	}
+
+	// シーン管理
+	// ここは後に修正
+	sceneManager = new SceneManager();
+	sceneManager->Initialize();
 
 	return S_OK;
 }
@@ -181,6 +195,9 @@ HRESULT MAIN::InitD3D()
 	}
 	SAFE_RELEASE(pBackBuffer);
 
+	
+
+
 	//深度ステンシルビューの作成
 	D3D11_TEXTURE2D_DESC descDepth;
 	descDepth.Width = WINDOW_WIDTH;
@@ -206,13 +223,9 @@ HRESULT MAIN::InitD3D()
 		return E_FAIL;
 	}
 
-
-
-	// 深度テストを有効化
-
 	//レンダーターゲットビューと深度ステンシルビューをパイプラインにバインド
 	deviceContext->OMSetRenderTargets(1, &rtv, dsv);
-
+	
 	// 深度テストを無効にする
 	//D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	//ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
@@ -220,8 +233,6 @@ HRESULT MAIN::InitD3D()
 	//
 	//device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
 	//deviceContext->OMSetDepthStencilState(depthStencilState, 1);
-
-
 
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
@@ -259,16 +270,16 @@ HRESULT MAIN::InitD3D()
 	//fps = new Fps;
 	//fps->Init(text);
 
-	testObj = new TestObj;
-	testObj->Init(device, deviceContext, swapChain);
-
-	// カメラクラス
-	camera = new Camera();
-	camera->Init();
-
-	// スカイドームクラス
-	skyDome = new SphereMap();
-	skyDome->Init(device, deviceContext, swapChain);
+	//testObj = new TestObj;
+	//testObj->Init(device, deviceContext, swapChain);
+	//
+	//// カメラクラス
+	//camera = new Camera();
+	//camera->Init();
+	//
+	//// スカイドームクラス
+	//skyDome = new SphereMap();
+	//skyDome->Init(device, deviceContext, swapChain);
 
 	return S_OK;
 }
@@ -278,9 +289,11 @@ HRESULT MAIN::InitD3D()
 void MAIN::App()
 {
 	// キー操作更新処理
-	KeyManager::GetInstance().KeyStateUpdate();
+	//key.KeyStateUpdate();
 
-	camera->Update();
+	//camera->Update();
+	sceneManager->Update();
+	sceneManager->Draw();
 
 	Render();
 }
@@ -305,19 +318,19 @@ void MAIN::Render()
 	//画面クリア（実際は単色で画面を塗りつぶす処理）
 	float ClearColor[4] = { 0,0,1,1 };// クリア色作成　RGBAの順
 	deviceContext->ClearRenderTargetView(rtv, ClearColor);//画面クリア
-	deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);//深度バッファクリア
+	deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);	//深度バッファクリア
 	
 	// 座標変換
-	camera->Render();
+	//camera->Render();
 
 	// フレームレート計算・描画
 	//fps->Render();
 
-	// Objファイル（手）
-	testObj->Render(camera->GetView(), camera->GetProj());
+	// Objファイル（手） 
+	//testObj->Render(camera->GetView(), camera->GetProj());
 
 	// スカイドーム描画
-	skyDome->Render(testObj->GetPosition(), camera->GetView(), camera->GetProj());
+	//skyDome->Render(testObj->GetPosition(), camera->GetView(), camera->GetProj());
 
 	//画面更新（バックバッファをフロントバッファに）
 	swapChain->Present(1, 0);//テキストの後(執筆

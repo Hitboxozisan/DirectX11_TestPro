@@ -27,7 +27,7 @@ void FireSpark::Init(int MaxParticle, XMFLOAT3& EmitPos)
 	{
 		pPartArray[i].Pos = EmitPos;
 		pPartArray[i].Dir = XMFLOAT3( 2 * ((float)rand() / (float)RAND_MAX) - 1, (float)rand() / (float)RAND_MAX, 2 * ((float)rand() / (float)RAND_MAX) - 1 );
-		pPartArray[i].Dir = XMNormalizeFloat3(pPartArray[i].Dir);
+		pPartArray[i].Dir = NormalizeXMFLOAT3(pPartArray[i].Dir);
 		pPartArray[i].Speed = (5 + ((float)rand() / (float)RAND_MAX)) * 0.00001;
 		pPartArray[i].BirthFrame = rand();
 		
