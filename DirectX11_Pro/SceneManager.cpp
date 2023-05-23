@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "SceneGame.h"
 #include "SceneTitle.h"
+#include "D11Device.h"
 
 /// <summary>
 /// コンストラクタ
@@ -67,6 +68,8 @@ void SceneManager::Update()
 /// </summary>
 void SceneManager::Draw()
 {
+	
+
 	if (currentPointer != nullptr)
 	{
 		currentPointer->Draw();		//現在のシーンの描画処理

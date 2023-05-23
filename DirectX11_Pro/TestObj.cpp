@@ -1,13 +1,25 @@
-#include "TestObj.h"
 #include <locale.h>
 #include <memory>
+#include "TestObj.h"
+#include "Singleton.h"
+#include "D11Device.h"
+#include "DirectXManager.h"
 //#include <string.h>
 
-HRESULT TestObj::Init(ID3D11Device* inDevice, ID3D11DeviceContext* inContext, IDXGISwapChain* inSwap)
+TestObj::TestObj()
+	:device(Singleton<D11Device>::GetInstance())
+	,m_pDevice(device.dx11->GetDevice())
+	,m_pDeviceContext(device.dx11->GetDeviceContext())
+	,m_pSwapChain(device.dx11->GetSwapChain())
 {
-	m_pDevice = inDevice;
-	m_pDeviceContext = inContext;
-	m_pSwapChain = inSwap;
+}
+
+TestObj::~TestObj()
+{
+}
+
+HRESULT TestObj::Init()
+{
 	
 	//シェーダー初期化
 	if (FAILED(InitShader()))
@@ -272,7 +284,7 @@ HRESULT TestObj::MakeTexture()
 	}
 
 	// リソースとシェーダーリソースビューを作成
-	if (FAILED(CreateShaderResourceView(m_pDevice, image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
+	if (FAILED(CreateShaderResourceView(m_pDevice.Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
 	{
 		// 失敗
 		info = {};
@@ -346,7 +358,7 @@ HRESULT TestObj::LoadMaterial(LPSTR FileName, MyMaterial* pMaterial)
 			}
 			
 			// リソースとシェーダーリソースビューを作成
-			if (FAILED(CreateShaderResourceView(m_pDevice, image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
+			if (FAILED(CreateShaderResourceView(m_pDevice.Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
 			{
 				// 失敗
 				info = {};
@@ -366,12 +378,12 @@ void TestObj::Fainalize()
 	SAFE_RELEASE(m_pPixelShader);
 	SAFE_RELEASE(m_pVertexBuffer);
 	SAFE_RELEASE(m_pVertexLayout);
-	SAFE_RELEASE(m_pSwapChain);
+	//SAFE_RELEASE(m_pSwapChain);
 	SAFE_RELEASE(m_pBackBuffer_TexRTV);
 	SAFE_RELEASE(m_pBackBuffer_DSTexDSV);
 	SAFE_RELEASE(m_pBackBuffer_DSTex);
-	SAFE_RELEASE(m_pDeviceContext);
-	SAFE_RELEASE(m_pDevice);
+	//SAFE_RELEASE(m_pDeviceContext);
+	//SAFE_RELEASE(m_pDevice);
 	SAFE_RELEASE(m_pSampleLinear);
 	SAFE_RELEASE(m_pTexture);
 }

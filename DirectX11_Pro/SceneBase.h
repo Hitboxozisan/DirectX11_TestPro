@@ -6,6 +6,7 @@
 using namespace DirectX;
 
 class SceneManager;
+class D11Device;
 
 /// <summary>
 /// シーンベースクラス

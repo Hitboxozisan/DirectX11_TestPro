@@ -11,7 +11,30 @@ DirectXManager::~DirectXManager()
 	// 処理なし
 }
 
-HRESULT DirectXManager::CreateRencerTarget()
+//LRESULT DirectXManager::MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+//{
+//	switch (iMsg)
+//	{
+//	case WM_KEYDOWN:
+//		switch ((char)wParam)
+//		{
+//		case VK_ESCAPE://ESCキーで修了
+//			PostQuitMessage(0);
+//			break;
+//		}
+//		break;
+//	case WM_DESTROY:
+//		PostQuitMessage(0);
+//		break;
+//	}
+//	return DefWindowProc(hWnd, iMsg, wParam, lParam);
+//}
+
+/// <summary>
+/// レンダーターゲットビュー作成
+/// </summary>
+/// <returns></returns>
+HRESULT DirectXManager::CreateRencerTargetAndDepthStencil()
 {
 	ID3D11Texture2D* pBackBuffer = nullptr;
 	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
@@ -30,6 +53,10 @@ HRESULT DirectXManager::CreateRencerTarget()
     return S_OK;
 }
 
+/// <summary>
+/// 深度ステンシル作成
+/// </summary>
+/// <returns></returns>
 HRESULT DirectXManager::CreateDepthStencilView()
 {
 	D3D11_TEXTURE2D_DESC descDepth;
@@ -44,6 +71,16 @@ HRESULT DirectXManager::CreateDepthStencilView()
 	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
+
+	if (FAILED(device->CreateTexture2D(&descDepth, NULL, &ds)))
+	{
+		return E_FAIL;
+	}
+	// そのテクスチャーに対しデプスステンシルビューを作成
+	if (FAILED(device->CreateDepthStencilView(ds.Get(), NULL, &dsv)))
+	{
+		return E_FAIL;
+	}
 
     return S_OK;
 }
@@ -65,6 +102,41 @@ HRESULT DirectXManager::CreateSwapChain(const HWND& hwnd)
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = TRUE;
 
+	D3D_FEATURE_LEVEL pFeatureLevels = D3D_FEATURE_LEVEL_11_0;
+	D3D_FEATURE_LEVEL* pFeatureLevel = NULL;
+
+	if (FAILED(D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL,
+		0, &pFeatureLevels, 1, D3D11_SDK_VERSION, &sd, &swapChain, &device,
+		pFeatureLevel, &deviceContext)))
+	{
+		return FALSE;
+	}
 
     return S_OK;
+}
+
+void DirectXManager::SettingViewport()
+{
+	//ビューポートの設定
+	D3D11_VIEWPORT vp;
+	vp.Width = WINDOW_WIDTH;
+	vp.Height = WINDOW_HEIGHT;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	deviceContext->RSSetViewports(1, &vp);
+}
+
+void DirectXManager::SettingRasterizer()
+{
+	//ラスタライズ設定
+	D3D11_RASTERIZER_DESC rdc;
+	ZeroMemory(&rdc, sizeof(rdc));
+	rdc.CullMode = D3D11_CULL_NONE;
+	rdc.FillMode = D3D11_FILL_SOLID;
+	ID3D11RasterizerState* pIr = NULL;
+	device->CreateRasterizerState(&rdc, &pIr);
+	deviceContext->RSSetState(pIr);
+	SAFE_RELEASE(pIr);
 }

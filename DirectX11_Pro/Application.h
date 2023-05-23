@@ -1,13 +1,18 @@
 #pragma once
+#include "Common.h"
+#include "Framework.h"
+
 class Application
 {
 public:
 	// ‰Šú‰»
-	Application();
+	Application(HINSTANCE);
 
 	// ‰ğ•ú
 	~Application();
 
+
+	LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	// Às
 	void Run();
 

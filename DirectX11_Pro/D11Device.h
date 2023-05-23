@@ -9,9 +9,9 @@ public:
 	D11Device();
 	~D11Device();
 
-
-	bool Init();
 	LRESULT MsgProc(HWND, UINT, WPARAM, LPARAM);
+	bool Init(HINSTANCE);
+	HRESULT InitD3D();
 
 	// デバイス
 	std::shared_ptr<DirectXManager> dx11;
@@ -22,7 +22,7 @@ public:
 private:
 
 	// ウィンドウの生成
-	void CreateGameWindow(HINSTANCE, LPCWSTR windowName);
+	HRESULT CreateGameWindow(HINSTANCE);
 
 };
 

@@ -1,5 +1,8 @@
 #pragma once
+#include "Common.h"
+#include "Framework.h"
 #include "SceneManager.h"
+#include "D11Device.h"
 
 class SceneBase;
 class Text;
@@ -7,7 +10,6 @@ class Fps;
 class Light;
 class TestPolygon;
 class PointSprite3D;
-class TestObj;
 class Camera;
 class SphereMap;
 
@@ -29,12 +31,16 @@ public:
 
 private:
 
+	ComPtr<IDXGISwapChain> swapChain;
+
+	class D11Device device;
+
 	Text* text;				//文字表示用
 	Fps* fps;
 	Light* light;			// ライト
 	TestPolygon* polygon;
 	PointSprite3D* pointSprite;
-	TestObj* testObj;
+	class TestObj* testObj;
 	Camera* camera;
 	SphereMap* skyDome;
 

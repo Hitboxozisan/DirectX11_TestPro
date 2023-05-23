@@ -1,4 +1,7 @@
 #include "SceneGame.h"
+#include "D11Device.h"
+#include "Camera.h"
+#include "TestObj.h"
 
 /// <summary>
 /// コンストラクタ
@@ -21,6 +24,13 @@ SceneGame::~SceneGame()
 /// </summary>
 void SceneGame::Initialize()
 {
+	//device = inDevice;
+
+	camera = new Camera();
+	testObj = new TestObj();
+
+	camera->Init();
+	testObj->Init();
 }
 
 /// <summary>
@@ -49,6 +59,9 @@ void SceneGame::Deactivate()
 /// </summary>
 void SceneGame::Update()
 {
+	swapChain = device.dx11->GetSwapChain();
+
+	camera->Update();
 }
 
 /// <summary>
@@ -56,4 +69,9 @@ void SceneGame::Update()
 /// </summary>
 void SceneGame::Draw()
 {
+	camera->Render();
+	testObj->Render(camera->GetView(), camera->GetProj());
+
+	//画面更新（バックバッファをフロントバッファに）
+	swapChain->Present(1, 0);//テキストの後(執筆
 }

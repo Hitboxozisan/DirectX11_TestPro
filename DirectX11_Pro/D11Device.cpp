@@ -1,7 +1,12 @@
 #include "D11Device.h"
 
+// 関数プロトタイプ宣言
+LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 D11Device::D11Device()
+	:hwnd(0)
 {
+	
 }
 
 D11Device::~D11Device()
@@ -11,11 +16,6 @@ D11Device::~D11Device()
 /// <summary>
 /// ウィンドウプロシージャー
 /// </summary>
-/// <param name="hWnd"></param>
-/// <param name="iMsg"></param>
-/// <param name="wParam"></param>
-/// <param name="lParam"></param>
-/// <returns></returns>
 LRESULT D11Device::MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (iMsg)
@@ -35,22 +35,31 @@ LRESULT D11Device::MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, iMsg, wParam, lParam);
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+bool D11Device::Init(HINSTANCE hInstance)
 {
-	//return MsgProc(hWnd, uMsg, wParam, lParam);
-}
-
-bool D11Device::Init()
-{
-
-    // DirectX11ラッパー生成＆初期化
+	// DirectX11ラッパー生成＆初期化
     dx11.reset(new DirectXManager(hwnd));
-	
+
+	if (SUCCEEDED(CreateGameWindow(hInstance)))
+	{
+		InitD3D();
+	}
 
     return true;
 }
 
-void D11Device::CreateGameWindow(HINSTANCE hInstance, LPCWSTR windowName)
+HRESULT D11Device::InitD3D()
+{
+	dx11->CreateSwapChain(hwnd);
+	dx11->CreateRencerTargetAndDepthStencil();
+	dx11->CreateDepthStencilView();
+	dx11->SettingViewport();
+	dx11->SettingRasterizer();
+
+	return S_OK;
+}
+
+HRESULT D11Device::CreateGameWindow(HINSTANCE hInstance)
 {
 	// ウィンドウの定義
 	WNDCLASSEX  wc;
@@ -62,20 +71,20 @@ void D11Device::CreateGameWindow(HINSTANCE hInstance, LPCWSTR windowName)
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
-	wc.lpszClassName = windowName;
+	wc.lpszClassName = APP_NAME;
 	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 	RegisterClassEx(&wc);
 
 	//ウィンドウの作成
-	hwnd = CreateWindow(windowName, windowName, WS_OVERLAPPEDWINDOW,
+	hwnd = CreateWindow(APP_NAME, APP_NAME, WS_OVERLAPPEDWINDOW,
 		0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, hInstance, 0);
 	if (!hwnd)
 	{
-		return;
+		return E_FAIL;
 	}
 	//ウインドウの表示
 	ShowWindow(hwnd, SW_SHOW);
 	UpdateWindow(hwnd);
 
-	//return S_OK;
+	return S_OK;
 }

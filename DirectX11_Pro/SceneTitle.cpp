@@ -1,4 +1,5 @@
 #include "SceneTitle.h"
+#include "D11Device.h"
 
 SceneTitle::SceneTitle(SceneManager* const sceneManager)
 	:SceneBase(sceneManager)

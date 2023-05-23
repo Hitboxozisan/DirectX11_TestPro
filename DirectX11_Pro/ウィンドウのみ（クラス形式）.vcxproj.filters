@@ -74,9 +74,11 @@
     <ClCompile Include="SceneTitle.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXManager.cpp" />
     <ClCompile Include="D11Device.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="DirectXManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -163,9 +165,11 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXManager.h" />
     <ClInclude Include="D11Device.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="DirectXManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

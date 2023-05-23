@@ -23,7 +23,7 @@ public:
 	HRESULT InitWindow(HINSTANCE, INT, INT, INT, INT, LPCWSTR);
 	HRESULT Init();
 	HRESULT InitD3D();
-	LRESULT MsgProc(HWND, UINT, WPARAM, LPARAM);
+	//LRESULT MsgProc(HWND, UINT, WPARAM, LPARAM);
 	void Loop();
 	void App();
 	void Render();
@@ -31,14 +31,14 @@ public:
 
 private:
 
-	HWND hWnd;
-	ID3D11Device* device;
-	ID3D11DeviceContext* deviceContext;
-	IDXGISwapChain* swapChain;
-	ID3D11RenderTargetView* rtv;
-	ID3D11DepthStencilView* dsv;
-	ID3D11DepthStencilState* depthStencilState;
-	ID3D11Texture2D* ds;
+	//HWND hWnd;
+	//ID3D11Device* device;
+	//ID3D11DeviceContext* deviceContext;
+	//IDXGISwapChain* swapChain;
+	//ID3D11RenderTargetView* rtv;
+	//ID3D11DepthStencilView* dsv;
+	//ID3D11DepthStencilState* depthStencilState;
+	//ID3D11Texture2D* ds;
 
 	//MESH* m_pMesh;
 	//Text* text;				//•¶Žš•\Ž¦—p
@@ -50,7 +50,6 @@ private:
 	//Camera* camera;
 	//SphereMap* skyDome;
 
-	
 	SceneManager* sceneManager;
 
 	//class KeyManager& key;

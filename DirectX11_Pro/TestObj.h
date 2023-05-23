@@ -27,7 +27,10 @@ struct MyMaterial
 class TestObj
 {
 public:
-	HRESULT Init(ID3D11Device* inDevice, ID3D11DeviceContext* inContext, IDXGISwapChain* inSwap);
+	TestObj();
+	~TestObj();
+
+	HRESULT Init();
 	HRESULT InitStaticMesh(LPSTR FileName, MyMesh* pMesh);
 	HRESULT	InitShader();
 	HRESULT MakeTexture();
@@ -59,10 +62,12 @@ private:
 
 	XMMATRIX position;		// オブジェクトの位置
 
+	class D11Device &device;
+
 	HWND m_hWnd;
-	ID3D11Device* m_pDevice;
-	ID3D11DeviceContext* m_pDeviceContext;
-	IDXGISwapChain* m_pSwapChain;
+	ComPtr<ID3D11Device> m_pDevice;
+	ComPtr<ID3D11DeviceContext> m_pDeviceContext;
+	ComPtr<IDXGISwapChain> m_pSwapChain;
 
 	ID3D11RenderTargetView* m_pBackBuffer_TexRTV;
 	ID3D11DepthStencilView* m_pBackBuffer_DSTexDSV;
