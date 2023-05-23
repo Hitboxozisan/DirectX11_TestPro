@@ -31,6 +31,7 @@ public:
 
 private:
 
+	ComPtr<ID3D11DeviceContext> deviceContext;
 	ComPtr<IDXGISwapChain> swapChain;
 
 	class D11Device device;

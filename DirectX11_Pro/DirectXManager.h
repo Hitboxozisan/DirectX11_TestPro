@@ -24,15 +24,18 @@ public:
 	ComPtr<ID3D11DeviceContext> GetDeviceContext() const { return deviceContext; }
 	ComPtr<IDXGISwapChain> GetSwapChain() const { return swapChain; }
 
+	ComPtr<ID3D11RenderTargetView> GetRtv() const { return rtv; }
+	ComPtr<ID3D11DepthStencilView> GetDsv() const { return dsv; }
+
 private:
 	HWND hWnd;
-	ComPtr<ID3D11Device> device;
-	ComPtr<ID3D11DeviceContext> deviceContext;
-	ComPtr<IDXGISwapChain> swapChain;
-	ComPtr<ID3D11RenderTargetView> rtv;
-	ComPtr<ID3D11DepthStencilView> dsv;
-	ComPtr<ID3D11DepthStencilState> depthStencilState;
-	ComPtr<ID3D11Texture2D> ds;
+	ComPtr<ID3D11Device> device = nullptr;
+	ComPtr<ID3D11DeviceContext> deviceContext = nullptr;
+	ComPtr<IDXGISwapChain> swapChain = nullptr;
+	ComPtr<ID3D11RenderTargetView> rtv = nullptr;
+	ComPtr<ID3D11DepthStencilView> dsv = nullptr;
+	ComPtr<ID3D11DepthStencilState> depthStencilState = nullptr;
+	ComPtr<ID3D11Texture2D> ds = nullptr;
 
 	//HRESULT InitWinow();
 	

@@ -40,5 +40,5 @@ private:
 };
 
 // Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ô‚ğ’è‹`
-template <typename T>std::once_flag Singleton<T>::initFlag;
+template <typename T> std::once_flag Singleton<T>::initFlag;
 template <typename T> T* Singleton<T>::instance = nullptr;

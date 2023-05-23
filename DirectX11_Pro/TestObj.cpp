@@ -211,7 +211,7 @@ HRESULT TestObj::InitShader()
 	}
 	SAFE_RELEASE(pErrors);
 
-	if (FAILED(m_pDevice->CreateVertexShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), NULL, &m_pVertexShader)))
+	if (FAILED(m_pDevice.Get()->CreateVertexShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), NULL, &m_pVertexShader)))
 	{
 		SAFE_RELEASE(pCompiledShader);
 		MessageBox(0, L"バーテックスシェーダー作成失敗", NULL, MB_OK);
@@ -226,7 +226,7 @@ HRESULT TestObj::InitShader()
 	};
 	UINT numElements = sizeof(layout) / sizeof(layout[0]);
 	//頂点インプットレイアウトを作成
-	if (FAILED(m_pDevice->CreateInputLayout(layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &m_pVertexLayout)))
+	if (FAILED(m_pDevice.Get()->CreateInputLayout(layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &m_pVertexLayout)))
 	{
 		return E_FAIL;
 	}

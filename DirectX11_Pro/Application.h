@@ -6,19 +6,19 @@ class Application
 {
 public:
 	// èâä˙âª
-	Application(HINSTANCE);
+	Application();
 
 	// âï˙
 	~Application();
 
 
-	LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	//LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	// é¿çs
 	void Run();
 
 private:
 
-	class D11Device& device;
+	//class D11Device& device;
 	class KeyManager& key;
 	class SceneManager* sceneManager;
 

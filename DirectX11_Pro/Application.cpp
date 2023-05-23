@@ -1,5 +1,4 @@
 
-
 #include "Application.h"
 #include "Singleton.h"
 #include "D11Device.h"
@@ -9,15 +8,15 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Application::Application(HINSTANCE hInstance)
-	:device(Singleton<D11Device>::GetInstance())
-	,key(Singleton<KeyManager>::GetInstance())
+Application::Application()
+	:key(Singleton<KeyManager>::GetInstance())
 {
+
 	// DirectX関係初期化処理
- 	if (device.Init(hInstance))
-	{
-		return;
-	}
+ 	//if (device.Init())
+	//{
+	//	return;
+	//}
 
 	// シーンマネージャー
 	sceneManager = new SceneManager();
@@ -31,10 +30,10 @@ Application::~Application()
 {
 }
 
-LRESULT Application::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	return device.MsgProc(hWnd, uMsg, wParam, lParam);
-}
+//LRESULT Application::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+//{
+//	return device.MsgProc(hWnd, uMsg, wParam, lParam);
+//}
 
 /// <summary>
 /// 更新処理

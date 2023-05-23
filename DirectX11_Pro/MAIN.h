@@ -19,11 +19,13 @@ class SphereMap;
 class MAIN
 {
 public:
+	MAIN();
+	~MAIN();
 
 	HRESULT InitWindow(HINSTANCE, INT, INT, INT, INT, LPCWSTR);
 	HRESULT Init();
 	HRESULT InitD3D();
-	//LRESULT MsgProc(HWND, UINT, WPARAM, LPARAM);
+	LRESULT MsgProc(HWND, UINT, WPARAM, LPARAM);
 	void Loop();
 	void App();
 	void Render();
@@ -31,7 +33,7 @@ public:
 
 private:
 
-	//HWND hWnd;
+	HWND hWnd;
 	//ID3D11Device* device;
 	//ID3D11DeviceContext* deviceContext;
 	//IDXGISwapChain* swapChain;
@@ -49,6 +51,9 @@ private:
 	//TestObj* testObj;
 	//Camera* camera;
 	//SphereMap* skyDome;
+	
+	class D11Device& device;
+	class Application* app;
 
 	SceneManager* sceneManager;
 
