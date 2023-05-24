@@ -26,7 +26,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //アプリケーションのエントリー関数 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, INT)
 {
-	g_pMain = new MAIN;
+	g_pMain = new MAIN();
 	if (g_pMain != NULL)
 	{
 		if (SUCCEEDED(g_pMain->InitWindow(hInstance, 0, 0, WINDOW_WIDTH,
@@ -57,8 +57,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 MAIN::MAIN()
 	:device(Singleton<D11Device>::GetInstance())
 {
-	device.Init(hWnd);
-	app = new Application();
+	
 }
 
 /// <summary>
@@ -128,11 +127,15 @@ LRESULT MAIN::MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 /// </summary>
 HRESULT MAIN::Init()
 {
+
 	//light = new Light;
 	//light->SetLight({ 0.0f, 0.0f, 5.0f, -1.0f });
 	//light->SetLight(XMVector3Normalize(light->GetLight()));
 
+	device.Init(hWnd);
 	device.InitD3D(hWnd);
+
+	app = new Application();
 
 	//if (FAILED(InitD3D()))
 	//{

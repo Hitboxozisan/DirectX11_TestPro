@@ -5,7 +5,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 D11Device::D11Device()
 {
-	
 }
 
 D11Device::~D11Device()

@@ -24,8 +24,6 @@ SceneGame::~SceneGame()
 /// </summary>
 void SceneGame::Initialize()
 {
-	//device = inDevice;
-
 	camera = new Camera();
 	testObj = new TestObj();
 
@@ -59,7 +57,7 @@ void SceneGame::Deactivate()
 /// </summary>
 void SceneGame::Update()
 {
-	deviceContext = device.dx11->GetDeviceContext();
+	deviceContext = device.dx11->GetDeviceContext().Get();
 	swapChain = device.dx11->GetSwapChain();
 
 	camera->Update();

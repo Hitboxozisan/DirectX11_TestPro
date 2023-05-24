@@ -13,7 +13,6 @@ public:
 	DirectXManager(HWND inHwnd);
 	~DirectXManager();
 
-	//LRESULT MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 	HRESULT CreateRencerTargetAndDepthStencil();
 	HRESULT CreateDepthStencilView();
 	HRESULT CreateSwapChain(const HWND& hwnd);

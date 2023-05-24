@@ -1,6 +1,8 @@
 #pragma once
 
 #include <mutex>
+#include <cassert>
+#include "SingletonFainalizer.h"
 
 /// <summary>
 /// クラスをシングルトン化する
@@ -9,22 +11,31 @@ template <typename T>
 class Singleton final
 {
 public:
+	//static T& GetInstanceComPtr()
+	//{
+	//	call_once(initFlag, CreateComPtr);
+	//}
+
 
 	static T& GetInstance()
 	{
-		std::call_once(initFlag, Create);
+		call_once(initFlag, Create);
 		assert(instance);
 		return *instance;
 	}
 
 private:
+	//static void CreatePtr()
+	//{
+	//	
+	//}
 
 	// インスタンスの生成
 	static void Create()
 	{
 		instance = new T;
 		// 解放処理にインスタンスを登録
-		
+		SingletonFainalizer::AddFinalizer(&Singleton<T>::Delete);
 	}
 
 	// インスタンスの解放

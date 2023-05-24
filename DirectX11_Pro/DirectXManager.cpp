@@ -11,25 +11,6 @@ DirectXManager::~DirectXManager()
 	// 処理なし
 }
 
-//LRESULT DirectXManager::MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
-//{
-//	switch (iMsg)
-//	{
-//	case WM_KEYDOWN:
-//		switch ((char)wParam)
-//		{
-//		case VK_ESCAPE://ESCキーで修了
-//			PostQuitMessage(0);
-//			break;
-//		}
-//		break;
-//	case WM_DESTROY:
-//		PostQuitMessage(0);
-//		break;
-//	}
-//	return DefWindowProc(hWnd, iMsg, wParam, lParam);
-//}
-
 /// <summary>
 /// レンダーターゲットビュー作成
 /// </summary>
