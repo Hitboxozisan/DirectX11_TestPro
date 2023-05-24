@@ -57,8 +57,8 @@ void SceneGame::Deactivate()
 /// </summary>
 void SceneGame::Update()
 {
-	deviceContext = device.dx11->GetDeviceContext().Get();
-	swapChain = device.dx11->GetSwapChain();
+	// = device.dx11->GetDeviceContext().Get();
+	//swapChain = device.dx11->GetSwapChain();
 
 	camera->Update();
 }
@@ -72,12 +72,12 @@ void SceneGame::Draw()
 	XMMATRIX mProj;
 	//画面クリア（実際は単色で画面を塗りつぶす処理）
 	float ClearColor[4] = { 0,0,1,1 };// クリア色作成　RGBAの順
-	deviceContext->ClearRenderTargetView(device.dx11->GetRtv().Get(), ClearColor);					//画面クリア
-	deviceContext->ClearDepthStencilView(device.dx11->GetDsv().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);	//深度バッファクリア
+	device.dx11->GetDeviceContext()->ClearRenderTargetView(device.dx11->GetRtv().Get(), ClearColor);					//画面クリア
+	device.dx11->GetDeviceContext()->ClearDepthStencilView(device.dx11->GetDsv().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);	//深度バッファクリア
 
 	camera->Render();
 	testObj->Render(camera->GetView(), camera->GetProj());
 
 	//画面更新（バックバッファをフロントバッファに）
-	swapChain->Present(1, 0);//テキストの後(執筆
+	swapChain->Present(1, 0);
 }

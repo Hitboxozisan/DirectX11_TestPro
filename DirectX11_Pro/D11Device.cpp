@@ -48,9 +48,15 @@ bool D11Device::Init(HWND hwnd)
 
 HRESULT D11Device::InitD3D(HWND hwnd)
 {
-	dx11->CreateSwapChain(hwnd);
-	dx11->CreateRencerTargetAndDepthStencil();
-	dx11->CreateDepthStencilView();
+	if (FAILED(dx11->CreateSwapChain(hwnd)))
+	{
+		return E_FAIL;
+	}
+	if (FAILED(dx11->CreateRencerTargetAndDepthStencil()))
+	{
+		return E_FAIL;
+	}
+
 	dx11->SettingViewport();
 	dx11->SettingRasterizer();
 
