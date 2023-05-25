@@ -34,11 +34,11 @@ private:
 	ComPtr<ID3D11DeviceContext> deviceContext;
 	ComPtr<IDXGISwapChain> swapChain;
 
-	class D11Device device;
+	class D11Device& device;
 
 	Text* text;				//文字表示用
 	Fps* fps;
-	Light* light;			// ライト
+	class Light* light;			// ライト
 	TestPolygon* polygon;
 	PointSprite3D* pointSprite;
 	class TestObj* testObj;

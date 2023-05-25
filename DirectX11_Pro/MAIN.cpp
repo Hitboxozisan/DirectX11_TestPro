@@ -133,8 +133,6 @@ HRESULT MAIN::Init()
 	//light->SetLight(XMVector3Normalize(light->GetLight()));
 
 	device.Init(hWnd);
-	device.InitD3D(hWnd);
-
 	app = new Application();
 
 	//if (FAILED(InitD3D()))
@@ -282,20 +280,7 @@ HRESULT MAIN::InitD3D()
 
 	return S_OK;
 }
-//
-//
-//アプリケーション処理。アプリのメイン関数。
-void MAIN::App()
-{
-	// キー操作更新処理
-	//key.KeyStateUpdate();
 
-	//camera->Update();
-	//sceneManager->Update();
-	//sceneManager->Draw();
-
-	Render();
-}
 //
 //
 //

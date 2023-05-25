@@ -8,9 +8,6 @@
 
 TestObj::TestObj()
 	:device(Singleton<D11Device>::GetInstance())
-	,m_pDevice(device.dx11->GetDevice())
-	,m_pDeviceContext(device.dx11->GetDeviceContext())
-	,m_pSwapChain(device.dx11->GetSwapChain())
 {
 }
 
@@ -169,7 +166,7 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 	bd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = pvVertexBuffer;
-	if (FAILED(m_pDevice->CreateBuffer(&bd, &InitData, &pMesh->pVertexBuffer)))
+	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &pMesh->pVertexBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -181,7 +178,7 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 	InitData.pSysMem = piFaceBuffer;
-	if (FAILED(m_pDevice->CreateBuffer(&bd, &InitData, &pMesh->pIndexBuffer)))
+	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &pMesh->pIndexBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -211,7 +208,7 @@ HRESULT TestObj::InitShader()
 	}
 	SAFE_RELEASE(pErrors);
 
-	if (FAILED(m_pDevice->CreateVertexShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), NULL, &m_pVertexShader)))
+	if (FAILED(device.dx11->GetDevice()->CreateVertexShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), NULL, &m_pVertexShader)))
 	{
 		SAFE_RELEASE(pCompiledShader);
 		MessageBox(0, L"バーテックスシェーダー作成失敗", NULL, MB_OK);
@@ -226,7 +223,7 @@ HRESULT TestObj::InitShader()
 	};
 	UINT numElements = sizeof(layout) / sizeof(layout[0]);
 	//頂点インプットレイアウトを作成
-	if (FAILED(m_pDevice->CreateInputLayout(layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &m_pVertexLayout)))
+	if (FAILED(device.dx11->GetDevice()->CreateInputLayout(layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &m_pVertexLayout)))
 	{
 		return E_FAIL;
 	}
@@ -237,7 +234,7 @@ HRESULT TestObj::InitShader()
 		return E_FAIL;
 	}
 	SAFE_RELEASE(pErrors);
-	if (FAILED(m_pDevice->CreatePixelShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), NULL, &m_pPixelShader)))
+	if (FAILED(device.dx11->GetDevice()->CreatePixelShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), NULL, &m_pPixelShader)))
 	{
 		SAFE_RELEASE(pCompiledShader);
 		MessageBox(0, L"ピクセルシェーダー作成失敗", NULL, MB_OK);
@@ -252,7 +249,7 @@ HRESULT TestObj::InitShader()
 	cb.MiscFlags = 0;
 	cb.Usage = D3D11_USAGE_DYNAMIC;
 
-	if (FAILED(m_pDevice->CreateBuffer(&cb, NULL, &m_pConstantBuffer)))
+	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&cb, NULL, &m_pConstantBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -268,7 +265,7 @@ HRESULT TestObj::MakeTexture()
 	SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	m_pDevice->CreateSamplerState(&SamDesc, &m_pSampleLinear);
+	device.dx11->GetDevice()->CreateSamplerState(&SamDesc, &m_pSampleLinear);
 
 	//フォントのテクスチャーを作成
 	// マルチバイト文字列からワイド文字列へ変換
@@ -284,7 +281,7 @@ HRESULT TestObj::MakeTexture()
 	}
 
 	// リソースとシェーダーリソースビューを作成
-	if (FAILED(CreateShaderResourceView(m_pDevice.Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
+	if (FAILED(CreateShaderResourceView(device.dx11->GetDevice().Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
 	{
 		// 失敗
 		info = {};
@@ -340,7 +337,7 @@ HRESULT TestObj::LoadMaterial(LPSTR FileName, MyMaterial* pMaterial)
 			SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 			SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 			SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-			m_pDevice->CreateSamplerState(&SamDesc, &m_pSampleLinear);
+			device.dx11->GetDevice()->CreateSamplerState(&SamDesc, &m_pSampleLinear);
 
 			fscanf_s(fp, "%s", &m_Material.textureName, sizeof(m_Material.textureName));
 			
@@ -358,7 +355,7 @@ HRESULT TestObj::LoadMaterial(LPSTR FileName, MyMaterial* pMaterial)
 			}
 			
 			// リソースとシェーダーリソースビューを作成
-			if (FAILED(CreateShaderResourceView(m_pDevice.Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
+			if (FAILED(CreateShaderResourceView(device.dx11->GetDevice().Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
 			{
 				// 失敗
 				info = {};
@@ -379,9 +376,9 @@ void TestObj::Fainalize()
 	SAFE_RELEASE(m_pVertexBuffer);
 	SAFE_RELEASE(m_pVertexLayout);
 	//SAFE_RELEASE(m_pSwapChain);
-	SAFE_RELEASE(m_pBackBuffer_TexRTV);
-	SAFE_RELEASE(m_pBackBuffer_DSTexDSV);
-	SAFE_RELEASE(m_pBackBuffer_DSTex);
+	//SAFE_RELEASE(m_pBackBuffer_TexRTV);
+	//SAFE_RELEASE(m_pBackBuffer_DSTexDSV);
+	//SAFE_RELEASE(m_pBackBuffer_DSTex);
 	//SAFE_RELEASE(m_pDeviceContext);
 	//SAFE_RELEASE(m_pDevice);
 	SAFE_RELEASE(m_pSampleLinear);
@@ -404,12 +401,12 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 	//mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
 
 	//使用するシェーダーの登録	
-	m_pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
-	m_pDeviceContext->PSSetShader(m_pPixelShader, NULL, 0);
+	device.dx11->GetDeviceContext()->VSSetShader(m_pVertexShader, NULL, 0);
+	device.dx11->GetDeviceContext()->PSSetShader(m_pPixelShader, NULL, 0);
 	//シェーダーのコンスタントバッファーに各種データを渡す	
 	D3D11_MAPPED_SUBRESOURCE pData;
 	ObjShaderConstantBuffer cb;
-	if (SUCCEEDED(m_pDeviceContext->Map(m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+	if (SUCCEEDED(device.dx11->GetDeviceContext()->Map(m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		// ワールド行列
 		cb.W = position;
@@ -429,28 +426,28 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 		cb.eye = XMFLOAT4({ 0.0f, 0.0f, 0.1f, 0.0f});
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&cb, sizeof(ObjShaderConstantBuffer));
-		m_pDeviceContext->Unmap(m_pConstantBuffer, 0);
+		device.dx11->GetDeviceContext()->Unmap(m_pConstantBuffer, 0);
 	}
 	// テクスチャをシェーダーに渡す
-	m_pDeviceContext->PSSetSamplers(0, 1, &m_pSampleLinear);
-	m_pDeviceContext->PSSetShaderResources(0, 1, &m_pTexture);
+	device.dx11->GetDeviceContext()->PSSetSamplers(0, 1, &m_pSampleLinear);
+	device.dx11->GetDeviceContext()->PSSetShaderResources(0, 1, &m_pTexture);
 	//このコンスタントバッファーを使うシェーダーの登録
-	m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
-	m_pDeviceContext->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+	device.dx11->GetDeviceContext()->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+	device.dx11->GetDeviceContext()->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
 	//頂点インプットレイアウトをセット
-	m_pDeviceContext->IASetInputLayout(m_pVertexLayout);
+	device.dx11->GetDeviceContext()->IASetInputLayout(m_pVertexLayout);
 	//プリミティブ・トポロジーをセット
-	m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	device.dx11->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//バーテックスバッファーをセット
 	UINT stride = sizeof(ObjVertex);
 	UINT offset = 0;
-	m_pDeviceContext->IASetVertexBuffers(0, 1, &m_Mesh.pVertexBuffer, &stride, &offset);
+	device.dx11->GetDeviceContext()->IASetVertexBuffers(0, 1, &m_Mesh.pVertexBuffer, &stride, &offset);
 	//インデックスバッファーをセット
 	stride = sizeof(int);
 	offset = 0;
-	m_pDeviceContext->IASetIndexBuffer(m_Mesh.pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	device.dx11->GetDeviceContext()->IASetIndexBuffer(m_Mesh.pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	//プリミティブをレンダリング
-	m_pDeviceContext->DrawIndexed(m_Mesh.dwNumFace * 3, 0, 0);
+	device.dx11->GetDeviceContext()->DrawIndexed(m_Mesh.dwNumFace * 3, 0, 0);
 }
 
 const XMMATRIX TestObj::GetPosition() const

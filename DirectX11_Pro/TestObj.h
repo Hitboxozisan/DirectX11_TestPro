@@ -65,13 +65,10 @@ private:
 	class D11Device &device;
 
 	HWND m_hWnd;
-	ComPtr<ID3D11Device> m_pDevice;
-	ComPtr<ID3D11DeviceContext> m_pDeviceContext;
-	ComPtr<IDXGISwapChain> m_pSwapChain;
-
-	ID3D11RenderTargetView* m_pBackBuffer_TexRTV;
-	ID3D11DepthStencilView* m_pBackBuffer_DSTexDSV;
-	ID3D11Texture2D* m_pBackBuffer_DSTex;
+	//ComPtr<ID3D11Device> m_pDevice;
+	//ID3D11RenderTargetView* m_pBackBuffer_TexRTV;
+	//ID3D11DepthStencilView* m_pBackBuffer_DSTexDSV;
+	//ID3D11Texture2D* m_pBackBuffer_DSTex;
 
 	//↓モデルの種類ごと(モデルの構造が全て同一ならアプリにひとつ）
 	ID3D11InputLayout* m_pVertexLayout;

@@ -27,7 +27,6 @@ public:
 	HRESULT InitD3D();
 	LRESULT MsgProc(HWND, UINT, WPARAM, LPARAM);
 	void Loop();
-	void App();
 	void Render();
 	void DestroyD3D();
 

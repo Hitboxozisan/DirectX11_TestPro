@@ -68,8 +68,6 @@ void SceneManager::Update()
 /// </summary>
 void SceneManager::Draw()
 {
-	
-
 	if (currentPointer != nullptr)
 	{
 		currentPointer->Draw();		//Œ»İ‚ÌƒV[ƒ“‚Ì•`‰æˆ—

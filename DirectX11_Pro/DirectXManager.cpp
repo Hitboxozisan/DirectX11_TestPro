@@ -1,6 +1,9 @@
+
+#include "Common.h"
+#include "Framework.h"
 #include "DirectXManager.h"
 
-DirectXManager::DirectXManager(HWND inHwnd)
+DirectXManager::DirectXManager(const HWND& inHwnd)
 	:hWnd(inHwnd)
 {
 	// 処理なし
@@ -8,7 +11,7 @@ DirectXManager::DirectXManager(HWND inHwnd)
 
 DirectXManager::~DirectXManager()
 {
-	// 処理なし
+	
 }
 
 /// <summary>
@@ -27,7 +30,10 @@ HRESULT DirectXManager::CreateRencerTargetAndDepthStencil()
 	SAFE_RELEASE(pBackBuffer);
 
 	// 深度ステンシルビューの作成
-	CreateDepthStencilView();
+	if (FAILED(CreateDepthStencilView()))
+	{
+		return E_FAIL;
+	}
 
 	deviceContext->OMSetRenderTargets(1, &rtv, dsv.Get());
 
@@ -53,12 +59,12 @@ HRESULT DirectXManager::CreateDepthStencilView()
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
 
-	if (FAILED(device->CreateTexture2D(&descDepth, NULL, &ds)))
+	if (FAILED(device->CreateTexture2D(&descDepth, NULL, &texture)))
 	{
 		return E_FAIL;
 	}
 	// そのテクスチャーに対しデプスステンシルビューを作成
-	if (FAILED(device->CreateDepthStencilView(ds.Get(), NULL, &dsv)))
+	if (FAILED(device->CreateDepthStencilView(texture.Get(), NULL, &dsv)))
 	{
 		return E_FAIL;
 	}
@@ -66,7 +72,7 @@ HRESULT DirectXManager::CreateDepthStencilView()
     return S_OK;
 }
 
-HRESULT DirectXManager::CreateSwapChain(const HWND& hwnd)
+HRESULT DirectXManager::CreateSwapChain()
 {
 	// デバイスとスワップチェーンの作成
 	DXGI_SWAP_CHAIN_DESC sd;
@@ -90,7 +96,7 @@ HRESULT DirectXManager::CreateSwapChain(const HWND& hwnd)
 		0, &pFeatureLevels, 1, D3D11_SDK_VERSION, &sd, &swapChain, &device,
 		pFeatureLevel, &deviceContext)))
 	{
-		return FALSE;
+		return E_FAIL;
 	}
 
     return S_OK;

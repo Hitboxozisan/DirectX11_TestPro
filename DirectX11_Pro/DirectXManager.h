@@ -10,12 +10,13 @@ using namespace DirectX;
 class DirectXManager
 {
 public:
-	DirectXManager(HWND inHwnd);
+	DirectXManager(const HWND& inHwnd);
 	~DirectXManager();
 
 	HRESULT CreateRencerTargetAndDepthStencil();
 	HRESULT CreateDepthStencilView();
-	HRESULT CreateSwapChain(const HWND& hwnd);
+	//HRESULT CreateSwapChain(const HWND& hwnd);
+	HRESULT CreateSwapChain();
 	void	SettingViewport();
 	void	SettingRasterizer();
 
@@ -34,7 +35,7 @@ private:
 	ComPtr<ID3D11RenderTargetView> rtv = nullptr;
 	ComPtr<ID3D11DepthStencilView> dsv = nullptr;
 	ComPtr<ID3D11DepthStencilState> depthStencilState = nullptr;
-	ComPtr<ID3D11Texture2D> ds = nullptr;
+	ComPtr<ID3D11Texture2D> texture = nullptr;
 
 	//HRESULT InitWinow();
 	

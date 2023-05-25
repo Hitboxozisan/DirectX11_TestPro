@@ -1,9 +1,7 @@
 #include "D11Device.h"
 
-// 関数プロトタイプ宣言
-LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
 D11Device::D11Device()
+	:dx11(nullptr)
 {
 }
 
@@ -33,22 +31,22 @@ D11Device::~D11Device()
 //	return DefWindowProc(hWnd, iMsg, wParam, lParam);
 //}
 
-bool D11Device::Init(HWND hwnd)
+bool D11Device::Init(const HWND& hwnd)
 {
 	// DirectX11ラッパー生成＆初期化
     dx11.reset(new DirectXManager(hwnd));
-
-	//if (SUCCEEDED(CreateGameWindow(hInstance)))
-	//{
-	//	InitD3D();
-	//}
+	
+	if (FAILED(InitD3D()))
+	{
+		return false;
+	}
 
     return true;
 }
 
-HRESULT D11Device::InitD3D(HWND hwnd)
+HRESULT D11Device::InitD3D()
 {
-	if (FAILED(dx11->CreateSwapChain(hwnd)))
+	if (FAILED(dx11->CreateSwapChain()))
 	{
 		return E_FAIL;
 	}

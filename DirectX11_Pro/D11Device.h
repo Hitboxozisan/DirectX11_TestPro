@@ -12,10 +12,11 @@ public:
 	//LRESULT MsgProc(HWND, UINT, WPARAM, LPARAM);
 	// ウィンドウの生成
 	//HRESULT CreateGameWindow(HINSTANCE);
-	bool Init(HWND hwnd);
-	HRESULT InitD3D(HWND hwnd);
+	bool Init(const HWND& hwnd);
+	HRESULT InitD3D();
 	// デバイス
 	std::shared_ptr<DirectXManager> dx11;
+	//DirectXManager* dx11;
 
 	// ウィンドウハンドル
 	//HWND hwnd;

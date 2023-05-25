@@ -11,13 +11,6 @@
 Application::Application()
 	:key(Singleton<KeyManager>::GetInstance())
 {
-
-	// DirectX関係初期化処理
- 	//if (device.Init())
-	//{
-	//	return;
-	//}
-
 	// シーンマネージャー
 	sceneManager = new SceneManager();
 	sceneManager->Initialize();
@@ -29,11 +22,6 @@ Application::Application()
 Application::~Application()
 {
 }
-
-//LRESULT Application::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-//{
-//	return device.MsgProc(hWnd, uMsg, wParam, lParam);
-//}
 
 /// <summary>
 /// 更新処理

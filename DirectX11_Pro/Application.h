@@ -11,8 +11,6 @@ public:
 	// âï˙
 	~Application();
 
-
-	//LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	// é¿çs
 	void Run();
 
