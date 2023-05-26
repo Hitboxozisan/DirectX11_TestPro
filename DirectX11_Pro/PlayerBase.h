@@ -31,6 +31,8 @@ protected:
 		CollisionTag tag;
 	};
 
+	const XMFLOAT3 INITIAL_POS = { 0.0f, 0.0f, 0.0f };
+
 	Param param;
 	bool isExist;
 

@@ -1,6 +1,16 @@
 #include "MeshManager.h"
+#include "Singleton.h"
 
-HRESULT MeshManager::LoadMesh(ID3D11Device* inDevice, LPSTR fileName, Mesh* mesh)
+MeshManager::MeshManager()
+	:device(Singleton<D11Device>::GetInstance())
+{
+}
+
+MeshManager::~MeshManager()
+{
+}
+
+HRESULT MeshManager::LoadMesh(LPSTR fileName)
 {
 	float x, y, z;
 	int v1 = 0, v2 = 0, v3 = 0;
@@ -24,7 +34,7 @@ HRESULT MeshManager::LoadMesh(ID3D11Device* inDevice, LPSTR fileName, Mesh* mesh
 		//頂点
 		if (strcmp(key, "v") == 0)
 		{
-			mesh->dwNumVert++;
+			mesh.dwNumVert++;
 		}
 		// 法線
 		if (strcmp(key, "vn") == 0)
@@ -39,16 +49,16 @@ HRESULT MeshManager::LoadMesh(ID3D11Device* inDevice, LPSTR fileName, Mesh* mesh
 		//フェイス（ポリゴン）
 		if (strcmp(key, "f") == 0)
 		{
-			mesh->dwNumFace++;
+			mesh.dwNumFace++;
 		}
 	}
 
 	//一時的なメモリ確保（頂点バッファとインデックスバッファ）
-	ObjVertex* pvVertexBuffer = new ObjVertex[mesh->dwNumFace * 3];
-	XMFLOAT3* pvCoord = new XMFLOAT3[mesh->dwNumVert];
+	ObjVertex* pvVertexBuffer = new ObjVertex[mesh.dwNumFace * 3];
+	XMFLOAT3* pvCoord = new XMFLOAT3[mesh.dwNumVert];
 	XMFLOAT3* pvNormal = new XMFLOAT3[dwVNCount];
 	XMFLOAT2* pvTexture = new XMFLOAT2[dwVTCount];
-	int* piFaceBuffer = new int[mesh->dwNumFace * 3];//３頂点ポリゴンなので、1フェイス=3頂点(3インデックス)
+	int* piFaceBuffer = new int[mesh.dwNumFace * 3];//３頂点ポリゴンなので、1フェイス=3頂点(3インデックス)
 
 	//本読み込み	
 	fseek(fp, SEEK_SET, 0);
@@ -121,25 +131,25 @@ HRESULT MeshManager::LoadMesh(ID3D11Device* inDevice, LPSTR fileName, Mesh* mesh
 	//バーテックスバッファーを作成
 	D3D11_BUFFER_DESC bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ObjVertex) * mesh->dwNumFace * 3;
+	bd.ByteWidth = sizeof(ObjVertex) * mesh.dwNumFace * 3;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = pvVertexBuffer;
-	if (FAILED(inDevice->CreateBuffer(&bd, &InitData, &mesh->pVertexBuffer)))
+	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &mesh.pVertexBuffer)))
 	{
 		return E_FAIL;
 	}
 
 	//インデックスバッファーを作成
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(int) * mesh->dwNumFace * 3;
+	bd.ByteWidth = sizeof(int) * mesh.dwNumFace * 3;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 	InitData.pSysMem = piFaceBuffer;
-	if (FAILED(inDevice->CreateBuffer(&bd, &InitData, &mesh->pIndexBuffer)))
+	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &mesh.pIndexBuffer)))
 	{
 		return E_FAIL;
 	}

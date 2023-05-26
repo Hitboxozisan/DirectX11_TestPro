@@ -58,7 +58,7 @@ private:
 		XMFLOAT4 diffuse;
 		XMFLOAT4 specular;
 		XMFLOAT4 eye;
-	};
+	}; 
 
 	XMMATRIX position;		// オブジェクトの位置
 

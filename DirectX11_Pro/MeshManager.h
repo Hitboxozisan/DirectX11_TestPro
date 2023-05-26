@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Framework.h"
+#include "D11Device.h"
 
 using namespace DirectX;
 
@@ -12,19 +13,14 @@ using namespace DirectX;
 class MeshManager
 {
 public:
-	static MeshManager& GetInstance()
-	{
-		static MeshManager meshMgr;
-		return meshMgr;
-	}
+	MeshManager();
+	~MeshManager();
 
 	struct Mesh;
 
-	 HRESULT LoadMesh(ID3D11Device* inDevice, LPSTR fileName, Mesh* mesh);
+	 HRESULT LoadMesh(LPSTR fileName);
 
 private:
-	MeshManager();
-	~MeshManager();
 
 	// ÉÅÉbÉVÉÖç\ë¢ëÃ
 	struct Mesh
@@ -42,7 +38,7 @@ private:
 		XMFLOAT2 tex = { 0.0f, 0.0f };
 	};
 
+	D11Device& device;
 	Mesh mesh;
-
 };
 

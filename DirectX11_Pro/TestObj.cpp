@@ -4,7 +4,10 @@
 #include "Singleton.h"
 #include "D11Device.h"
 #include "DirectXManager.h"
+#include "MathDx11.h"
 //#include <string.h>
+
+using namespace MathDx11;
 
 TestObj::TestObj()
 	:device(Singleton<D11Device>::GetInstance())
@@ -281,7 +284,7 @@ HRESULT TestObj::MakeTexture()
 	}
 
 	// リソースとシェーダーリソースビューを作成
-	if (FAILED(CreateShaderResourceView(device.dx11->GetDevice().Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
+	if (FAILED(CreateShaderResourceView(device.dx11->GetDevice(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
 	{
 		// 失敗
 		info = {};
@@ -355,7 +358,7 @@ HRESULT TestObj::LoadMaterial(LPSTR FileName, MyMaterial* pMaterial)
 			}
 			
 			// リソースとシェーダーリソースビューを作成
-			if (FAILED(CreateShaderResourceView(device.dx11->GetDevice().Get(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
+			if (FAILED(CreateShaderResourceView(device.dx11->GetDevice(), image->GetImages(), image->GetImageCount(), info, &m_pTexture)))
 			{
 				// 失敗
 				info = {};
@@ -387,7 +390,7 @@ void TestObj::Fainalize()
 
 void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 {
-	XMMATRIX mTran, mYaw, mPitch, mRoll, mScale;
+	XMMATRIX  mTran, mYaw, mPitch, mRoll, mScale;
 	position = XMMatrixRotationY(0.0f);
 	mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 	mYaw = XMMatrixRotationY(0.0f);
@@ -395,6 +398,7 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 	mRoll = XMMatrixRotationZ(0.0f);
 	mTran = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
+	
 	position = mScale * mYaw * mPitch * mRoll * mTran;
 
 	//ワールドトランスフォーム（絶対座標変換）

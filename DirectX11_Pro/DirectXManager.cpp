@@ -11,7 +11,13 @@ DirectXManager::DirectXManager(const HWND& inHwnd)
 
 DirectXManager::~DirectXManager()
 {
-	
+	SAFE_RELEASE(device);
+	SAFE_RELEASE(deviceContext);
+	SAFE_RELEASE(swapChain);
+	SAFE_RELEASE(rtv);
+	SAFE_RELEASE(dsv);
+	SAFE_RELEASE(depthStencilState);
+	SAFE_RELEASE(texture);
 }
 
 /// <summary>
@@ -35,7 +41,7 @@ HRESULT DirectXManager::CreateRencerTargetAndDepthStencil()
 		return E_FAIL;
 	}
 
-	deviceContext->OMSetRenderTargets(1, &rtv, dsv.Get());
+	deviceContext->OMSetRenderTargets(1, &rtv, dsv);
 
     return S_OK;
 }
@@ -64,7 +70,7 @@ HRESULT DirectXManager::CreateDepthStencilView()
 		return E_FAIL;
 	}
 	// そのテクスチャーに対しデプスステンシルビューを作成
-	if (FAILED(device->CreateDepthStencilView(texture.Get(), NULL, &dsv)))
+	if (FAILED(device->CreateDepthStencilView(texture, NULL, &dsv)))
 	{
 		return E_FAIL;
 	}

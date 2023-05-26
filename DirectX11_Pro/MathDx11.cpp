@@ -95,7 +95,11 @@ namespace MathDx11
 		return ret;
 	}
 
-
+	/// <summary>
+	/// XMFLAOT4‚ðXMVECTOR‚É•ÏŠ·
+	/// </summary>
+	/// <param name="lhs"></param>
+	/// <returns></returns>
 	const XMVECTOR ConvertXMFLOAT4FromXMVECTOR(const XMFLOAT4 lhs)
 	{
 		XMVECTOR ret;
@@ -103,6 +107,20 @@ namespace MathDx11
 
 		return ret;
 	}
+
+	/// <summary>
+	/// XMFLOAT3‚ðXMMATRIX‚É•ÏŠ·
+	/// </summary>
+	/// <param name="lhs"></param>
+	/// <returns></returns>
+	const XMMATRIX ConvertXMFLOAT3FromXMMATRIX(const XMFLOAT3 lhs)
+	{
+		XMVECTOR vec = XMVectorSet(lhs.x, lhs.y, lhs.z, 0.0f);
+		XMMATRIX ret = XMMatrixTranslationFromVector(vec);
+
+		return ret;
+	}
+
 
 	const XMFLOAT4 ConversionFloat4(const XMVECTOR lhs)
 	{

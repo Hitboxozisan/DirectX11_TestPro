@@ -82,6 +82,7 @@
     <ClCompile Include="SingletonFainalizer.cpp">
       <Filter>Singleton</Filter>
     </ClCompile>
+    <ClCompile Include="ModelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -176,6 +177,9 @@
     <ClInclude Include="SingletonFainalizer.h">
       <Filter>Singleton</Filter>
     </ClInclude>
+    <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="ModelData.h" />
+    <ClInclude Include="ModelTypeData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

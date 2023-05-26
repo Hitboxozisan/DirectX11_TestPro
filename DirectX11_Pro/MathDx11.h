@@ -19,6 +19,7 @@ namespace MathDx11
 	const XMFLOAT3 ConvertXMVECTORFromXMFLOAT3(const XMVECTOR vec);
 	const XMVECTOR ConvertXMFLOAT3FromXMVECTOR(const XMFLOAT3 lhs);
 	const XMVECTOR ConvertXMFLOAT4FromXMVECTOR(const XMFLOAT4 lhs);
+	const XMMATRIX ConvertXMFLOAT3FromXMMATRIX(const XMFLOAT3 lhs);
 
 	const XMFLOAT4 ConversionFloat4(const XMVECTOR lhs);
 }
