@@ -2,7 +2,6 @@
 
 #include "Common.h"
 #include "Framework.h"
-#include "D11Device.h"
 
 using namespace DirectX;
 
@@ -20,6 +19,9 @@ public:
 
 	 HRESULT LoadMesh(LPSTR fileName);
 
+	 ID3D11Buffer* GetVertexBuffer() const { return mesh.vertexBuffer; }
+	 ID3D11Buffer* GetIndexBuffer() const { return mesh.indexBuffer; }
+
 private:
 
 	// メッシュ構造体
@@ -27,18 +29,20 @@ private:
 	{
 		DWORD dwNumVert = 0;
 		DWORD dwNumFace = 0;
-		ID3D11Buffer* pVertexBuffer;
-		ID3D11Buffer* pIndexBuffer;
+		ID3D11Buffer* vertexBuffer;
+		ID3D11Buffer* indexBuffer;
 	};
 
-	struct ObjVertex
-	{
-		XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };		// 位置
-		XMFLOAT3 norm = { 0.0f, 0.0f, 0.0f };
-		XMFLOAT2 tex = { 0.0f, 0.0f };
-	};
+	//struct ObjVertex
+	//{
+	//	XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };		// 位置
+	//	XMFLOAT3 norm = { 0.0f, 0.0f, 0.0f };
+	//	XMFLOAT2 tex = { 0.0f, 0.0f };
+	//};
 
-	D11Device& device;
+	class D11Device& device;
+	class MaterialManager& mateMgr;
+	
 	Mesh mesh;
 };
 

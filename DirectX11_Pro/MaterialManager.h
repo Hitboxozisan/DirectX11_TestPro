@@ -1,6 +1,7 @@
 #pragma once
 #include "Common.h"
 #include "Framework.h"
+#include "D11Device.h"
 
 using namespace DirectX;
 
@@ -22,9 +23,11 @@ public:
 	MaterialManager();
 	~MaterialManager();
 
-	//struct MyMaterial;
+	void Load(LPSTR inFileName);
 
-	void Load(LPSTR inFileName, Material* inMaterial);
+	// ÉQÉbÉ^Å[
+	ID3D11ShaderResourceView* GetTexture() { return texture; }
+	ID3D11SamplerState* GetSmpleLinear() { return sampleLinear; }
 
 private:
 	class D11Device& device;

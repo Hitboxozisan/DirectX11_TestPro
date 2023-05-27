@@ -25,7 +25,7 @@ MaterialManager::~MaterialManager()
 /// <summary>
 /// 読み込み
 /// </summary>
-void MaterialManager::Load(LPSTR inFileName, Material* inMaterial)
+void MaterialManager::Load(LPSTR inFileName)
 {
 	// マテリアルファイルを開いて内容を読み込む
 	FILE* fp = NULL;

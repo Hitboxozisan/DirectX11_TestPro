@@ -1,8 +1,12 @@
+#include <string.h>
 #include "MeshManager.h"
 #include "Singleton.h"
+#include "D11Device.h"
+#include "MaterialManager.h"
 
 MeshManager::MeshManager()
 	:device(Singleton<D11Device>::GetInstance())
+	,mateMgr(Singleton<MaterialManager>::GetInstance())
 {
 }
 
@@ -66,6 +70,7 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	dwVTCount = 0;
 	dwVNCount = 0;
 	dwFCount = 0;
+	CHAR mateName[64];
 
 	while (!feof(fp))
 	{
@@ -77,6 +82,8 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 		if (strcmp(key, "mtllib") == 0)
 		{
 			fscanf_s(fp, "%s ", key, sizeof(key));
+			strcpy_s(mateName, key);
+			mateMgr.Load(mateName);
 			//LoadMaterial("Data/Material/Geometry+Normal+UV.mtl", &material);
 		}
 		//’¸“_ “Ç‚Ýž‚Ý
@@ -137,7 +144,7 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	bd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = pvVertexBuffer;
-	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &mesh.pVertexBuffer)))
+	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &mesh.vertexBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -149,7 +156,7 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 	InitData.pSysMem = piFaceBuffer;
-	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &mesh.pIndexBuffer)))
+	if (FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &mesh.indexBuffer)))
 	{
 		return E_FAIL;
 	}

@@ -32,15 +32,10 @@ private:
 	void Move();
 
 	class D11Device& device;
-	class Materialmanager& materialMgr;
+	class MaterialManager& materialMgr;
 	class MeshManager& meshMgr;
 	class KeyManager& key;
 	class Camera& camera;
-
-	ID3D11InputLayout* vertexLayout;
-	ID3D11VertexShader* vertexShader;
-	ID3D11PixelShader* pixelShader;
-	ID3D11Buffer* vertexBuffer;
 
 	// ¶‚«‚Ä‚¢‚é‚©
 	bool isAlive;
