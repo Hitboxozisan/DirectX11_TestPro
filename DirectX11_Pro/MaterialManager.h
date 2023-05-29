@@ -16,6 +16,7 @@ struct Material
 
 /// <summary>
 /// マテリアル管理・読み込みクラス
+/// メッシュマネージャに存在
 /// </summary>
 class MaterialManager
 {
@@ -28,6 +29,8 @@ public:
 	// ゲッター
 	ID3D11ShaderResourceView* GetTexture() { return texture; }
 	ID3D11SamplerState* GetSmpleLinear() { return sampleLinear; }
+	XMFLOAT4 GetDiffuse() { return material.kd; }
+	XMFLOAT4 GetSpecular() { return material.ks; }
 
 private:
 	class D11Device& device;

@@ -1,26 +1,27 @@
 #include "Player.h"
 #include "Singleton.h"
 #include "MathDx11.h"
-#include "ModelData.h"
+//#include "ModelData.h"
 #include "D11Device.h"
 #include "MaterialManager.h"
 #include "MeshManager.h"
 #include "Camera.h"
 #include "KeyManager.h"
+#include "ShaderManager.h"
 
 
 // xmfloat,xmmatrix関係の演算処理に使用
 using namespace MathDx11;
 // モデルのファイルパス取り出しに使用
-using namespace ObjModelData;
+//using namespace ObjModelData;
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 Player::Player()
 	:device(Singleton<D11Device>::GetInstance())
-	,materialMgr(Singleton<MaterialManager>::GetInstance())
 	,meshMgr(Singleton<MeshManager>::GetInstance())
+	,shaderMgr(Singleton<ShaderManager>::GetInstance())
 	,key(Singleton<KeyManager>::GetInstance())
 	,camera(Singleton<Camera>::GetInstance())
 	,isAlive(true)
@@ -44,12 +45,30 @@ void Player::Init()
 {
 	param.pos = INITIAL_POS;
 
-	// objファイルの読み込み
-	char* file = strdup(FILE_PATH[ObjModelType::Player].c_str());
-	meshMgr.LoadMesh(file);
-	mesh.vertexBuffer = meshMgr.GetVertexBuffer();
-	mesh.indexBuffer = meshMgr.GetIndexBuffer();
-
+	//// objファイルの読み込み
+	//char* file = strdup(FILE_PATH[ObjModelType::Player].c_str());
+	//if (FAILED(meshMgr.LoadMesh(file)))
+	//{
+	//	MessageBox(0, L"プレイヤーObjファイル読み込み失敗", NULL, MB_OK);
+	//	return;
+	//}
+	//mesh.vertexBuffer = meshMgr.GetVertexBuffer();
+	//mesh.indexBuffer = meshMgr.GetIndexBuffer();
+	//material.kd = meshMgr.mateMgr.GetDiffuse();
+	//material.ks = meshMgr.mateMgr.GetSpecular();
+	//texture = meshMgr.mateMgr.GetTexture();
+	//sampleLinear = meshMgr.mateMgr.GetSmpleLinear();
+	//
+	//// シェーダーファイルの読み込み
+	//if (FAILED(shaderMgr.Load(ObjModelType::Player)))
+	//{
+	//	MessageBox(0, L"プレイヤーシェーダーファイル読み込み失敗", NULL, MB_OK);
+	//	return;
+	//}
+	//vertexShader = shaderMgr.GetVertexShader();
+	//pixelShader = shaderMgr.GetPixelShader();
+	//vertexLayout = shaderMgr.GetVertexLayout();
+	//constantBuffer = shaderMgr.GetConstantBuffer();
 
 }
 
@@ -105,23 +124,23 @@ void Player::Draw()
 		cb.WVP = XMMatrixTranspose(cb.WVP);
 		// ライトの方向を渡す
 		XMFLOAT3 lightDir = { -1.0f, 0.0f, -1.0f };
-		cb.lightDir = XMFLOAT4({ lightDir.x, lightDir.y, lightDir.z, 0.0f });
+		cb.lightDir = XMFLOAT4(lightDir.x, lightDir.y, lightDir.z, 0.0f);
 		// ディフューズカラーを渡す
 		cb.diffuse = material.kd;
 		// スペキュラーをシェーダーに渡す
 		cb.specular = material.ks;
 		// カメラ位置をシェーダーに渡す
-		cb.eye = XMFLOAT4({ 0.0f, 0.0f, 0.1f, 0.0f });
+		cb.eye = XMFLOAT4(camera.GetPos().x, camera.GetPos().y, camera.GetPos().z, 0.0f);
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&cb, sizeof(ShaderConstantBuffer));
-		device.dx11->GetDeviceContext()->Unmap(mesh.vertexBuffer, 0);
+		device.dx11->GetDeviceContext()->Unmap(constantBuffer, 0);
 	}
 	// テクスチャをシェーダーに渡す
-	device.dx11->GetDeviceContext()->PSSetSamplers(0, 1, &sampleLinear);
-	device.dx11->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
+	//device.dx11->GetDeviceContext()->PSSetSamplers(0, 1, &sampleLinear);
+	//device.dx11->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
 	//このコンスタントバッファーを使うシェーダーの登録
-	device.dx11->GetDeviceContext()->VSSetConstantBuffers(0, 1, &mesh.vertexBuffer);
-	device.dx11->GetDeviceContext()->PSSetConstantBuffers(0, 1, &mesh.vertexBuffer);
+	device.dx11->GetDeviceContext()->VSSetConstantBuffers(0, 1, &constantBuffer);
+	device.dx11->GetDeviceContext()->PSSetConstantBuffers(0, 1, &constantBuffer);
 	//頂点インプットレイアウトをセット
 	device.dx11->GetDeviceContext()->IASetInputLayout(vertexLayout);
 	//プリミティブ・トポロジーをセット

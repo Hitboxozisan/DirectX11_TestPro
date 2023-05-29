@@ -4,6 +4,7 @@
 #include "TestObj.h"
 #include "Singleton.h"
 #include "Light.h"
+#include "Player.h"
 
 /// <summary>
 /// コンストラクタ
@@ -12,6 +13,7 @@
 SceneGame::SceneGame(SceneManager* const sceneManager)
 	:SceneBase(sceneManager)
 	,device(Singleton<D11Device>::GetInstance())
+	,camera(Singleton<Camera>::GetInstance())
 {
 }
 
@@ -28,13 +30,14 @@ SceneGame::~SceneGame()
 void SceneGame::Initialize()
 {
 	light = new Light();
-	camera = new Camera();
 	testObj = new TestObj();
+	player = new Player();
 
 	//light->SetLight({ 0.0f, 0.0f, 5.0f, -1.0f });
 	//light->SetLight(XMVector3Normalize(light->GetLight()));
-	camera->Init();
+	camera.Init();
 	testObj->Init();
+	player->Init();
 }
 
 /// <summary>
@@ -63,7 +66,7 @@ void SceneGame::Deactivate()
 /// </summary>
 void SceneGame::Update()
 {
-	camera->Update();
+	camera.Update();
 }
 
 /// <summary>
@@ -78,8 +81,9 @@ void SceneGame::Draw()
 	device.dx11->GetDeviceContext()->ClearRenderTargetView(device.dx11->GetRtv(), ClearColor);					//画面クリア
 	device.dx11->GetDeviceContext()->ClearDepthStencilView(device.dx11->GetDsv(), D3D11_CLEAR_DEPTH, 1.0f, 0);	//深度バッファクリア
 
-	camera->Render();
-	testObj->Render(camera->GetView(), camera->GetProj());
+	camera.Render();
+	testObj->Render();
+	player->Draw();
 
 	//画面更新（バックバッファをフロントバッファに）
 	device.dx11->GetSwapChain()->Present(1, 0);

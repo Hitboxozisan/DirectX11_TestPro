@@ -5,12 +5,12 @@
 #include "ModelTypeData.h"
 
 // ObjModelのファイルパスデータ
-namespace ObjModelData
+namespace ShaderData
 {
 	// 各モデルのファイルパス
 	std::unordered_map<ObjModelType, const std::string> FILE_PATH =
 	{
-		{ObjModelType::Player, "Data/Model/Player/Player.obj"},
-		{ObjModelType::TestObj, "Data/Model/Test/Geometry+Normal+UV.obj"}
+		{ObjModelType::Player, "Shader/Player.hlsl"},
+		{ObjModelType::TestObj, "Shader/Geometry+Shade+Spec+Texture.hlsl"}
 	};
 }

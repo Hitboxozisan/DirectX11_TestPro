@@ -5,12 +5,21 @@
 #include "D11Device.h"
 #include "DirectXManager.h"
 #include "MathDx11.h"
+#include "Camera.h"
+#include "MaterialManager.h"
+#include "MeshManager.h"
+#include "ShaderManager.h"
+#include "ModelData.h"
 //#include <string.h>
 
 using namespace MathDx11;
+using namespace ObjModelData;
 
 TestObj::TestObj()
 	:device(Singleton<D11Device>::GetInstance())
+	, camera(Singleton<Camera>::GetInstance())
+	, meshMgr(Singleton<MeshManager>::GetInstance())
+	, shaderMgr(Singleton<ShaderManager>::GetInstance())
 {
 }
 
@@ -22,22 +31,42 @@ HRESULT TestObj::Init()
 {
 	
 	//シェーダー初期化
-	if (FAILED(InitShader()))
-	{
-		return E_FAIL;
-	}
-	//メッシュ作成
-	if (FAILED(InitStaticMesh("Data/Model/Test/Geometry+Normal+UV.obj", &m_Mesh)))
-	{
-		return E_FAIL;
-	}
-
-	//テクスチャー作成
-	//if (FAILED(MakeTexture()))
+	//if (FAILED(InitShader()))
 	//{
 	//	return E_FAIL;
 	//}
+	//メッシュ作成
+	//if (FAILED(InitStaticMesh("Data/Model/Test/Geometry+Normal+UV.obj", &m_Mesh)))
+	//{
+	//	return E_FAIL;
+	//}
+	 
+	// シェーダーファイルの読み込み
+	if (FAILED(shaderMgr.Load(ObjModelType::TestObj)))
+	{
+		MessageBox(0, L"プレイヤーシェーダーファイル読み込み失敗", NULL, MB_OK);
+		return E_FAIL;
+	}
+	m_pVertexShader = shaderMgr.GetVertexShader();
+	m_pPixelShader = shaderMgr.GetPixelShader();
+	m_pVertexLayout = shaderMgr.GetVertexLayout();
+	m_pConstantBuffer = shaderMgr.GetConstantBuffer();
+	 
+	// objファイルの読み込み
+	char* file = strdup(FILE_PATH[ObjModelType::TestObj].c_str());
+	if (FAILED(meshMgr.LoadMesh(file)))
+	{
+		MessageBox(0, L"プレイヤーObjファイル読み込み失敗", NULL, MB_OK);
+		return E_FAIL;
+	}
+	m_Mesh.pVertexBuffer = meshMgr.GetVertexBuffer();
+	m_Mesh.pIndexBuffer = meshMgr.GetIndexBuffer();
+	m_Material.kd = meshMgr.mateMgr.GetDiffuse();
+	m_Material.ks = meshMgr.mateMgr.GetSpecular();
+	m_pTexture = meshMgr.mateMgr.GetTexture();
+	m_pSampleLinear = meshMgr.mateMgr.GetSmpleLinear();
 
+	
 	return S_OK;
 }
 
@@ -388,7 +417,7 @@ void TestObj::Fainalize()
 	SAFE_RELEASE(m_pTexture);
 }
 
-void TestObj::Render(XMMATRIX view, XMMATRIX proj)
+void TestObj::Render()
 {
 	XMMATRIX  mTran, mYaw, mPitch, mRoll, mScale;
 	position = XMMatrixRotationY(0.0f);
@@ -402,7 +431,7 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 	position = mScale * mYaw * mPitch * mRoll * mTran;
 
 	//ワールドトランスフォーム（絶対座標変換）
-	//mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
+	//position = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
 
 	//使用するシェーダーの登録	
 	device.dx11->GetDeviceContext()->VSSetShader(m_pVertexShader, NULL, 0);
@@ -416,7 +445,7 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 		cb.W = position;
 		cb.W = XMMatrixTranspose(cb.W);
 		//ワールド、カメラ、射影行列を渡す
-		XMMATRIX m = position * view * proj;
+		XMMATRIX m = position * camera.GetView() * camera.GetProj();
 		cb.WVP = m;
 		cb.WVP = XMMatrixTranspose(cb.WVP);
 		// ライトの方向を渡す
@@ -427,7 +456,7 @@ void TestObj::Render(XMMATRIX view, XMMATRIX proj)
 		// スペキュラーをシェーダーに渡す
 		cb.specular = m_Material.ks;
 		// カメラ位置をシェーダーに渡す
-		cb.eye = XMFLOAT4({ 0.0f, 0.0f, 0.1f, 0.0f});
+		cb.eye = XMFLOAT4(camera.GetPos().x, camera.GetPos().y, camera.GetPos().z, 0.0f);
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&cb, sizeof(ObjShaderConstantBuffer));
 		device.dx11->GetDeviceContext()->Unmap(m_pConstantBuffer, 0);

@@ -74,7 +74,6 @@
     <ClCompile Include="SceneTitle.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="D11Device.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="DirectXManager.cpp">
       <Filter>Manager</Filter>
@@ -82,7 +81,12 @@
     <ClCompile Include="SingletonFainalizer.cpp">
       <Filter>Singleton</Filter>
     </ClCompile>
-    <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="D11Device.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -169,7 +173,6 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="D11Device.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="DirectXManager.h">
       <Filter>Manager</Filter>
@@ -177,9 +180,15 @@
     <ClInclude Include="SingletonFainalizer.h">
       <Filter>Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ModelData.h" />
     <ClInclude Include="ModelTypeData.h" />
+    <ClInclude Include="ShaderData.h" />
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="D11Device.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -223,6 +232,9 @@
     </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{b36baf48-3211-4709-bb85-ef8cddb7dc06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DirectX">
+      <UniqueIdentifier>{b4f3dc6d-b1dc-4ccf-9c64-459060d7e79b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

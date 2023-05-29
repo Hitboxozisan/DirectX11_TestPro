@@ -73,7 +73,7 @@ void Camera::RotateCamera()
 {
 	//key = KeyManager::GetInstance();
 
-	yawFlo += -(key.IsKeyPush(KeyInfo::RotateL)) * 0.01 + (key.IsKeyPush(KeyInfo::RotateR)) * 0.01;
+	yawFlo += -(key.IsKeyPush(KeyInfo::RotateL)) * 0.05 + (key.IsKeyPush(KeyInfo::RotateR)) * 0.05;
 
 	yaw = XMMatrixRotationY(yawFlo);
 

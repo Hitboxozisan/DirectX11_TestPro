@@ -5,6 +5,7 @@
 
 using namespace DirectX;
 
+
 //struct MyMesh;
 // オリジナルメッシュ
 struct MyMesh
@@ -37,7 +38,7 @@ public:
 	HRESULT LoadMaterial(LPSTR FileName, MyMaterial* pMaterial);
 
 	void Fainalize();
-	void Render(XMMATRIX view, XMMATRIX proj);
+	void Render();
 
 	const XMMATRIX GetPosition() const;
 
@@ -63,6 +64,10 @@ private:
 	XMMATRIX position;		// オブジェクトの位置
 
 	class D11Device &device;
+	class Camera& camera;
+	class MeshManager& meshMgr;
+	class ShaderManager& shaderMgr;
+
 
 	HWND m_hWnd;
 	//ComPtr<ID3D11Device> m_pDevice;

@@ -3,6 +3,7 @@
 
 using namespace DirectX;
 
+
 class Player final : public PlayerBase
 {
 public:
@@ -32,8 +33,9 @@ private:
 	void Move();
 
 	class D11Device& device;
-	class MaterialManager& materialMgr;
+	//class MaterialManager& materialMgr;
 	class MeshManager& meshMgr;
+	class ShaderManager& shaderMgr;
 	class KeyManager& key;
 	class Camera& camera;
 

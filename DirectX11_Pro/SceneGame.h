@@ -8,9 +8,6 @@ class SceneBase;
 class Text;
 class Fps;
 class Light;
-class TestPolygon;
-class PointSprite3D;
-class Camera;
 class SphereMap;
 
 /// <summary>
@@ -35,14 +32,13 @@ private:
 	ComPtr<IDXGISwapChain> swapChain;
 
 	class D11Device& device;
+	class Camera& camera;
 
-	Text* text;				//文字表示用
+	Text* text;					// 文字表示用
 	Fps* fps;
 	class Light* light;			// ライト
-	TestPolygon* polygon;
-	PointSprite3D* pointSprite;
 	class TestObj* testObj;
-	Camera* camera;
+	class Player* player;		// プレイヤー
 	SphereMap* skyDome;
 
 };

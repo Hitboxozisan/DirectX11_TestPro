@@ -6,5 +6,5 @@
 enum class ObjModelType
 {
 	Player = 0,
-
+	TestObj,
 };

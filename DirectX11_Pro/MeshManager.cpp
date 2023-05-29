@@ -71,6 +71,7 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	dwVNCount = 0;
 	dwFCount = 0;
 	CHAR mateName[64];
+	CHAR filePath[32] = "Data/Material/";
 
 	while (!feof(fp))
 	{
@@ -83,8 +84,9 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 		{
 			fscanf_s(fp, "%s ", key, sizeof(key));
 			strcpy_s(mateName, key);
-			mateMgr.Load(mateName);
-			//LoadMaterial("Data/Material/Geometry+Normal+UV.mtl", &material);
+			//strcat_s(filePath, mateName);
+			//strcat_s(filePath, mateName);
+			mateMgr.Load(filePath);
 		}
 		//í∏ì_ ì«Ç›çûÇ›
 		if (strcmp(key, "v") == 0)

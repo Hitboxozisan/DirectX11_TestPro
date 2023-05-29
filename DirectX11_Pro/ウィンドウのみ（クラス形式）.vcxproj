@@ -162,7 +162,6 @@
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MathDx11.cpp" />
     <ClCompile Include="MeshManager.cpp" />
-    <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="ObjModelManager.cpp" />
     <ClCompile Include="Pixel3D.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -172,6 +171,7 @@
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SingletonFainalizer.cpp" />
     <ClCompile Include="SphereMap.cpp" />
     <ClCompile Include="TestObj.cpp" />
@@ -199,7 +199,6 @@
     <ClInclude Include="MathDx11.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="ModelData.h" />
-    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ModelTypeData.h" />
     <ClInclude Include="ObjModelManager.h" />
     <ClInclude Include="Pixel3D.h" />
@@ -210,6 +209,8 @@
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneTitle.h" />
+    <ClInclude Include="ShaderData.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SingletonFainalizer.h" />
     <ClInclude Include="SphereMap.h" />

@@ -66,6 +66,7 @@ protected:
 	ID3D11InputLayout* vertexLayout;
 	ID3D11VertexShader* vertexShader;
 	ID3D11PixelShader* pixelShader;
+	ID3D11Buffer* constantBuffer;
 	ID3D11SamplerState* sampleLinear;		// テクスチャのサンプラー
 	ID3D11ShaderResourceView* texture;		// テクスチャ
 	bool isExist;
