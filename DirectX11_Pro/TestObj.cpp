@@ -30,12 +30,12 @@ TestObj::~TestObj()
 HRESULT TestObj::Init()
 {
 	
-	//シェーダー初期化
+	////シェーダー初期化
 	//if (FAILED(InitShader()))
 	//{
 	//	return E_FAIL;
 	//}
-	//メッシュ作成
+	////メッシュ作成
 	//if (FAILED(InitStaticMesh("Data/Model/Test/Geometry+Normal+UV.obj", &m_Mesh)))
 	//{
 	//	return E_FAIL;
@@ -59,6 +59,8 @@ HRESULT TestObj::Init()
 		MessageBox(0, L"プレイヤーObjファイル読み込み失敗", NULL, MB_OK);
 		return E_FAIL;
 	}
+	m_Mesh.dwNumVert = meshMgr.GetNumVert();
+	m_Mesh.dwNumFace = meshMgr.GetNumFace();
 	m_Mesh.pVertexBuffer = meshMgr.GetVertexBuffer();
 	m_Mesh.pIndexBuffer = meshMgr.GetIndexBuffer();
 	m_Material.kd = meshMgr.mateMgr.GetDiffuse();
@@ -138,7 +140,7 @@ HRESULT TestObj::InitStaticMesh(LPSTR FileName, MyMesh* pMesh)
 		if (strcmp(key, "mtllib") == 0)
 		{
 			fscanf_s(fp, "%s ", key, sizeof(key));
-			LoadMaterial("Data/Material/Geometry+Normal+UV.mtl", &m_Material);
+			LoadMaterial("Data/Material/hand_texture.mtl", &m_Material);
 		}
 		//頂点 読み込み
 		if (strcmp(key, "v") == 0)

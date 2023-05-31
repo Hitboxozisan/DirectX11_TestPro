@@ -70,8 +70,8 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	dwVTCount = 0;
 	dwVNCount = 0;
 	dwFCount = 0;
-	CHAR mateName[64];
-	CHAR filePath[32] = "Data/Material/";
+	char mateName[64];
+	char filePath[32] = "Data/Material/";
 
 	while (!feof(fp))
 	{
@@ -84,8 +84,7 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 		{
 			fscanf_s(fp, "%s ", key, sizeof(key));
 			strcpy_s(mateName, key);
-			//strcat_s(filePath, mateName);
-			//strcat_s(filePath, mateName);
+			strcat_s(filePath, mateName);
 			mateMgr.Load(filePath);
 		}
 		//í∏ì_ ì«Ç›çûÇ›
@@ -171,6 +170,4 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	delete[] piFaceBuffer;
 
 	return S_OK;
-
-    return E_NOTIMPL;
 }

@@ -83,7 +83,7 @@ void SceneGame::Draw()
 
 	camera.Render();
 	testObj->Render();
-	player->Draw();
+	//player->Draw();
 
 	//画面更新（バックバッファをフロントバッファに）
 	device.dx11->GetSwapChain()->Present(1, 0);

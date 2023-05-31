@@ -19,6 +19,8 @@ public:
 
 	 HRESULT LoadMesh(LPSTR fileName);
 
+	 DWORD GetNumVert() const { return mesh.dwNumVert; }
+	 DWORD GetNumFace() const { return mesh.dwNumFace; }
 	 ID3D11Buffer* GetVertexBuffer() const { return mesh.vertexBuffer; }
 	 ID3D11Buffer* GetIndexBuffer() const { return mesh.indexBuffer; }
 

@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Singleton.h"
 #include "MathDx11.h"
-//#include "ModelData.h"
+#include "ModelData.h"
 #include "D11Device.h"
 #include "MaterialManager.h"
 #include "MeshManager.h"
@@ -13,7 +13,7 @@
 // xmfloat,xmmatrix関係の演算処理に使用
 using namespace MathDx11;
 // モデルのファイルパス取り出しに使用
-//using namespace ObjModelData;
+using namespace ObjModelData;
 
 /// <summary>
 /// コンストラクタ
@@ -45,30 +45,32 @@ void Player::Init()
 {
 	param.pos = INITIAL_POS;
 
-	//// objファイルの読み込み
-	//char* file = strdup(FILE_PATH[ObjModelType::Player].c_str());
-	//if (FAILED(meshMgr.LoadMesh(file)))
-	//{
-	//	MessageBox(0, L"プレイヤーObjファイル読み込み失敗", NULL, MB_OK);
-	//	return;
-	//}
-	//mesh.vertexBuffer = meshMgr.GetVertexBuffer();
-	//mesh.indexBuffer = meshMgr.GetIndexBuffer();
-	//material.kd = meshMgr.mateMgr.GetDiffuse();
-	//material.ks = meshMgr.mateMgr.GetSpecular();
-	//texture = meshMgr.mateMgr.GetTexture();
-	//sampleLinear = meshMgr.mateMgr.GetSmpleLinear();
-	//
-	//// シェーダーファイルの読み込み
-	//if (FAILED(shaderMgr.Load(ObjModelType::Player)))
-	//{
-	//	MessageBox(0, L"プレイヤーシェーダーファイル読み込み失敗", NULL, MB_OK);
-	//	return;
-	//}
-	//vertexShader = shaderMgr.GetVertexShader();
-	//pixelShader = shaderMgr.GetPixelShader();
-	//vertexLayout = shaderMgr.GetVertexLayout();
-	//constantBuffer = shaderMgr.GetConstantBuffer();
+	// objファイルの読み込み
+	char* file = strdup(FILE_PATH[ObjModelType::Player].c_str());
+	if (FAILED(meshMgr.LoadMesh(file)))
+	{
+		MessageBox(0, L"プレイヤーObjファイル読み込み失敗", NULL, MB_OK);
+		return;
+	}
+	mesh.dwNumVert = meshMgr.GetNumVert();
+	mesh.dwNumFace = meshMgr.GetNumFace();
+	mesh.vertexBuffer = meshMgr.GetVertexBuffer();
+	mesh.indexBuffer = meshMgr.GetIndexBuffer();
+	material.kd = meshMgr.mateMgr.GetDiffuse();
+	material.ks = meshMgr.mateMgr.GetSpecular();
+	texture = meshMgr.mateMgr.GetTexture();
+	sampleLinear = meshMgr.mateMgr.GetSmpleLinear();
+	
+	// シェーダーファイルの読み込み
+	if (FAILED(shaderMgr.Load(ObjModelType::Player)))
+	{
+		MessageBox(0, L"プレイヤーシェーダーファイル読み込み失敗", NULL, MB_OK);
+		return;
+	}
+	vertexShader = shaderMgr.GetVertexShader();
+	pixelShader = shaderMgr.GetPixelShader();
+	vertexLayout = shaderMgr.GetVertexLayout();
+	constantBuffer = shaderMgr.GetConstantBuffer();
 
 }
 
