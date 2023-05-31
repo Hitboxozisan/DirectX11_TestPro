@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "Singleton.h"
 #include "MathDx11.h"
-#include "ModelData.h"
 #include "D11Device.h"
 #include "MaterialManager.h"
 #include "MeshManager.h"
@@ -9,11 +8,8 @@
 #include "KeyManager.h"
 #include "ShaderManager.h"
 
-
 // xmfloat,xmmatrix関係の演算処理に使用
 using namespace MathDx11;
-// モデルのファイルパス取り出しに使用
-using namespace ObjModelData;
 
 /// <summary>
 /// コンストラクタ
@@ -46,8 +42,8 @@ void Player::Init()
 	param.pos = INITIAL_POS;
 
 	// objファイルの読み込み
-	char* file = strdup(FILE_PATH[ObjModelType::Player].c_str());
-	if (FAILED(meshMgr.LoadMesh(file)))
+	//char* file = strdup(FILE_PATH[ObjModelType::Player].c_str());
+	if (FAILED(meshMgr.LoadMesh(ObjModelType::Player)))
 	{
 		MessageBox(0, L"プレイヤーObjファイル読み込み失敗", NULL, MB_OK);
 		return;
@@ -107,7 +103,7 @@ void Player::Draw()
 	position = mScale * mYaw * mPitch * mRoll * mTran;
 
 	//ワールドトランスフォーム（絶対座標変換）
-	//mWorld = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
+	//position = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
 
 	//使用するシェーダーの登録	
 	device.dx11->GetDeviceContext()->VSSetShader(vertexShader, NULL, 0);
@@ -115,7 +111,7 @@ void Player::Draw()
 	//シェーダーのコンスタントバッファーに各種データを渡す	
 	D3D11_MAPPED_SUBRESOURCE pData;
 	ShaderConstantBuffer cb;
-	if (SUCCEEDED(device.dx11->GetDeviceContext()->Map(mesh.vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+	if (SUCCEEDED(device.dx11->GetDeviceContext()->Map(constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		// ワールド行列
 		cb.W = position;

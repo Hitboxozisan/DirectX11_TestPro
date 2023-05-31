@@ -3,6 +3,10 @@
 #include "Singleton.h"
 #include "D11Device.h"
 #include "MaterialManager.h"
+#include "ModelTypeData.h"
+#include "ModelData.h"
+
+using namespace ObjModelData;
 
 MeshManager::MeshManager()
 	:device(Singleton<D11Device>::GetInstance())
@@ -14,7 +18,7 @@ MeshManager::~MeshManager()
 {
 }
 
-HRESULT MeshManager::LoadMesh(LPSTR fileName)
+HRESULT MeshManager::LoadMesh(ObjModelType inType)
 {
 	float x, y, z;
 	int v1 = 0, v2 = 0, v3 = 0;
@@ -28,7 +32,7 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	char key[200] = { 0 };
 	//OBJファイルを開いて内容を読み込む
 	FILE* fp = NULL;
-	fopen_s(&fp, fileName, "rt");
+	fopen_s(&fp, FILE_PATH[inType].c_str(), "rt");
 
 	//事前に頂点数、ポリゴン数を調べる
 	while (!feof(fp))
@@ -71,7 +75,7 @@ HRESULT MeshManager::LoadMesh(LPSTR fileName)
 	dwVNCount = 0;
 	dwFCount = 0;
 	char mateName[64];
-	char filePath[32] = "Data/Material/";
+	char filePath[64] = "Data/Material/";
 
 	while (!feof(fp))
 	{

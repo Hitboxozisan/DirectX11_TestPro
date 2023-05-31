@@ -3,6 +3,8 @@
 #include <memory>
 
 #include "Text.h"
+#include "Singleton.h"
+#include "D11Device.h"
 
 struct ShaderData
 {
@@ -14,8 +16,10 @@ struct ShaderData
 //
 //
 Text::Text()
+	:device(Singleton<D11Device>::GetInstance())
 {
-	ZeroMemory(this,sizeof(Text));
+	// deviceがNULLになるためコメントアウト
+	//ZeroMemory(this,sizeof(Text));
 	scale=1.0f;
 	//カーニング量を個別に設定
 
@@ -125,7 +129,7 @@ Text::~Text()
 //
 //
 //
-HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float size, XMFLOAT4 vColor)
+HRESULT Text::Init(DWORD width,DWORD height,float size, XMFLOAT4 vColor)
 {
 	alpha=vColor.w;
 	color=vColor;
@@ -137,9 +141,9 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 		kerning[i]*=scale;		
 	}
 	//デバイスとコンテキストをコピー
-	deviceContext=pContext;
-	deviceContext->GetDevice(&device);
-	//window サイズ
+	//device.dx11->GetDeviceContext()deviceContext=pContext;
+	//deviceContext->GetDevice(&device);
+	//ウィンドウ サイズ
 	windowWidth=width;
 	windowHeight=height;
 	//フォントごとにクアッド作成
@@ -174,7 +178,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 
 			D3D11_SUBRESOURCE_DATA InitData;
 			InitData.pSysMem = vertices;
-			if( FAILED( device->CreateBuffer( &bd, &InitData, &vertexBuffer[cnt] ) ) )
+			if( FAILED(device.dx11->GetDevice()->CreateBuffer(&bd, &InitData, &vertexBuffer[cnt])))
 			{
 				return E_FAIL;
 			}
@@ -188,7 +192,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 	SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	device->CreateSamplerState( &SamDesc, &sampleLinear);
+	device.dx11->GetDevice()->CreateSamplerState(&SamDesc, &sampleLinear);
 	//フォントのテクスチャーを作成
 	// マルチバイト文字列からワイド文字列へ変換
 	setlocale(LC_CTYPE, "jpn");
@@ -202,7 +206,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 		return E_FAIL;
 	}
 	// リソースとシェーダーリソースビューを作成
-	if (FAILED(CreateShaderResourceView(device, image->GetImages(), image->GetImageCount(), info, &srv)))
+	if (FAILED(CreateShaderResourceView(device.dx11->GetDevice(), image->GetImages(), image->GetImageCount(), info, &srv)))
 	{
 		// 失敗
 		info = {};
@@ -223,7 +227,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 	SAFE_RELEASE(pErrors);
 	
 
-	if(FAILED(device->CreateVertexShader(pCompiledShader->GetBufferPointer(),pCompiledShader->GetBufferSize(),NULL,&vertexShader)))
+	if(FAILED(device.dx11->GetDevice()->CreateVertexShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), NULL, &vertexShader)))
 	{
 		SAFE_RELEASE(pCompiledShader);
 		MessageBox(0,L"バーテックスシェーダー作成失敗",NULL,MB_OK);
@@ -238,7 +242,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 	UINT numElements = sizeof(layout)/sizeof(layout[0]);
 
 	//頂点インプットレイアウトを作成
-	if( FAILED( device->CreateInputLayout( layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &vertexLayout ) ) )
+	if( FAILED( device.dx11->GetDevice()->CreateInputLayout(layout, numElements, pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &vertexLayout)))
 		return E_FAIL;
 	//ブロブからピクセルシェーダー作成
 	if(FAILED(D3DCompileFromFile(L"Shader/Text.hlsl",NULL,NULL,"PS","ps_5_0",0,0,&pCompiledShader,&pErrors)))
@@ -247,7 +251,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 		return E_FAIL;
     }
 	SAFE_RELEASE(pErrors);
-	if(FAILED(device->CreatePixelShader(pCompiledShader->GetBufferPointer(),pCompiledShader->GetBufferSize(),NULL,&pixelShader)))
+	if(FAILED(device.dx11->GetDevice()->CreatePixelShader(pCompiledShader->GetBufferPointer(),pCompiledShader->GetBufferSize(),NULL,&pixelShader)))
 	{
 		SAFE_RELEASE(pCompiledShader);
 		MessageBox(0,L"ピクセルシェーダー作成失敗",NULL,MB_OK);
@@ -264,7 +268,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 	cb.StructureByteStride=0;
 	cb.Usage=D3D11_USAGE_DYNAMIC;
 
-	if( FAILED(device->CreateBuffer( &cb, NULL, &constantBuffer)))
+	if( FAILED(device.dx11->GetDevice()->CreateBuffer( &cb, NULL, &constantBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -282,7 +286,7 @@ HRESULT Text::Init(ID3D11DeviceContext* pContext,DWORD width,DWORD height,float 
 	bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 	
-	if(FAILED(device->CreateBlendState(&bd, &blendState)))
+	if(FAILED(device.dx11->GetDevice()->CreateBlendState(&bd, &blendState)))
 	{
 		return E_FAIL;
 	}
@@ -310,19 +314,19 @@ void Text::Render(char* text,int x,int y)
 	proj = mOtho;
 
 	//トポロジー
-	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
+	device.dx11->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	//頂点インプットレイアウトをセット
-	deviceContext->IASetInputLayout( vertexLayout );
+	device.dx11->GetDeviceContext()->IASetInputLayout( vertexLayout );
 
 	//使用するシェーダーの登録
-	deviceContext->VSSetShader(vertexShader,NULL,0);
-	deviceContext->PSSetShader(pixelShader,NULL,0);
+	device.dx11->GetDeviceContext()->VSSetShader(vertexShader,NULL,0);
+	device.dx11->GetDeviceContext()->PSSetShader(pixelShader,NULL,0);
 	//このコンスタントバッファーを使うシェーダーの登録
-	deviceContext->VSSetConstantBuffers(0,1,&constantBuffer );
-	deviceContext->PSSetConstantBuffers(0,1,&constantBuffer );
+	device.dx11->GetDeviceContext()->VSSetConstantBuffers(0,1,&constantBuffer );
+	device.dx11->GetDeviceContext()->PSSetConstantBuffers(0,1,&constantBuffer );
 	//テクスチャーをシェーダーに渡す
-	deviceContext->PSSetSamplers(0,1,&sampleLinear);
-	deviceContext->PSSetShaderResources(0,1, srv.GetAddressOf());
+	device.dx11->GetDeviceContext()->PSSetSamplers(0,1,&sampleLinear);
+	device.dx11->GetDeviceContext()->PSSetShaderResources(0,1, srv.GetAddressOf());
 	
 	//render
 	for(int i=0;i<strlen(text);i++)
@@ -345,7 +349,7 @@ void Text::RenderFont(int FontIndex,int x,int y)
 	//シェーダーのコンスタントバッファーに各種データを渡す	
 	D3D11_MAPPED_SUBRESOURCE pData;
 	SIMPLESHADER_CONSTANT_BUFFER cb;
-	if( SUCCEEDED( deviceContext->Map( constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData ) ) )
+	if( SUCCEEDED(device.dx11->GetDeviceContext()->Map( constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData ) ) )
 	{
 		//ワールド、カメラ、射影行列を渡す
 		XMMATRIX m=mWorld*view*proj;
@@ -357,15 +361,15 @@ void Text::RenderFont(int FontIndex,int x,int y)
 		cb.fAlpha.x=alpha;
 
 		memcpy_s( pData.pData, pData.RowPitch, (void*)( &cb), sizeof( cb ) );
-		deviceContext->Unmap( constantBuffer, 0 );
+		device.dx11->GetDeviceContext()->Unmap( constantBuffer, 0 );
 	}
 	//バーテックスバッファーをセット
 	UINT stride = sizeof( TextVertex );
 	UINT offset = 0;
-	deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer[FontIndex], &stride, &offset );
+	device.dx11->GetDeviceContext()->IASetVertexBuffers( 0, 1, &vertexBuffer[FontIndex], &stride, &offset );
 
 	//抜け色
 	UINT ColorKey=0xffffffff;
-	deviceContext->OMSetBlendState(blendState, NULL, ColorKey);
-	deviceContext->Draw( 4, 0 );
+	device.dx11->GetDeviceContext()->OMSetBlendState(blendState, NULL, ColorKey);
+	device.dx11->GetDeviceContext()->Draw( 4, 0 );
 }

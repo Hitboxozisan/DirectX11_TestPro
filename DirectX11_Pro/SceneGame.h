@@ -5,7 +5,6 @@
 #include "D11Device.h"
 
 class SceneBase;
-class Text;
 class Fps;
 class Light;
 class SphereMap;
@@ -33,8 +32,8 @@ private:
 
 	class D11Device& device;
 	class Camera& camera;
+	class Text& text;					// 文字表示用
 
-	Text* text;					// 文字表示用
 	Fps* fps;
 	class Light* light;			// ライト
 	class TestObj* testObj;

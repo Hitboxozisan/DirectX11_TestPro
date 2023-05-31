@@ -3,12 +3,13 @@
 #include "KeyManager.h"
 #include "Singleton.h"
 #include "MathDx11.h"
-#include "Singleton.h"
+//#include "Text.h"
 
 using namespace MathDx11;
 
 Camera::Camera()
 	:key(Singleton<KeyManager>::GetInstance())
+	//,text(Singleton<Text>::GetInstance())
 {
 	// 処理なし
 }
@@ -23,10 +24,12 @@ Camera::~Camera()
 /// </summary>
 void Camera::Init()
 {	
+	// 操作用座標
 	cameraPos = { 0.0f, 0.0f, 0.0f };
 	yawFlo = 0;
 	zoom = 4;
 	dir = { 0.0f, 0.0f, 1.0f };
+	// 描画用座標
 	position = INITIAL_POS;
 	upDir = INITIAL_UP_DIR;
 }

@@ -5,7 +5,6 @@
 
 using namespace DirectX;
 
-
 //struct MyMesh;
 // オリジナルメッシュ
 struct MyMesh

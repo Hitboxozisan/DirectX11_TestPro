@@ -35,18 +35,25 @@ struct TextVertex
 };
 //
 //
+
+/// <summary>
+/// テキストクラス
+/// シングルトン
+/// </summary>
 class Text
 {
 public:
 	Text();
 	~Text();
 
-	HRESULT Init(ID3D11DeviceContext* pContext, DWORD width, DWORD height, float size, XMFLOAT4 vColor);
+	HRESULT Init(DWORD width, DWORD height, float size, XMFLOAT4 vColor);
 	void Render(char* text, int x, int y);
 	void RenderFont(int FontIndex, int x, int y);
 
-	ID3D11Device* device;
-	ID3D11DeviceContext* deviceContext;
+	class D11Device& device;
+
+	//ID3D11Device* device;
+	//ID3D11DeviceContext* deviceContext;
 	ID3D11SamplerState* sampleLinear;
 	ID3D11VertexShader* vertexShader;
 	ID3D11PixelShader* pixelShader;

@@ -9,11 +9,11 @@
 #include "MaterialManager.h"
 #include "MeshManager.h"
 #include "ShaderManager.h"
-#include "ModelData.h"
+//#include "ModelData.h"
 //#include <string.h>
 
 using namespace MathDx11;
-using namespace ObjModelData;
+//using namespace ObjModelData;
 
 TestObj::TestObj()
 	:device(Singleton<D11Device>::GetInstance())
@@ -53,8 +53,8 @@ HRESULT TestObj::Init()
 	m_pConstantBuffer = shaderMgr.GetConstantBuffer();
 	 
 	// objファイルの読み込み
-	char* file = strdup(FILE_PATH[ObjModelType::TestObj].c_str());
-	if (FAILED(meshMgr.LoadMesh(file)))
+	//char* file = strdup(FILE_PATH[ObjModelType::TestObj].c_str());
+	if (FAILED(meshMgr.LoadMesh(ObjModelType::TestObj)))
 	{
 		MessageBox(0, L"プレイヤーObjファイル読み込み失敗", NULL, MB_OK);
 		return E_FAIL;

@@ -2,8 +2,6 @@
 #include <unordered_map>
 #include <string.h>
 
-#include "ModelTypeData.h"
-
 // ObjModelのファイルパスデータ
 namespace ShaderData
 {

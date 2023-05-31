@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Framework.h"
+#include "ModelTypeData.h"
 
 using namespace DirectX;
 
@@ -17,7 +18,7 @@ public:
 
 	struct Mesh;
 
-	 HRESULT LoadMesh(LPSTR fileName);
+	 HRESULT LoadMesh(ObjModelType inType);
 
 	 DWORD GetNumVert() const { return mesh.dwNumVert; }
 	 DWORD GetNumFace() const { return mesh.dwNumFace; }

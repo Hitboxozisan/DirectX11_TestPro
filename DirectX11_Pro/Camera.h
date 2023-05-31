@@ -49,5 +49,6 @@ private:
 	void ZoomInOut();
 
 	class KeyManager& key;
+	//class Text& text;
 };
 

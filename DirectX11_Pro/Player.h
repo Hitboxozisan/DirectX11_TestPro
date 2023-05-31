@@ -1,8 +1,8 @@
 #pragma once
 #include "PlayerBase.h"
+//#include "ModelData.h"
 
-using namespace DirectX;
-
+//using namespace ObjModelData;
 
 class Player final : public PlayerBase
 {
