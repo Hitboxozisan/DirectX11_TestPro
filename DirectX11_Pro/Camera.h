@@ -18,11 +18,11 @@ public:
 	void Update();
 	void Render();
 	
-	const XMMATRIX GetView();
-	const XMMATRIX GetProj();
-	const XMVECTOR GetCameraPos();
-	const XMVECTOR GetLookPos();
-	const XMVECTOR GetUpVec();
+	const XMMATRIX GetView() const { return view; }
+	const XMMATRIX GetProj() const { return proj; }
+	const XMVECTOR GetCameraPos()const { return position; }
+	const XMVECTOR GetLookPos() const { return lookPos; }
+	const XMVECTOR GetUpVec() const { return upDir; }
 
 	const XMFLOAT3 GetPos();
 
@@ -32,13 +32,15 @@ private:
 	const XMVECTOR INITIAL_UP_DIR = { 0.0f, 1.0f, 0.0f };
 
 	float yawFlo;
+	float pitchFlo;
 	float zoom;			// ÉYÅ[ÉÄíl
 
 	XMFLOAT3 cameraPos;
 
+	XMMATRIX yaw;
+	XMMATRIX pitch;
 	XMMATRIX view;
 	XMMATRIX proj;
-	XMMATRIX yaw;
 	XMVECTOR dir;
 	XMVECTOR position;
 	XMVECTOR lookPos;

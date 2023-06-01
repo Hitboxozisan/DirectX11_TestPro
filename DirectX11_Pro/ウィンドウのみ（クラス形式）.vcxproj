@@ -166,6 +166,7 @@
     <ClCompile Include="Pixel3D.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerBase.cpp" />
+    <ClCompile Include="PlayerDirection.cpp" />
     <ClCompile Include="PointSprite3D.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SceneGame.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Pixel3D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerBase.h" />
+    <ClInclude Include="PlayerDirection.h" />
     <ClInclude Include="PointSprite3D.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneGame.h" />

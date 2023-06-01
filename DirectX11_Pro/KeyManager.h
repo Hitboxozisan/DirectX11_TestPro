@@ -11,9 +11,21 @@ enum KeyInfo
 	Right = VK_RIGHT,
 	RotateR = 'E',
 	RotateL = 'Q',
+	RotateW = 'W',
+	RotateS = 'S',
 	ZoomIn  = 'P',
 	ZoomOut = 'L',
 	
+};
+
+enum ButtonInfo
+{
+	Forward,		// 前
+	Back,			// 後ろ
+	Right,			// 右
+	Left,			// 左
+	Decision,		// 決定
+	Return,			// 戻る
 };
 
 /// <summary>
@@ -23,6 +35,7 @@ class KeyManager
 {
 public:
 	void KeyStateUpdate();						// キー操作更新処理
+	void ButtonStateUpdate();					// ボタン操作更新処理
 
 	const bool IsKeyPush(KeyInfo keycord);
 	bool IsKeyJust(KeyInfo keycord);
@@ -43,8 +56,20 @@ private:
 		KeyInfo::Right,
 		KeyInfo::RotateR,
 		KeyInfo::RotateL,
+		KeyInfo::RotateW,
+		KeyInfo::RotateS,
 		KeyInfo::ZoomIn,
 		KeyInfo::ZoomOut,
+	};
+
+	constexpr static ButtonInfo buttonInfo[] =
+	{
+		ButtonInfo::Forward,
+		ButtonInfo::Back,
+		ButtonInfo::Right,
+		ButtonInfo::Left,
+		ButtonInfo::Decision,
+		ButtonInfo::Return,
 	};
 
 	// キーの状態

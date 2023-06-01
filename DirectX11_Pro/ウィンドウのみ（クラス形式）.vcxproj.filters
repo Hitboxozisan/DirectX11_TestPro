@@ -87,6 +87,9 @@
     <ClCompile Include="D11Device.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDirection.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -188,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="D11Device.h">
       <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDirection.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

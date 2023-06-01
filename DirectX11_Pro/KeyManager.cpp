@@ -6,18 +6,6 @@
 #include "KeyManager.h"
 #include "EnumItr.h"
 
-//KeyManager::KeyManager()
-//{
-//    // ˆ—‚È‚µ
-//}
-//
-//
-//KeyManager::KeyManager(const KeyManager&)
-//{
-//    // ˆ—‚È‚µ
-//}
-
-
 /// <summary>
 /// ƒL[‚Ìó‘Ô‚ğ“¾‚é
 /// </summary>
@@ -42,6 +30,10 @@ void KeyManager::KeyStateUpdate()
         }
     }
 
+}
+
+void KeyManager::ButtonStateUpdate()
+{
 }
 
 /// <summary>

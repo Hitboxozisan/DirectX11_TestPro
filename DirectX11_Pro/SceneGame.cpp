@@ -84,11 +84,11 @@ void SceneGame::Draw()
 	device.dx11->GetDeviceContext()->ClearRenderTargetView(device.dx11->GetRtv(), ClearColor);					//画面クリア
 	device.dx11->GetDeviceContext()->ClearDepthStencilView(device.dx11->GetDsv(), D3D11_CLEAR_DEPTH, 1.0f, 0);	//深度バッファクリア
 
+	//text.Render("ABC", 50, 50);
 	camera.Render();
 	//testObj->Render();
 	player->Draw();
 
-	//text.Render("ABC", 50, 50);
 
 	//画面更新（バックバッファをフロントバッファに）
 	device.dx11->GetSwapChain()->Present(1, 0);

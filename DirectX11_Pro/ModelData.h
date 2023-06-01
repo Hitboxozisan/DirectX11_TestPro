@@ -9,6 +9,7 @@ namespace ObjModelData
 	std::unordered_map<ObjModelType, const std::string> FILE_PATH =
 	{
 		{ObjModelType::Player, "Data/Model/Player/Player.obj"},
+		{ObjModelType::PlayerDir, "Data/Model/Player/PlayerDir.obj"},
 		{ObjModelType::TestObj, "Data/Model/Test/Geometry+Normal+UV.obj"}
 	};
 }
