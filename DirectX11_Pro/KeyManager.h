@@ -1,31 +1,32 @@
 #pragma once
 
 #include <map>
+#include <Xinput.h>
 
 // キー情報
 enum KeyInfo
 {
-	Up = VK_UP,
-	Down = VK_DOWN,
-	Left = VK_LEFT,
-	Right = VK_RIGHT,
-	RotateR = 'E',
-	RotateL = 'Q',
-	RotateW = 'W',
-	RotateS = 'S',
-	ZoomIn  = 'P',
-	ZoomOut = 'L',
+	KeyUp = VK_UP,
+	KeyDown = VK_DOWN,
+	KeyLeft = VK_LEFT,
+	KeyRight = VK_RIGHT,
+	KeyRotateR = 'E',
+	KeyRotateL = 'Q',
+	KeyRotateW = 'W',
+	KeyRotateS = 'S',
+	KeyZoomIn  = 'P',
+	KeyZoomOut = 'L',
 	
 };
 
 enum ButtonInfo
 {
-	Forward,		// 前
-	Back,			// 後ろ
-	Right,			// 右
-	Left,			// 左
-	Decision,		// 決定
-	Return,			// 戻る
+	ButtonUp = XINPUT_GAMEPAD_DPAD_UP,				// 矢印キー上
+	ButtonDown = XINPUT_GAMEPAD_DPAD_DOWN,			// 矢印キー下
+	ButtonRight = XINPUT_GAMEPAD_DPAD_RIGHT,		// 矢印キー右
+	ButtonLeft = XINPUT_GAMEPAD_DPAD_LEFT,			// 矢印キー左
+	ButtonDecision = XINPUT_GAMEPAD_A,				// 決定
+	ButtonReturn = XINPUT_GAMEPAD_B,				// 戻る
 };
 
 /// <summary>
@@ -34,12 +35,16 @@ enum ButtonInfo
 class KeyManager
 {
 public:
+	void InitController();
 	void KeyStateUpdate();						// キー操作更新処理
 	void ButtonStateUpdate();					// ボタン操作更新処理
 
 	const bool IsKeyPush(KeyInfo keycord);
 	bool IsKeyJust(KeyInfo keycord);
 	bool IsKeyExit(KeyInfo keycord);
+	const bool IsButtonPush(ButtonInfo inButton);
+	bool IsButtonJust(ButtonInfo inButton);
+	bool IsButtonExit(ButtonInfo inButton);
 	
 private:
 	// 外部からアクセスを制限する
@@ -50,29 +55,30 @@ private:
 	// キー情報配列
 	constexpr static KeyInfo keyInfo[] =
 	{
-		KeyInfo::Up,
-		KeyInfo::Down,
-		KeyInfo::Left,
-		KeyInfo::Right,
-		KeyInfo::RotateR,
-		KeyInfo::RotateL,
-		KeyInfo::RotateW,
-		KeyInfo::RotateS,
-		KeyInfo::ZoomIn,
-		KeyInfo::ZoomOut,
+		KeyInfo::KeyUp,
+		KeyInfo::KeyDown,
+		KeyInfo::KeyLeft,
+		KeyInfo::KeyRight,
+		KeyInfo::KeyRotateR,
+		KeyInfo::KeyRotateL,
+		KeyInfo::KeyRotateW,
+		KeyInfo::KeyRotateS,
+		KeyInfo::KeyZoomIn,
+		KeyInfo::KeyZoomOut,
 	};
 
 	constexpr static ButtonInfo buttonInfo[] =
 	{
-		ButtonInfo::Forward,
-		ButtonInfo::Back,
-		ButtonInfo::Right,
-		ButtonInfo::Left,
-		ButtonInfo::Decision,
-		ButtonInfo::Return,
+		ButtonInfo::ButtonUp,
+		ButtonInfo::ButtonDown,
+		ButtonInfo::ButtonRight,
+		ButtonInfo::ButtonLeft,
+		ButtonInfo::ButtonDecision,
+		ButtonInfo::ButtonReturn,
 	};
 
 	// キーの状態
+	// コントローラーの状態もこちらを使用
 	enum KeyState
 	{
 		None,		// 押されていない
@@ -88,9 +94,17 @@ private:
 		KeyState prevState = KeyState::None;
 	};
 
+	// キーボード
 	std::map<KeyInfo, KeyStateInfo> key;
+	// コントローラー
+	std::map<ButtonInfo, KeyStateInfo> button;
+	XINPUT_STATE xState;
 
+	// キーボード
 	void CheckKeyPushState(KeyInfo keycord);	// キーを押した際の状態遷移
 	void CheckKeyExitState(KeyInfo keycord);	// キーを離した際の状態遷移
+	// コントローラー
+	void CheckButtonPushState(ButtonInfo inButton);		// ボタンを押した際の状態遷移
+	void CheckButtonExitState(ButtonInfo inButton);		// ボタンを離した際の状態遷移
 
 };

@@ -117,11 +117,6 @@ LRESULT MAIN::MsgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 /// </summary>
 HRESULT MAIN::Init()
 {
-
-	//light = new Light;
-	//light->SetLight({ 0.0f, 0.0f, 5.0f, -1.0f });
-	//light->SetLight(XMVector3Normalize(light->GetLight()));
-
 	device.Init(hWnd);
 	app = new Application();
 

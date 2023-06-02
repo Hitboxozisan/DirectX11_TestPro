@@ -42,6 +42,7 @@ void Application::Run()
 		{
 			// 操作関係更新処理
 			key.KeyStateUpdate();
+			key.ButtonStateUpdate();
 			// 各シーン更新処理
 			sceneManager->Update();
 			// 各シーン更新処理

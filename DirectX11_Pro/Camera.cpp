@@ -64,8 +64,11 @@ void Camera::Render()
 /// </summary>
 void Camera::MoveCamera()
 {
-	cameraPos.x += -(key.IsKeyPush(KeyInfo::Left)) * 0.01 + (key.IsKeyPush(KeyInfo::Right)) * 0.01;
-	cameraPos.y += -(key.IsKeyPush(KeyInfo::Down)) * 0.01 + (key.IsKeyPush(KeyInfo::Up)) * 0.01;
+	cameraPos.x += -(key.IsKeyPush(KeyInfo::KeyLeft)) * 0.01 + (key.IsKeyPush(KeyInfo::KeyRight)) * 0.01;
+	cameraPos.y += -(key.IsKeyPush(KeyInfo::KeyDown)) * 0.01 + (key.IsKeyPush(KeyInfo::KeyUp)) * 0.01;
+
+	cameraPos.x += -(key.IsButtonPush(ButtonInfo::ButtonLeft)) * 0.01 + (key.IsButtonPush(ButtonInfo::ButtonRight)) * 0.01;
+	cameraPos.y += -(key.IsButtonPush(ButtonInfo::ButtonDown)) * 0.01 + (key.IsButtonPush(ButtonInfo::ButtonUp)) * 0.01;
 
 	// é¿ç€ÇÃà íuÇçXêV
 	// xmfloat3ÇxmvectorÇ…ïœä∑
@@ -77,8 +80,8 @@ void Camera::MoveCamera()
 /// </summary>
 void Camera::RotateCamera()
 {
-	yawFlo += -(key.IsKeyPush(KeyInfo::RotateL)) * 0.05 + (key.IsKeyPush(KeyInfo::RotateR)) * 0.05;
-	pitchFlo += -(key.IsKeyPush(KeyInfo::RotateW)) * 0.05 + (key.IsKeyPush(KeyInfo::RotateS)) * 0.05;
+	yawFlo += -(key.IsKeyPush(KeyInfo::KeyRotateL)) * 0.05 + (key.IsKeyPush(KeyInfo::KeyRotateR)) * 0.05;
+	pitchFlo += -(key.IsKeyPush(KeyInfo::KeyRotateW)) * 0.05 + (key.IsKeyPush(KeyInfo::KeyRotateS)) * 0.05;
 
 	yaw = XMMatrixRotationY(yawFlo);
 	pitch = XMMatrixRotationX(pitchFlo);
@@ -94,7 +97,7 @@ void Camera::RotateCamera()
 /// </summary>
 void Camera::ZoomInOut()
 {
-	zoom += (key.IsKeyPush(KeyInfo::ZoomIn)) * 0.03 - (key.IsKeyPush(KeyInfo::ZoomOut)) * 0.03;
+	zoom += (key.IsKeyPush(KeyInfo::KeyZoomIn)) * 0.03 - (key.IsKeyPush(KeyInfo::KeyZoomOut)) * 0.03;
 	if (zoom < 1.1)
 	{
 		zoom = 1.1;
