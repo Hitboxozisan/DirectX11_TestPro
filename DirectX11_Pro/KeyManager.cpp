@@ -6,6 +6,9 @@
 #include "KeyManager.h"
 #include "EnumItr.h"
 
+// 操作情報取得のため
+using namespace KeyMgrInfo;
+
 /// <summary>
 /// キーの状態を得る
 /// </summary>
@@ -16,9 +19,11 @@ void KeyManager::KeyStateUpdate()
     
     for(auto& i : keyInfo)
     {
+        // キーの入力状態を更新
         key[i].prevState = key[i].state;
         if (GetKeyboardState(keyboard))
         {
+            // 押された場合
             if (keyboard[i] & 0x80)
             {
                 CheckKeyPushState(i);
@@ -199,6 +204,24 @@ bool KeyManager::IsButtonJust(ButtonInfo inButton)
 bool KeyManager::IsButtonExit(ButtonInfo inButton)
 {
     return xState.Gamepad.wButtons == KeyState::PushExit;
+}
+
+/// <summary>
+/// 右トリガーの押下状態
+/// </summary>
+/// <returns></returns>
+bool KeyManager::IsCheckRTrigger()
+{
+    return xState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+}
+
+/// <summary>
+/// 左トリガーの押下状態
+/// </summary>
+/// <returns></returns>
+bool KeyManager::IsCheckLTrigger()
+{
+    return xState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
 }
 
 

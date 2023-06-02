@@ -6,6 +6,8 @@
 //#include "Text.h"
 
 using namespace MathDx11;
+// キー情報取り出しに使用
+using namespace KeyMgrInfo;
 
 Camera::Camera()
 	:key(Singleton<KeyManager>::GetInstance())

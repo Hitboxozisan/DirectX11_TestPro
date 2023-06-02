@@ -3,31 +3,38 @@
 #include <map>
 #include <Xinput.h>
 
-// キー情報
-enum KeyInfo
+namespace KeyMgrInfo
 {
-	KeyUp = VK_UP,
-	KeyDown = VK_DOWN,
-	KeyLeft = VK_LEFT,
-	KeyRight = VK_RIGHT,
-	KeyRotateR = 'E',
-	KeyRotateL = 'Q',
-	KeyRotateW = 'W',
-	KeyRotateS = 'S',
-	KeyZoomIn  = 'P',
-	KeyZoomOut = 'L',
-	
-};
 
-enum ButtonInfo
-{
-	ButtonUp = XINPUT_GAMEPAD_DPAD_UP,				// 矢印キー上
-	ButtonDown = XINPUT_GAMEPAD_DPAD_DOWN,			// 矢印キー下
-	ButtonRight = XINPUT_GAMEPAD_DPAD_RIGHT,		// 矢印キー右
-	ButtonLeft = XINPUT_GAMEPAD_DPAD_LEFT,			// 矢印キー左
-	ButtonDecision = XINPUT_GAMEPAD_A,				// 決定
-	ButtonReturn = XINPUT_GAMEPAD_B,				// 戻る
-};
+	// キー情報
+	enum KeyInfo
+	{
+		KeyUp = VK_UP,
+		KeyDown = VK_DOWN,
+		KeyLeft = VK_LEFT,
+		KeyRight = VK_RIGHT,
+		KeyRotateR = 'E',
+		KeyRotateL = 'Q',
+		KeyRotateW = 'W',
+		KeyRotateS = 'S',
+		KeyZoomIn = 'P',
+		KeyZoomOut = 'L',
+
+	};
+
+	// コントローラーボタン情報
+	enum ButtonInfo
+	{
+		ButtonUp = XINPUT_GAMEPAD_DPAD_UP,				// 矢印キー上
+		ButtonDown = XINPUT_GAMEPAD_DPAD_DOWN,			// 矢印キー下
+		ButtonRight = XINPUT_GAMEPAD_DPAD_RIGHT,		// 矢印キー右
+		ButtonLeft = XINPUT_GAMEPAD_DPAD_LEFT,			// 矢印キー左
+		ButtonDecision = XINPUT_GAMEPAD_A,				// 決定
+		ButtonReturn = XINPUT_GAMEPAD_B,				// 戻る
+	};
+}
+
+using namespace KeyMgrInfo;
 
 /// <summary>
 /// キーの入力判定
@@ -38,13 +45,22 @@ public:
 	void InitController();
 	void KeyStateUpdate();						// キー操作更新処理
 	void ButtonStateUpdate();					// ボタン操作更新処理
+	void StickStateUpdate();
 
+	// キーボード
 	const bool IsKeyPush(KeyInfo keycord);
 	bool IsKeyJust(KeyInfo keycord);
 	bool IsKeyExit(KeyInfo keycord);
+	// コントローラー
+	 // ボタン
 	const bool IsButtonPush(ButtonInfo inButton);
 	bool IsButtonJust(ButtonInfo inButton);
 	bool IsButtonExit(ButtonInfo inButton);
+	 // 右トリガー
+	bool IsCheckRTrigger();
+	 // 左トリガー
+	bool IsCheckLTrigger();
+	
 	
 private:
 	// 外部からアクセスを制限する
@@ -98,6 +114,7 @@ private:
 	std::map<KeyInfo, KeyStateInfo> key;
 	// コントローラー
 	std::map<ButtonInfo, KeyStateInfo> button;
+	std::map<BYTE, KeyStateInfo> trigger;
 	XINPUT_STATE xState;
 
 	// キーボード
