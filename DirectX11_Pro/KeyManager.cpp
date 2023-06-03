@@ -71,6 +71,24 @@ void KeyManager::ButtonStateUpdate()
     }
 }
 
+/// <summary>
+/// アナログスティック更新処理
+/// </summary>
+void KeyManager::StickStateUpdate()
+{
+    // デッドゾーン以下の場合は数値を0にする
+    if ((xState.Gamepad.sThumbLX <  XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+        xState.Gamepad.sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) &&
+        (xState.Gamepad.sThumbLY <  XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+            xState.Gamepad.sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))
+    {
+        xState.Gamepad.sThumbLX = 0;
+        xState.Gamepad.sThumbLY = 0;
+    }
+
+
+}
+
 
 /// <summary>
 /// コントローラー呼び出し
@@ -80,6 +98,13 @@ void KeyManager::InitController()
     // XInputの初期化
     //XInputEnable(true);
 
+}
+
+void KeyManager::Update()
+{
+    KeyStateUpdate();
+    ButtonStateUpdate();
+    StickStateUpdate();
 }
 
 /// <summary>
@@ -209,7 +234,7 @@ bool KeyManager::IsButtonExit(ButtonInfo inButton)
 /// <summary>
 /// 右トリガーの押下状態
 /// </summary>
-/// <returns></returns>
+/// <returns>true : 押した</returns>
 bool KeyManager::IsCheckRTrigger()
 {
     return xState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
@@ -218,10 +243,44 @@ bool KeyManager::IsCheckRTrigger()
 /// <summary>
 /// 左トリガーの押下状態
 /// </summary>
-/// <returns></returns>
+/// <returns>true : 押した</returns>
 bool KeyManager::IsCheckLTrigger()
 {
     return xState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
 }
+
+/// <summary>
+/// 右スティックの入力状態を返す(x, y)
+/// 正規化済み
+/// </summary>
+/// <returns></returns>
+XMFLOAT2 KeyManager::GetRStickInput()
+{
+    XMVECTOR nor = XMVectorSet(xState.Gamepad.sThumbRX, xState.Gamepad.sThumbRY, 0.0f, 0.0f);
+    nor = XMVector2Normalize(nor);
+
+    XMFLOAT2 result;
+    XMStoreFloat2(&result, nor);
+
+    return result;
+}
+
+/// <summary>
+/// 左スティックの入力状態を返す(x, y)
+/// 正規化済み
+/// </summary>
+/// <returns></returns>
+XMFLOAT2 KeyManager::GetLStickInput()
+{
+    XMVECTOR nor = XMVectorSet(xState.Gamepad.sThumbLX, xState.Gamepad.sThumbLY, 0.0f, 0.0f);
+    nor = XMVector2Normalize(nor);
+
+    XMFLOAT2 result;
+    XMStoreFloat2(&result, nor);
+
+    return result;
+}
+
+
 
 

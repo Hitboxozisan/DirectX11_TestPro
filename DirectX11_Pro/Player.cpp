@@ -172,5 +172,8 @@ void Player::Move()
 	XMFLOAT3 Forward = SubXMFLOAT3(param.pos, camera.GetPos());
 	// è∞Ç…ÇﬂÇËçûÇÒÇæÇËÇ∑ÇÈÇÃÇñhÇÆÇΩÇﬂYé≤ÇÕ0Ç…Ç∑ÇÈ
 	Forward.y = 0;
+	// ê≥ãKâª
+	XMFLOAT3 right;
+
 
 }

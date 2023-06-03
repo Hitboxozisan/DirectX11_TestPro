@@ -2,10 +2,12 @@
 
 #include <map>
 #include <Xinput.h>
+#include "Common.h"
+
+using namespace DirectX;
 
 namespace KeyMgrInfo
 {
-
 	// キー情報
 	enum KeyInfo
 	{
@@ -42,9 +44,11 @@ using namespace KeyMgrInfo;
 class KeyManager
 {
 public:
+
 	void InitController();
-	void KeyStateUpdate();						// キー操作更新処理
-	void ButtonStateUpdate();					// ボタン操作更新処理
+	void Update();					// 操作関係更新処理
+	void KeyStateUpdate();			// キー操作更新処理
+	void ButtonStateUpdate();		// ボタン操作更新処理
 	void StickStateUpdate();
 
 	// キーボード
@@ -60,7 +64,9 @@ public:
 	bool IsCheckRTrigger();
 	 // 左トリガー
 	bool IsCheckLTrigger();
-	
+	 // スティック
+	XMFLOAT2 GetRStickInput();
+	XMFLOAT2 GetLStickInput();
 	
 private:
 	// 外部からアクセスを制限する
@@ -83,6 +89,7 @@ private:
 		KeyInfo::KeyZoomOut,
 	};
 
+	// コントローラーボタン情報配列
 	constexpr static ButtonInfo buttonInfo[] =
 	{
 		ButtonInfo::ButtonUp,

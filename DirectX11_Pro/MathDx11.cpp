@@ -67,6 +67,13 @@ namespace MathDx11
 		return ret;
 	}
 
+	XMFLOAT3 CrossXMFLOAT3(const XMFLOAT3& lhs, const XMFLOAT3& rhs)
+	{
+
+
+		return XMFLOAT3();
+	}
+
 	/// <summary>
 	/// XMVECTOR‚ðXMFLOAT‚É•ÏŠ·
 	/// </summary>
