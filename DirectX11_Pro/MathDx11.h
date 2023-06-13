@@ -16,6 +16,8 @@ namespace MathDx11
 	XMFLOAT3 NormalizeXMFLOAT3(XMFLOAT3& vec);
 	 // å∏éZ
 	XMFLOAT3 SubXMFLOAT3(const XMFLOAT3& lhs, const XMFLOAT3& rhs);
+	 // èÊéZ
+	XMFLOAT3 ScaleXMFLOAT3(XMFLOAT3& vec, float scale);
 	 // äOêœ
 	XMFLOAT3 CrossXMFLOAT3(const XMFLOAT3& lhs, const XMFLOAT3& rhs);
 

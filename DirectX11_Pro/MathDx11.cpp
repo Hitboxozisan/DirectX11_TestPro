@@ -57,21 +57,55 @@ namespace MathDx11
 		return ret;
 	}
 
+	/// <summary>
+	/// å∏éZ
+	/// </summary>
+	/// <param name="lhs"></param>
+	/// <param name="rhs"></param>
+	/// <returns></returns>
 	XMFLOAT3 SubXMFLOAT3(const XMFLOAT3& lhs, const XMFLOAT3& rhs)
 	{
 		XMFLOAT3 ret;
 		ret.x = lhs.x - rhs.x;
-		ret.x = lhs.x - rhs.x;
-		ret.x = lhs.x - rhs.x;
+		ret.y = lhs.y - rhs.y;
+		ret.z = lhs.z - rhs.z;
 
 		return ret;
 	}
 
+	/// <summary>
+	/// èÊéZ
+	/// </summary>
+	/// <param name="vec"></param>
+	/// <param name="scale"></param>
+	/// <returns></returns>
+	XMFLOAT3 ScaleXMFLOAT3(XMFLOAT3& vec, float scale)
+	{
+		XMFLOAT3 ret = vec;
+		ret.x *= scale;
+		ret.y *= scale;
+		ret.z *= scale;
+
+		return ret;
+	}
+
+	/// <summary>
+	/// äOêœ
+	/// </summary>
+	/// <param name="lhs"></param>
+	/// <param name="rhs"></param>
+	/// <returns></returns>
 	XMFLOAT3 CrossXMFLOAT3(const XMFLOAT3& lhs, const XMFLOAT3& rhs)
 	{
+		XMFLOAT3 vec1 = lhs;
+		XMFLOAT3 vec2 = rhs;
 
+		XMVECTOR cross = XMVector3Cross(XMLoadFloat3(&vec1), XMLoadFloat3(&vec2));
 
-		return XMFLOAT3();
+		XMFLOAT3 result;
+		XMStoreFloat3(&result, cross);
+
+		return result;
 	}
 
 	/// <summary>
@@ -122,8 +156,16 @@ namespace MathDx11
 	/// <returns></returns>
 	const XMMATRIX ConvertXMFLOAT3FromXMMATRIX(const XMFLOAT3 lhs)
 	{
-		XMVECTOR vec = XMVectorSet(lhs.x, lhs.y, lhs.z, 0.0f);
-		XMMATRIX ret = XMMatrixTranslationFromVector(vec);
+		// ãåéÆ
+		//XMVECTOR vec = XMVectorSet(lhs.x, lhs.y, lhs.z, 0.0f);
+		//XMMATRIX ret = XMMatrixTranslationFromVector(vec);
+
+		XMMATRIX ret = XMMatrixSet(
+			lhs.x, 0.0f, 0.0f, 0.0f,
+			0.0f, lhs.y, 0.0f, 0.0f,
+			0.0f, 0.0f, lhs.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		);
 
 		return ret;
 	}

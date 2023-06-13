@@ -83,7 +83,7 @@ void Player::Fainalize()
 /// </summary>
 void Player::Update()
 {
-	//Move();
+	Move();
 }
 
 /// <summary>
@@ -98,9 +98,9 @@ void Player::Draw()
 	mYaw = XMMatrixRotationY(0.0f);
 	mPitch = XMMatrixRotationX(0.0f);
 	mRoll = XMMatrixRotationZ(0.0f);
-	mTran = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	//mTran = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
-	position = mScale * mYaw * mPitch * mRoll * mTran;
+	position = mScale * mYaw * mPitch * mRoll;
 
 	//ワールドトランスフォーム（絶対座標変換）
 	//position = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
@@ -168,12 +168,22 @@ void Player::OnCollisionEnter(Collision* other)
 /// </summary>
 void Player::Move()
 {
+	XMFLOAT3 inputVec(0, 0, 0);
+
 	// 前方向ベクトルを出す
 	XMFLOAT3 Forward = SubXMFLOAT3(param.pos, camera.GetPos());
 	// 床にめり込んだりするのを防ぐためY軸は0にする
 	Forward.y = 0;
 	// 正規化
-	XMFLOAT3 right;
+	Forward = NormalizeXMFLOAT3(Forward);
 
+	// 外積から横のベクトルを取得
+	XMFLOAT3 right = CrossXMFLOAT3(XMFLOAT3(0, 1, 0), Forward);
 
+	// コントローラーの入力を取得
+	XMFLOAT2 input = key.GetLStickInput();
+	inputVec += ScaleXMFLOAT3(Forward, input.y * 10);
+	inputVec += ScaleXMFLOAT3(right, input.x * 10);
+
+	param.pos += inputVec;
 }

@@ -57,7 +57,7 @@ protected:
 		XMFLOAT2 tex = { 0.0f, 0.0f };
 	};
 
-	const XMFLOAT3 INITIAL_POS = { 0.0f, 0.0f, 0.0f };
+	const XMFLOAT3 INITIAL_POS = { 0.0f, 0.0f, 10.0f };
 
 	Param param;
 	PlayerMesh mesh;

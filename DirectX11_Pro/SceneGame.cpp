@@ -70,6 +70,7 @@ void SceneGame::Deactivate()
 void SceneGame::Update()
 {
 	camera.Update();
+	player->Update();
 }
 
 /// <summary>

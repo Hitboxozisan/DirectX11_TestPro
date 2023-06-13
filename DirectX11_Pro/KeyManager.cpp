@@ -85,8 +85,7 @@ void KeyManager::StickStateUpdate()
         xState.Gamepad.sThumbLX = 0;
         xState.Gamepad.sThumbLY = 0;
     }
-
-
+   
 }
 
 
