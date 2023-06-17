@@ -27,13 +27,14 @@ Camera::~Camera()
 void Camera::Init()
 {	
 	// 操作用座標
-	cameraPos = { 0.0f, 5.0f, -4.0f };
+	cameraPos = { 0.0f, 5.0f, -10.0f };
+	lookPos = { 0.0f, 1.5f, 0.0f };
+	upDir = INITIAL_UP_DIR;
 	yawFlo = 0;
 	zoom = 4;
 	dir = { 0.0f, 0.0f, 1.0f };
 	// 描画用座標
-	//position = INITIAL_POS;
-	upDir = INITIAL_UP_DIR;
+	position = INITIAL_POS;
 }
 
 /// <summary>
@@ -42,23 +43,36 @@ void Camera::Init()
 void Camera::Update()
 {
 	MoveCamera();
-	RotateCamera();
+	//RotateCamera();
 	ZoomInOut();
 }
 
 /// <summary>
 /// 描画処理
 /// </summary>
-void Camera::Render()
+void Camera::Render(XMFLOAT3 playerPos, float playerYaw)
 {
+	position = { 0.0f, 5.0f, -10.0f };
+	lookPos = { 0.0f, 1.5f, 0.0f };
+	upDir = { 0.0f, 1.0f, 0.0f };
+
+	// 視点と注視点の両方をキャラの位置と回転行列でまげて移動する
+	XMMATRIX oriMat, tran, yaw;
+	tran = XMMatrixTranslation(playerPos.x, playerPos.y, playerPos.z);
+	yaw = XMMatrixRotationY(playerYaw);
+	oriMat = yaw * tran;
+	
+	position = XMVector3TransformCoord(position, oriMat);
+	// 注視点の設定
+	lookPos = XMVector3TransformCoord(lookPos, oriMat);
 
 	// ビュートランスフォーム
 	//lookPos = position + dir;
 	// 注視位置はいったんプレイヤーの初期位置に
-	lookPos = { 0.0f, 0.0f, 0.0f, 1.0f };
+	//lookPos = { 0.0f, 0.0f, 0.0f, 1.0f };
 	view = XMMatrixLookAtLH(position, lookPos, upDir);
-
 	proj = XMMatrixPerspectiveFovLH(XM_PI / zoom, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
+
 }
 
 /// <summary>
@@ -66,15 +80,17 @@ void Camera::Render()
 /// </summary>
 void Camera::MoveCamera()
 {
-	cameraPos.x += -(key.IsKeyPush(KeyInfo::KeyLeft)) * 0.01 + (key.IsKeyPush(KeyInfo::KeyRight)) * 0.01;
-	cameraPos.y += -(key.IsKeyPush(KeyInfo::KeyDown)) * 0.01 + (key.IsKeyPush(KeyInfo::KeyUp)) * 0.01;
+	// キーボード
+	//cameraPos.x += -(key.IsKeyPush(KeyInfo::KeyLeft)) * 0.01 + (key.IsKeyPush(KeyInfo::KeyRight)) * 0.01;
+	//cameraPos.y += -(key.IsKeyPush(KeyInfo::KeyDown)) * 0.01 + (key.IsKeyPush(KeyInfo::KeyUp)) * 0.01;
 
-	cameraPos.x += -(key.IsButtonPush(ButtonInfo::ButtonLeft)) * 0.01 + (key.IsButtonPush(ButtonInfo::ButtonRight)) * 0.01;
-	cameraPos.y += -(key.IsButtonPush(ButtonInfo::ButtonDown)) * 0.01 + (key.IsButtonPush(ButtonInfo::ButtonUp)) * 0.01;
+	// コントローラー
+	//cameraPos.x += -(key.IsButtonPush(ButtonInfo::ButtonLeft)) * 0.01 + (key.IsButtonPush(ButtonInfo::ButtonRight)) * 0.01;
+	//cameraPos.y += -(key.IsButtonPush(ButtonInfo::ButtonDown)) * 0.01 + (key.IsButtonPush(ButtonInfo::ButtonUp)) * 0.01;
 
 	// 実際の位置を更新
 	// xmfloat3をxmvectorに変換
-	position = ConvertXMFLOAT3FromXMVECTOR(cameraPos);
+	//position = ConvertXMFLOAT3FromXMVECTOR(cameraPos);
 }
 
 /// <summary>
@@ -83,7 +99,7 @@ void Camera::MoveCamera()
 void Camera::RotateCamera()
 {
 	yawFlo += -(key.IsKeyPush(KeyInfo::KeyRotateL)) * 0.05 + (key.IsKeyPush(KeyInfo::KeyRotateR)) * 0.05;
-	pitchFlo += -(key.IsKeyPush(KeyInfo::KeyRotateW)) * 0.05 + (key.IsKeyPush(KeyInfo::KeyRotateS)) * 0.05;
+	//pitchFlo += -(key.IsKeyPush(KeyInfo::KeyRotateW)) * 0.05 + (key.IsKeyPush(KeyInfo::KeyRotateS)) * 0.05;
 
 	yaw = XMMatrixRotationY(yawFlo);
 	pitch = XMMatrixRotationX(pitchFlo);
@@ -108,6 +124,16 @@ void Camera::ZoomInOut()
 	{
 		zoom = 30;
 	}
+}
+
+void Camera::FollowUpPlayer(XMFLOAT3 pos, XMFLOAT3 dir, float yaw)
+{
+	//XMVECTOR player = XMLoadFloat3(&pos);
+	//XMVECTOR direction = XMLoadFloat3(&dir);
+	//lookPos = player + direction;
+	//lookPos = {0, 0, 0, 1};
+
+	//yawFlo = yaw;
 }
 
 const XMFLOAT3 Camera::GetPos()

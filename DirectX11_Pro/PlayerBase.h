@@ -13,8 +13,12 @@ public:
 	PlayerBase();
 	virtual ~PlayerBase();
 
+	//
+	const float GetYaw() { return yaw; }
 	// 座標
-	const XMFLOAT3 GetPosition() { return param.pos; };
+	const XMFLOAT3 GetPos() { return param.pos; };
+	// 向き
+	const XMFLOAT3 GetDir() { return param.dir; };
 	// 当たり判定タグ
 	const CollisionTag GetTag() { return param.tag; };
 	// 当たり判定処理
@@ -27,6 +31,7 @@ protected:
 	struct Param
 	{
 		XMFLOAT3 pos;
+		XMFLOAT3 dir;
 		class Collision* collision;
 		CollisionTag tag;
 	};
@@ -69,6 +74,12 @@ protected:
 	ID3D11Buffer* constantBuffer;
 	ID3D11SamplerState* sampleLinear;		// テクスチャのサンプラー
 	ID3D11ShaderResourceView* texture;		// テクスチャ
+
+	float yaw;
+	XMVECTOR axisX;
+	XMVECTOR axisY;
+	XMVECTOR axisZ;
+
 	bool isExist;
 
 	// エフェクト管理クラス

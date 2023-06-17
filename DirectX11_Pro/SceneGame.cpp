@@ -39,7 +39,7 @@ void SceneGame::Initialize()
 	//light->SetLight(XMVector3Normalize(light->GetLight()));
 	//text.Init(WINDOW_WIDTH, WINDOW_HEIGHT, 23, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 	camera.Init();
-	//testObj->Init();
+	testObj->Init();
 	player->Init();
 }
 
@@ -80,14 +80,16 @@ void SceneGame::Draw()
 {
 	XMMATRIX mView;
 	XMMATRIX mProj;
+
 	//画面クリア（実際は単色で画面を塗りつぶす処理）
-	float ClearColor[4] = { 0,0,0.5,1 };// クリア色作成　RGBAの順
+	float ClearColor[4] = { 0, 0, 0.5, 1 };// クリア色作成　RGBAの順
 	device.dx11->GetDeviceContext()->ClearRenderTargetView(device.dx11->GetRtv(), ClearColor);					//画面クリア
 	device.dx11->GetDeviceContext()->ClearDepthStencilView(device.dx11->GetDsv(), D3D11_CLEAR_DEPTH, 1.0f, 0);	//深度バッファクリア
 
 	//text.Render("ABC", 50, 50);
-	camera.Render();
-	//testObj->Render();
+
+	camera.Render(player->GetPos(), player->GetYaw());
+	testObj->Render();
 	player->Draw();
 
 

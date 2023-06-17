@@ -30,6 +30,7 @@ private:
 		XMFLOAT4 eye;
 	};
 
+	void DrawMesh(XMMATRIX pos);
 	void Move();
 
 	class D11Device& device;
@@ -38,6 +39,13 @@ private:
 	class ShaderManager& shaderMgr;
 	class KeyManager& key;
 	class Camera& camera;
+
+	// ÉeÉXÉg------------
+	XMMATRIX view;
+	XMMATRIX proj;
+	XMFLOAT3 eye;
+
+	//-------------------
 
 	// ê∂Ç´ÇƒÇ¢ÇÈÇ©
 	bool isAlive;
