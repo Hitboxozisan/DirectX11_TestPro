@@ -16,8 +16,8 @@ public:
 
 	void Init();
 	void Update();
-	void Render(XMFLOAT3 playerPos, float playerYaw);
-	void FollowUpPlayer(XMFLOAT3 pos, XMFLOAT3 dir, float yaw);
+	void Render();
+	void FollowUpPlayer(XMFLOAT3 pos);
 	
 	const XMMATRIX GetView() const { return view; }
 	const XMMATRIX GetProj() const { return proj; }
@@ -30,7 +30,9 @@ public:
 	const void SetLookPos(XMVECTOR look) { lookPos = look; }
 private:
 	// íËêî
-	const XMVECTOR INITIAL_POS = { 0.0f, 5.0f, -10.0f };
+	const float ADJUST_POS_Y = 5;
+	const float ADJUST_POS_Z = -10;
+	const XMVECTOR INITIAL_POS = { 0.0f, 0.0f, 0.0f };
 	const XMVECTOR INITIAL_UP_DIR = { 0.0f, 1.0f, 0.0f };
 
 	float yawFlo;

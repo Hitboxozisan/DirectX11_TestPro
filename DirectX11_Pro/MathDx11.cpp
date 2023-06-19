@@ -108,6 +108,17 @@ namespace MathDx11
 		return result;
 	}
 
+	bool operator!=(const XMFLOAT2&& lhs, const XMFLOAT2& rhs)
+	{
+		if (lhs.x != rhs.x ||
+			lhs.y != rhs.y)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	/// <summary>
 	/// XMVECTOR‚ðXMFLOAT‚É•ÏŠ·
 	/// </summary>

@@ -13,8 +13,6 @@ public:
 	PlayerBase();
 	virtual ~PlayerBase();
 
-	//
-	const float GetYaw() { return yaw; }
 	// 座標
 	const XMFLOAT3 GetPos() { return param.pos; };
 	// 向き
@@ -74,11 +72,6 @@ protected:
 	ID3D11Buffer* constantBuffer;
 	ID3D11SamplerState* sampleLinear;		// テクスチャのサンプラー
 	ID3D11ShaderResourceView* texture;		// テクスチャ
-
-	float yaw;
-	XMVECTOR axisX;
-	XMVECTOR axisY;
-	XMVECTOR axisZ;
 
 	bool isExist;
 

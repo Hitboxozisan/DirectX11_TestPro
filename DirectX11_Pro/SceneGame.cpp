@@ -70,6 +70,7 @@ void SceneGame::Deactivate()
 void SceneGame::Update()
 {
 	camera.Update();
+	camera.FollowUpPlayer(player->GetPos());
 	player->Update();
 }
 
@@ -88,7 +89,7 @@ void SceneGame::Draw()
 
 	//text.Render("ABC", 50, 50);
 
-	camera.Render(player->GetPos(), player->GetYaw());
+	camera.Render();
 	testObj->Render();
 	player->Draw();
 

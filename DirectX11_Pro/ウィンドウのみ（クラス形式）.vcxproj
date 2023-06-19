@@ -162,6 +162,7 @@
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MathDx11.cpp" />
     <ClCompile Include="MeshManager.cpp" />
+    <ClCompile Include="Mover.cpp" />
     <ClCompile Include="ObjModelManager.cpp" />
     <ClCompile Include="Pixel3D.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="ModelData.h" />
     <ClInclude Include="ModelTypeData.h" />
+    <ClInclude Include="Mover.h" />
     <ClInclude Include="ObjModelManager.h" />
     <ClInclude Include="Pixel3D.h" />
     <ClInclude Include="Player.h" />

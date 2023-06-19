@@ -21,6 +21,10 @@ namespace MathDx11
 	 // ŠOÏ
 	XMFLOAT3 CrossXMFLOAT3(const XMFLOAT3& lhs, const XMFLOAT3& rhs);
 
+	// XMFLOAT2‰‰Z
+	bool operator!=(const XMFLOAT2&& lhs, const XMFLOAT2& rhs);
+
+
 	// •ÏŠ·ˆ—
 	const XMFLOAT3 ConvertXMVECTORFromXMFLOAT3(const XMVECTOR vec);
 	const XMVECTOR ConvertXMFLOAT3FromXMVECTOR(const XMFLOAT3 lhs);

@@ -42,12 +42,6 @@ void Player::Init()
 	param.pos = INITIAL_POS;
 	param.dir = XMFLOAT3(0, 0, 0);
 
-	axisX = XMVECTOR{ 1, 0, 0 };
-	axisY = XMVECTOR{ 0, 1, 0 };
-	axisZ = XMVECTOR{ 0, 0, 1 };
-
-	yaw = 1.0f;
-
 	// objファイルの読み込み
 	//char* file = strdup(FILE_PATH[ObjModelType::Player].c_str());
 	if (FAILED(meshMgr.LoadMesh(ObjModelType::Player)))
@@ -91,6 +85,7 @@ void Player::Fainalize()
 void Player::Update()
 {
 	Move();
+	Direction();
 }
 
 /// <summary>
@@ -107,17 +102,12 @@ void Player::Draw()
 
 	XMMATRIX position, tran, rot, mScale;
 	tran = XMMatrixTranslation(param.pos.x, param.pos.y, param.pos.z);
-	rot = XMMatrixRotationY(yaw);
-	axisX = XMVector3TransformCoord(XMVECTOR{ 1, 0, 0 }, rot);
-	axisY = XMVector3TransformCoord(XMVECTOR{ 0, 1, 0 }, rot);
-	axisZ = XMVector3TransformCoord(XMVECTOR{ 0, 0, 1 }, rot);
+	float dir = atan2(param.dir.x, param.dir.z);
+	rot = XMMatrixRotationY(dir);
 	
 	//mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 
 	position = rot * tran;
-
-	//ワールドトランスフォーム（絶対座標変換）
-	//position = XMMatrixRotationY(timeGetTime() / 1100.0f);//単純にyaw回転させる
 
 	DrawMesh(position);
 }
@@ -195,7 +185,7 @@ void Player::Move()
 	Forward = NormalizeXMFLOAT3(Forward);
 
 	// 外積から横のベクトルを取得
-	XMFLOAT3 right = CrossXMFLOAT3(XMFLOAT3(0, 1, 0), Forward);
+	XMFLOAT3 Right = CrossXMFLOAT3(XMFLOAT3(0, 1, 0), Forward);
 
 	// 入力ベクトル
 	XMFLOAT3 inputVec(0, 0, 0);
@@ -204,27 +194,53 @@ void Player::Move()
 	XMFLOAT2 input(0, 0);
 
 	// キーボード
-	//param.pos.x += -(key.IsKeyPush(KeyInfo::KeyMoveLeft)) * 0.1 + (key.IsKeyPush(KeyInfo::KeyMoveRight)) * 0.1;
-	//param.pos.z += -(key.IsKeyPush(KeyInfo::KeyMoveBack)) * 0.1 + (key.IsKeyPush(KeyInfo::KeyMoveForward)) * 0.1;
-	
 	if (key.IsKeyPush(KeyInfo::KeyMoveForward)) input.y += 1;
 	if (key.IsKeyPush(KeyInfo::KeyMoveBack)) input.y += -1;
 	if (key.IsKeyPush(KeyInfo::KeyMoveRight)) input.x += 1;
 	if (key.IsKeyPush(KeyInfo::KeyMoveLeft)) input.x += -1;
 
 	inputVec += ScaleXMFLOAT3(Forward, input.y * 0.1);
-	inputVec += ScaleXMFLOAT3(right, input.x * 0.1);
+	inputVec += ScaleXMFLOAT3(Right, input.x * 0.1);
 
 	param.pos += inputVec;
-
-	// 回転
-	yaw += -(key.IsKeyPush(KeyInfo::KeyRotateL)) * 0.1f + (key.IsKeyPush(KeyInfo::KeyRotateR)) * 0.1f;
 
 	// コントローラー
 	// コントローラーの入力を取得
 	input = key.GetLStickInput();
-	inputVec += ScaleXMFLOAT3(Forward, input.y * 10);
-	inputVec += ScaleXMFLOAT3(right, input.x * 10);
+
+	inputVec += ScaleXMFLOAT3(Forward, input.y * 0.1);
+	inputVec += ScaleXMFLOAT3(Right, input.x * 0.1);
 
 	param.pos += inputVec;
+
+}
+
+/// <summary>
+/// 向き設定
+/// </summary>
+void Player::Direction()
+{
+	// 前方向ベクトルを出す
+	XMFLOAT3 Forward = SubXMFLOAT3(param.pos, camera.GetPos());
+	// 床にめり込んだりするのを防ぐためY軸は0にする
+	Forward.y = 0;
+	// 正規化
+	Forward = NormalizeXMFLOAT3(Forward);
+	// 外積から横のベクトルを取得
+	XMFLOAT3 Right = CrossXMFLOAT3(XMFLOAT3(0, 1, 0), Forward);
+
+	XMFLOAT3 inputVec(0, 0, 0);
+
+	XMFLOAT2 input = key.GetRStickInput();
+	
+	if (input.x != 0 ||
+		input.y != 0)
+	{
+		inputVec += ScaleXMFLOAT3(Forward, input.y);
+		inputVec += ScaleXMFLOAT3(Right, input.x);
+
+		param.dir += inputVec;
+		param.dir = NormalizeXMFLOAT3(param.dir);
+	}
+
 }

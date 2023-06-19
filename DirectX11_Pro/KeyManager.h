@@ -71,11 +71,9 @@ public:
 	XMFLOAT2 GetLStickInput();
 	
 private:
-	// 外部からアクセスを制限する
-	//KeyManager();
-	//KeyManager(const KeyManager&);
-	//~KeyManager();
-	
+	const float STICK_MAX = 32767.0f;
+	const float TRIGGER_MAX = 255.0f;
+
 	// キー情報配列
 	constexpr static KeyInfo keyInfo[] =
 	{

@@ -42,7 +42,7 @@ void Camera::Init()
 /// </summary>
 void Camera::Update()
 {
-	MoveCamera();
+	//MoveCamera();
 	//RotateCamera();
 	ZoomInOut();
 }
@@ -50,29 +50,15 @@ void Camera::Update()
 /// <summary>
 /// 描画処理
 /// </summary>
-void Camera::Render(XMFLOAT3 playerPos, float playerYaw)
+void Camera::Render()
 {
-	position = { 0.0f, 5.0f, -10.0f };
-	lookPos = { 0.0f, 1.5f, 0.0f };
 	upDir = { 0.0f, 1.0f, 0.0f };
 
-	// 視点と注視点の両方をキャラの位置と回転行列でまげて移動する
-	XMMATRIX oriMat, tran, yaw;
-	tran = XMMatrixTranslation(playerPos.x, playerPos.y, playerPos.z);
-	yaw = XMMatrixRotationY(playerYaw);
-	oriMat = yaw * tran;
+	position = ConvertXMFLOAT3FromXMVECTOR(cameraPos);
 	
-	position = XMVector3TransformCoord(position, oriMat);
-	// 注視点の設定
-	lookPos = XMVector3TransformCoord(lookPos, oriMat);
-
-	// ビュートランスフォーム
-	//lookPos = position + dir;
-	// 注視位置はいったんプレイヤーの初期位置に
-	//lookPos = { 0.0f, 0.0f, 0.0f, 1.0f };
 	view = XMMatrixLookAtLH(position, lookPos, upDir);
+	
 	proj = XMMatrixPerspectiveFovLH(XM_PI / zoom, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
-
 }
 
 /// <summary>
@@ -104,7 +90,6 @@ void Camera::RotateCamera()
 	yaw = XMMatrixRotationY(yawFlo);
 	pitch = XMMatrixRotationX(pitchFlo);
 	
-
 	dir = { 0.0f, 0.0f, 1.0f };
 	dir = XMVector3TransformCoord(dir, yaw);
 
@@ -126,14 +111,14 @@ void Camera::ZoomInOut()
 	}
 }
 
-void Camera::FollowUpPlayer(XMFLOAT3 pos, XMFLOAT3 dir, float yaw)
+void Camera::FollowUpPlayer(XMFLOAT3 pos)
 {
-	//XMVECTOR player = XMLoadFloat3(&pos);
-	//XMVECTOR direction = XMLoadFloat3(&dir);
-	//lookPos = player + direction;
-	//lookPos = {0, 0, 0, 1};
+	cameraPos = pos;
+	cameraPos.y += ADJUST_POS_Y;
+	cameraPos.z += ADJUST_POS_Z;
 
-	//yawFlo = yaw;
+	lookPos = XMLoadFloat3(&pos);
+	position = ConvertXMFLOAT3FromXMVECTOR(cameraPos);
 }
 
 const XMFLOAT3 Camera::GetPos()

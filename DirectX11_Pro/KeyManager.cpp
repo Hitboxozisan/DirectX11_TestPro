@@ -255,13 +255,19 @@ bool KeyManager::IsCheckLTrigger()
 /// <returns></returns>
 XMFLOAT2 KeyManager::GetRStickInput()
 {
-    XMVECTOR nor = XMVectorSet(xState.Gamepad.sThumbRX, xState.Gamepad.sThumbRY, 0.0f, 0.0f);
-    nor = XMVector2Normalize(nor);
+    // ‹ŒŽ®
+    //XMVECTOR nor = XMVectorSet(xState.Gamepad.sThumbRX / STICK_MAX, xState.Gamepad.sThumbRY / STICK_MAX, 0.0f, 0.0f);
+    //nor = XMVector2Normalize(nor);
+    //
+    //XMFLOAT2 result;
+    //XMStoreFloat2(&result, nor);
+    //
+    //return result;
 
-    XMFLOAT2 result;
-    XMStoreFloat2(&result, nor);
+    float x = (float)xState.Gamepad.sThumbRX / STICK_MAX;
+    float y = (float)xState.Gamepad.sThumbRY / STICK_MAX;
 
-    return result;
+    return XMFLOAT2(x, y);
 }
 
 /// <summary>
@@ -271,13 +277,19 @@ XMFLOAT2 KeyManager::GetRStickInput()
 /// <returns></returns>
 XMFLOAT2 KeyManager::GetLStickInput()
 {
-    XMVECTOR nor = XMVectorSet(xState.Gamepad.sThumbLX, xState.Gamepad.sThumbLY, 0.0f, 0.0f);
-    nor = XMVector2Normalize(nor);
+    // ‹ŒŽ®
+    //XMVECTOR nor = XMVectorSet(xState.Gamepad.sThumbLX / STICK_MAX, xState.Gamepad.sThumbLY / STICK_MAX, 0.0f, 0.0f);
+    //nor = XMVector2Normalize(nor);
+    //
+    //XMFLOAT2 result;
+    //XMStoreFloat2(&result, nor);
+    //
+    //return result;
 
-    XMFLOAT2 result;
-    XMStoreFloat2(&result, nor);
+    float x = (float)xState.Gamepad.sThumbLX / STICK_MAX;
+    float y = (float)xState.Gamepad.sThumbLY / STICK_MAX;
 
-    return result;
+    return XMFLOAT2(x, y);
 }
 
 

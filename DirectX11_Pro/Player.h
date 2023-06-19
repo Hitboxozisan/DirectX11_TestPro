@@ -32,6 +32,7 @@ private:
 
 	void DrawMesh(XMMATRIX pos);
 	void Move();
+	void Direction();
 
 	class D11Device& device;
 	//class MaterialManager& materialMgr;

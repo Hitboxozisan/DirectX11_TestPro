@@ -10,6 +10,8 @@ namespace Tag
 	{
 		Player = 0,
 		Enemy,
+		BulletPlayer,
+		BulletEnemy,
 
 		TagAmount
 	};

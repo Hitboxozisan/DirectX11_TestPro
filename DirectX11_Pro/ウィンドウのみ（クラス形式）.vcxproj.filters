@@ -90,6 +90,9 @@
     <ClCompile Include="PlayerDirection.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="Mover.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -183,9 +186,6 @@
     <ClInclude Include="SingletonFainalizer.h">
       <Filter>Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="ModelData.h" />
-    <ClInclude Include="ModelTypeData.h" />
-    <ClInclude Include="ShaderData.h" />
     <ClInclude Include="ShaderManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -194,6 +194,18 @@
     </ClInclude>
     <ClInclude Include="PlayerDirection.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderData.h">
+      <Filter>FilePath</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelTypeData.h">
+      <Filter>FilePath</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelData.h">
+      <Filter>FilePath</Filter>
+    </ClInclude>
+    <ClInclude Include="Mover.h">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +253,15 @@
     </Filter>
     <Filter Include="DirectX">
       <UniqueIdentifier>{b4f3dc6d-b1dc-4ccf-9c64-459060d7e79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bullet">
+      <UniqueIdentifier>{b2dd47ed-b7f1-463b-9f3c-61ff484a06f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FilePath">
+      <UniqueIdentifier>{446fec53-d250-439b-9801-de8168418cf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{2b394ae3-097c-4904-b13b-2c8d2f435587}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -30,6 +30,7 @@ using ComPtr = Microsoft::WRL::ComPtr<T>;
 #define APP_NAME L"DirectX11_Game"
 #define FLAME_RATE 60;
 #define ZERO_VECTOR = XMVECTOR{0.0f, 0.0f, 0.0f};
+#define ZERO_XMFLOAT3 = XMFLOAT3(0.0f, 0.0f, 0.0f);
 #define ZERO_MATRIX = XMMATRIX{ZERO_VECTOR, ZERO_VECTOR, ZERO_VECTOR, ZERO_VECTOR};
 
 //É}ÉNÉç
