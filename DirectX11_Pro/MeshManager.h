@@ -31,8 +31,8 @@ private:
 	// メッシュ構造体
 	struct Mesh
 	{
-		DWORD dwNumVert = 0;
-		DWORD dwNumFace = 0;
+		DWORD dwNumVert = 0;			// 頂点数
+		DWORD dwNumFace = 0;			// ポリゴン数
 		ID3D11Buffer* vertexBuffer;
 		ID3D11Buffer* indexBuffer;
 	};
@@ -40,8 +40,8 @@ private:
 	struct ObjVertex
 	{
 		XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };		// 位置
-		XMFLOAT3 norm = { 0.0f, 0.0f, 0.0f };
-		XMFLOAT2 tex = { 0.0f, 0.0f };
+		XMFLOAT3 norm = { 0.0f, 0.0f, 0.0f };		// 法線
+		XMFLOAT2 tex = { 0.0f, 0.0f };				// テクスチャ
 	};
 
 	class D11Device& device;

@@ -93,6 +93,7 @@
     <ClCompile Include="Mover.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="ObjModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -136,7 +137,6 @@
     <ClInclude Include="Singleton.h">
       <Filter>Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="EnumItr.h" />
     <ClInclude Include="SphereMap.h">
       <Filter>SphereMap</Filter>
     </ClInclude>
@@ -207,6 +207,9 @@
     <ClInclude Include="Mover.h">
       <Filter>Base</Filter>
     </ClInclude>
+    <ClInclude Include="ObjModel.h" />
+    <ClInclude Include="EnumIterator.h" />
+    <ClInclude Include="DrawData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

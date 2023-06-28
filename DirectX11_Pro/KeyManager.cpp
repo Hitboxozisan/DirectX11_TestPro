@@ -4,7 +4,7 @@
 #include <math.h>
 #include <xinput.h>
 #include "KeyManager.h"
-#include "EnumItr.h"
+#include "EnumIterator.h"
 
 // ‘€ìî•ñæ“¾‚Ì‚½‚ß
 using namespace KeyMgrInfo;
